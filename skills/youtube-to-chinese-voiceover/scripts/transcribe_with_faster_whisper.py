@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 from pathlib import Path
-
-from faster_whisper import WhisperModel
 
 
 def format_ts(seconds: float) -> str:
@@ -42,7 +41,11 @@ def main() -> None:
     args.txt_out.parent.mkdir(parents=True, exist_ok=True)
     args.srt_out.parent.mkdir(parents=True, exist_ok=True)
 
-    model = WhisperModel(args.model, device=args.device, compute_type=args.compute_type)
+    faster_whisper_module = importlib.import_module("faster_whisper")
+    whisper_model = getattr(faster_whisper_module, "WhisperModel")
+    model = whisper_model(
+        args.model, device=args.device, compute_type=args.compute_type
+    )
     segments, info = model.transcribe(
         str(args.audio),
         beam_size=args.beam_size,

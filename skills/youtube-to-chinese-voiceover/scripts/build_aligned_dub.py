@@ -2,14 +2,13 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import importlib
 import json
 import subprocess
 import tempfile
 import wave
 from dataclasses import dataclass
 from pathlib import Path
-
-import edge_tts
 import numpy as np
 
 
@@ -38,6 +37,22 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--voice", default="zh-CN-XiaoxiaoNeural", help="edge-tts 音色")
     parser.add_argument("--rate", default="+0%", help="edge-tts 语速")
+    parser.add_argument(
+        "--backend",
+        choices=["edge-tts", "qwen3-tts"],
+        default="edge-tts",
+        help="逐段合成所使用的 TTS 后端",
+    )
+    parser.add_argument(
+        "--reference-audio",
+        type=Path,
+        help="当 backend=qwen3-tts 时必填，用于零样本音色克隆的参考音频",
+    )
+    parser.add_argument(
+        "--qwen-tts-bin",
+        default="qwen-tts",
+        help="Qwen3-TTS CLI 可执行文件名或路径",
+    )
     parser.add_argument(
         "--sample-rate", type=int, default=24000, help="输出 wav 采样率"
     )
@@ -115,8 +130,51 @@ def ffprobe_duration(path: Path) -> float:
 async def synthesize_segment(
     text: str, output_path: Path, voice: str, rate: str
 ) -> None:
-    communicator = edge_tts.Communicate(text, voice, rate=rate)
+    edge_tts_module = importlib.import_module("edge_tts")
+    communicate = getattr(edge_tts_module, "Communicate")
+    communicator = communicate(text, voice, rate=rate)
     await communicator.save(str(output_path))
+
+
+def synthesize_segment_with_qwen(
+    text: str,
+    output_path: Path,
+    reference_audio: Path,
+    qwen_tts_bin: str,
+) -> None:
+    subprocess.run(
+        [
+            qwen_tts_bin,
+            "synthesize",
+            "--text",
+            text,
+            "--prompt-audio",
+            str(reference_audio),
+            "--output",
+            str(output_path),
+        ],
+        check=True,
+    )
+
+
+def synthesize_with_selected_backend(
+    *,
+    backend: str,
+    text: str,
+    output_path: Path,
+    voice: str,
+    rate: str,
+    reference_audio: Path | None,
+    qwen_tts_bin: str,
+) -> None:
+    if backend == "edge-tts":
+        asyncio.run(synthesize_segment(text, output_path, voice, rate))
+        return
+
+    if reference_audio is None:
+        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+
+    synthesize_segment_with_qwen(text, output_path, reference_audio, qwen_tts_bin)
 
 
 def mp3_to_wav(src: Path, dst: Path, sample_rate: int) -> None:
@@ -201,6 +259,9 @@ def speed_up_wav(src: Path, dst: Path, speedup: float, sample_rate: int) -> None
 
 def main() -> None:
     args = parse_args()
+    if args.backend == "qwen3-tts" and args.reference_audio is None:
+        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+
     segments = read_segments(args.srt, args.zh_segments)
     args.segment_dir.mkdir(parents=True, exist_ok=True)
     args.wav_out.parent.mkdir(parents=True, exist_ok=True)
@@ -225,8 +286,14 @@ def main() -> None:
             wav_path = args.segment_dir / f"segment-{segment.index:03d}.wav"
 
             if not mp3_path.exists():
-                asyncio.run(
-                    synthesize_segment(segment.text_zh, mp3_path, args.voice, args.rate)
+                synthesize_with_selected_backend(
+                    backend=args.backend,
+                    text=segment.text_zh,
+                    output_path=mp3_path,
+                    voice=args.voice,
+                    rate=args.rate,
+                    reference_audio=args.reference_audio,
+                    qwen_tts_bin=args.qwen_tts_bin,
                 )
             mp3_to_wav(mp3_path, wav_path, args.sample_rate)
             samples = read_wav_as_float(wav_path, args.sample_rate)
@@ -256,6 +323,7 @@ def main() -> None:
                     "slot_duration": slot_duration,
                     "text_en": segment.text_en,
                     "text_zh": segment.text_zh,
+                    "backend": args.backend,
                     "generated_duration": round(original_samples / args.sample_rate, 3),
                     "placed_duration": round(valid_samples / args.sample_rate, 3),
                     "speedup_applied": round(speedup_applied, 3),

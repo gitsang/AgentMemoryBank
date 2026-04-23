@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Run a personal-scale, low-cost workflow on YouTube video `3zgm60bXmQk` that produces a Chinese voiceover demo video, captures reproducible evidence under `reports/`, and extracts a reusable skill under `skills/`.
+**Goal:** Run a personal-scale, low-cost workflow on YouTube video `3zgm60bXmQk` that produces a Chinese voiceover demo video, optionally using external-reference-audio voice cloning, captures reproducible evidence under `reports/`, and extracts a reusable skill under `skills/`.
 
-**Architecture:** Create a dedicated report workspace for the sample video, bootstrap local CLI/Python tooling in an isolated `.venv`, download the source media, generate transcript artifacts, rewrite to Chinese narration, produce a TTS audio track, assemble a playable MP4, then distill only the proven workflow into a reusable skill. The execution is evidence-first: every artifact referenced by the report or skill must exist in the report directory.
+**Architecture:** Create a dedicated report workspace for the sample video, bootstrap local CLI/Python tooling in an isolated `.venv`, download the source media, generate transcript artifacts, rewrite to Chinese narration, optionally feed a user-supplied reference clip into a cloning-capable TTS backend, assemble a playable MP4, then distill only the proven workflow into a reusable skill. The execution is evidence-first: every artifact referenced by the report or skill must exist in the report directory.
 
-**Tech Stack:** Python 3.13, uv, ffmpeg/ffprobe, yt-dlp, faster-whisper, local helper scripts, markdown reports, skill documentation.
+**Tech Stack:** Python 3.13, uv, ffmpeg/ffprobe, yt-dlp, faster-whisper, edge-tts, qwen-tts, local helper scripts, markdown reports, skill documentation.
 
 ---
 

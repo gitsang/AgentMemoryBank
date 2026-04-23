@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import importlib
 import subprocess
 from pathlib import Path
-
-import edge_tts
 
 
 def parse_args() -> argparse.Namespace:
@@ -19,7 +18,9 @@ def parse_args() -> argparse.Namespace:
 
 
 async def synthesize(text: str, voice: str, rate: str, mp3_out: Path) -> None:
-    communicator = edge_tts.Communicate(text, voice, rate=rate)
+    edge_tts_module = importlib.import_module("edge_tts")
+    communicate = getattr(edge_tts_module, "Communicate")
+    communicator = communicate(text, voice, rate=rate)
     await communicator.save(str(mp3_out))
 
 

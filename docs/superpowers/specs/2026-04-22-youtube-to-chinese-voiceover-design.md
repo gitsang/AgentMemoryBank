@@ -10,7 +10,7 @@ status: draft-for-review
 
 Use the provided YouTube video (`3zgm60bXmQk`) as the concrete example to run a complete personal-scale workflow that produces a Chinese voiceover version of the source video, while extracting the verified process into a reusable skill for this repository.
 
-The implementation target is a **Chinese voiceover edition** rather than voice cloning or lip-sync. The workflow must stay low-cost, reproducible by one person, and explicit about where manual review is still required.
+The implementation target is a **Chinese voiceover edition** with an optional **external-reference-audio voice cloning mode**, rather than lip-sync. The workflow must stay low-cost, reproducible by one person, and explicit about where manual review is still required.
 
 ## Repository Fit
 
@@ -28,14 +28,15 @@ This repository currently centers around research artifacts under `reports/` and
 2. Capture basic source metadata for traceability.
 3. Generate an English transcript and subtitle timing.
 4. Rewrite the transcript into a natural Chinese voiceover script.
-5. Generate a Chinese narration audio track.
-6. Combine the narration with the source video into a playable output.
-7. Record commands, artifacts, issues, and manual interventions in a report.
-8. Distill the validated workflow into a reusable skill.
+5. Support an external reference-audio path for voice cloning.
+6. Generate a Chinese narration or cloned-voice audio track.
+7. Combine the narration with the source video into a playable output.
+8. Record commands, artifacts, issues, and manual interventions in a report.
+9. Distill the validated workflow into a reusable skill.
 
 ### Out of Scope
 
-1. Voice cloning that imitates the original speaker.
+1. Automatically extracting a stable reference voice from the original video.
 2. Lip-sync or face reenactment.
 3. Batch processing multiple videos.
 4. Full publishing automation.
@@ -48,10 +49,11 @@ The workflow is considered successful when all of the following are true:
 1. A local copy of the source media or audio exists.
 2. An English transcript with usable timing data exists.
 3. A Chinese script exists and reads naturally enough for narration.
-4. A Chinese narration audio file exists.
-5. A playable Chinese-voiceover video exists.
-6. `report.md` in the new report directory explains the end-to-end process, failures, fixes, and outputs.
-7. A new skill captures only the steps that proved stable during the real run.
+4. In cloning mode, a usable external reference audio file exists.
+5. A Chinese narration or cloned-voice audio file exists.
+6. A playable Chinese-voiceover video exists.
+7. `report.md` in the new report directory explains the end-to-end process, failures, fixes, and outputs.
+8. A new skill captures only the steps that proved stable during the real run.
 
 ## Recommended Approach
 
@@ -105,15 +107,17 @@ Option B is recommended because it makes the skill evidence-based rather than as
   - meaning preserved over literal translation
 - Manual review is expected here because transcript noise and culture-specific phrasing often require judgment
 
-### Phase 4 — Chinese TTS Narration
+### Phase 4 — Chinese TTS / Voice Cloning Narration
 
 - Preferred outcome: one complete Chinese narration audio file
-- Initial constraint: use standard Chinese TTS rather than voice cloning
+- Default path: use standard Chinese TTS
+- Cloning path: use an external reference clip plus Chinese text to synthesize a similar voice
 - Selection criteria:
   - low friction
   - low cost
   - acceptable naturalness
 - If multiple TTS paths are available, prefer the one that can be reproduced with the least setup in this environment
+- First implementation constraint: do **not** auto-extract the reference from the source video. Require a user-supplied external sample.
 
 ### Phase 5 — Video Assembly
 
@@ -167,7 +171,7 @@ The skill must be derived from what actually worked on the sample video, not fro
 
 ### 3. Keep the End Product Modest
 
-The first target is a Chinese voiceover video, not a high-fidelity dubbed reconstruction. This prevents the project from expanding into voice identity, lip-sync, or studio-grade postproduction.
+The first target is a Chinese voiceover / cloned-voice video, not a high-fidelity dubbed reconstruction. This prevents the project from expanding into automatic speaker extraction, lip-sync, or studio-grade postproduction.
 
 ### 4. Preserve Manual Review Points
 
@@ -192,6 +196,12 @@ The source audio may produce noisy transcription.
 Chinese narration may be too long or too short for the source pacing.
 
 - Mitigation: prefer a voiceover-style result and document any trim, silence, or timing adjustments.
+
+### Voice Cloning Quality Risk
+
+The cloned voice may sound unlike the reference if the sample is noisy, too short, or contains multiple speakers.
+
+- Mitigation: require a clean external reference clip, document its constraints, and treat similarity as best-effort rather than exact identity reproduction.
 
 ### Copyright and Reuse Risk
 
