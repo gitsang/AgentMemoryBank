@@ -51,3 +51,13 @@
 
 - Baseline test against `skills/youtube-to-chinese-voiceover/SKILL.md` failed on final packaging guidance: it did not specify `{title}.mp4`, `{title}.ass`, `{title}-bilingual.mp4`, or clearly separate intermediate artifacts from final deliverables.
 - After updating the skill, a re-test passed: the skill now explicitly documents title-based naming, external ASS delivery, burned bilingual export, and a review gate that checks final named deliverables before handoff.
+
+## Voice cloning rerun notes
+
+- 为了继续在 `What are AI agents` 这个视频上实跑音色克隆，这次临时从源音频中抽取了 `32.09s-45.47s` 的连续英文人声，生成 `source/reference.wav`，并把对应文本保存为 `source/reference.en.txt`。这和“第一版只支持外部参考音频”的 skill 边界不完全一致，属于为了本次验证而做的最小回退。
+- `qwen-tts` 官方可用的是 Python API，不是先前假设的 CLI。仓库里的 skill 脚本后来已经修正为 Python API 路径。
+- 首次安装 `qwen-tts` 时，默认 `torch` 解析到了 CUDA 轮子，开始下载大量 NVIDIA 依赖并超时；改成 `https://download.pytorch.org/whl/cpu` 的 CPU-only torch 后才稳定安装。
+- `qwen_tts` 在当前环境里还要求 `transformers==4.57.3`、`accelerate==1.12.0` 等推理依赖；版本不匹配时会在 import 阶段报 `check_model_inputs()` 相关错误。
+- 当前机器没有 GPU，`Qwen/Qwen3-TTS-12Hz-0.6B-Base` 在 CPU 上可以跑，但非常慢。一次 1.6s 左右的 smoke 输出大约需要 2 分 51 秒。
+- 整片逐段克隆长跑持续 8 小时，只生成了前 17 段缓存（`aligned-segments-clone/segment-001.wav` 到 `segment-017.wav`），没能在本次会话内完成 131 段全片。
+- 因此，本次真实交付改为：基于已经生成成功的前 17 段，组装出一个约 `55.31s` 的中文音色克隆片段样片，并明确记录整片版本仍受算力约束。

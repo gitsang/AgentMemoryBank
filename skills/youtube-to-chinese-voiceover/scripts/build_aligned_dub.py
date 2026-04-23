@@ -9,6 +9,7 @@ import tempfile
 import wave
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Protocol
 import numpy as np
 
 
@@ -19,6 +20,18 @@ class SubtitleSegment:
     end: float
     text_en: str
     text_zh: str
+
+
+class QwenVoiceCloneModel(Protocol):
+    def generate_voice_clone(
+        self,
+        text: str,
+        language: str | None = None,
+        ref_audio: str | None = None,
+        ref_text: str | None = None,
+        non_streaming_mode: bool = False,
+        **kwargs: object,
+    ) -> tuple[list[np.ndarray], int]: ...
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,9 +62,14 @@ def parse_args() -> argparse.Namespace:
         help="当 backend=qwen3-tts 时必填，用于零样本音色克隆的参考音频",
     )
     parser.add_argument(
-        "--qwen-tts-bin",
-        default="qwen-tts",
-        help="Qwen3-TTS CLI 可执行文件名或路径",
+        "--reference-text",
+        type=Path,
+        help="当 backend=qwen3-tts 时必填，参考音频对应文本",
+    )
+    parser.add_argument(
+        "--model-id",
+        default="Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+        help="Qwen3-TTS Base 模型 ID",
     )
     parser.add_argument(
         "--sample-rate", type=int, default=24000, help="输出 wav 采样率"
@@ -138,23 +156,20 @@ async def synthesize_segment(
 
 def synthesize_segment_with_qwen(
     text: str,
-    output_path: Path,
+    wav_output_path: Path,
     reference_audio: Path,
-    qwen_tts_bin: str,
+    reference_text: str,
+    model: QwenVoiceCloneModel,
 ) -> None:
-    subprocess.run(
-        [
-            qwen_tts_bin,
-            "synthesize",
-            "--text",
-            text,
-            "--prompt-audio",
-            str(reference_audio),
-            "--output",
-            str(output_path),
-        ],
-        check=True,
+    soundfile = importlib.import_module("soundfile")
+    wavs, sample_rate = model.generate_voice_clone(
+        text=text,
+        language="Chinese",
+        ref_audio=str(reference_audio),
+        ref_text=reference_text,
+        non_streaming_mode=True,
     )
+    soundfile.write(str(wav_output_path), wavs[0], sample_rate)
 
 
 def synthesize_with_selected_backend(
@@ -165,16 +180,34 @@ def synthesize_with_selected_backend(
     voice: str,
     rate: str,
     reference_audio: Path | None,
-    qwen_tts_bin: str,
+    reference_text: str | None,
+    qwen_model: QwenVoiceCloneModel | None,
 ) -> None:
     if backend == "edge-tts":
         asyncio.run(synthesize_segment(text, output_path, voice, rate))
         return
 
-    if reference_audio is None:
-        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+    if reference_audio is None or reference_text is None or qwen_model is None:
+        raise SystemExit(
+            "--reference-audio and --reference-text are required when --backend=qwen3-tts"
+        )
 
-    synthesize_segment_with_qwen(text, output_path, reference_audio, qwen_tts_bin)
+    synthesize_segment_with_qwen(
+        text,
+        output_path,
+        reference_audio,
+        reference_text,
+        qwen_model,
+    )
+
+
+def load_qwen_model(model_id: str) -> QwenVoiceCloneModel:
+    torch = importlib.import_module("torch")
+    qwen_tts_module = importlib.import_module("qwen_tts")
+    qwen_model = getattr(qwen_tts_module, "Qwen3TTSModel")
+    device_map = "cuda:0" if torch.cuda.is_available() else "cpu"
+    dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+    return qwen_model.from_pretrained(model_id, device_map=device_map, dtype=dtype)
 
 
 def mp3_to_wav(src: Path, dst: Path, sample_rate: int) -> None:
@@ -259,8 +292,12 @@ def speed_up_wav(src: Path, dst: Path, speedup: float, sample_rate: int) -> None
 
 def main() -> None:
     args = parse_args()
-    if args.backend == "qwen3-tts" and args.reference_audio is None:
-        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+    if args.backend == "qwen3-tts" and (
+        args.reference_audio is None or args.reference_text is None
+    ):
+        raise SystemExit(
+            "--reference-audio and --reference-text are required when --backend=qwen3-tts"
+        )
 
     segments = read_segments(args.srt, args.zh_segments)
     args.segment_dir.mkdir(parents=True, exist_ok=True)
@@ -271,6 +308,12 @@ def main() -> None:
     total_samples = int(round(video_duration * args.sample_rate))
     final_audio = np.zeros(total_samples, dtype=np.float32)
     report: list[dict[str, object]] = []
+    qwen_reference_text = (
+        args.reference_text.read_text(encoding="utf-8").strip()
+        if args.reference_text is not None
+        else None
+    )
+    qwen_model: QwenVoiceCloneModel | None = None
 
     with tempfile.TemporaryDirectory(prefix="aligned-dub-") as temp_dir_str:
         temp_dir = Path(temp_dir_str)
@@ -285,17 +328,33 @@ def main() -> None:
             mp3_path = args.segment_dir / f"segment-{segment.index:03d}.mp3"
             wav_path = args.segment_dir / f"segment-{segment.index:03d}.wav"
 
-            if not mp3_path.exists():
-                synthesize_with_selected_backend(
-                    backend=args.backend,
-                    text=segment.text_zh,
-                    output_path=mp3_path,
-                    voice=args.voice,
-                    rate=args.rate,
-                    reference_audio=args.reference_audio,
-                    qwen_tts_bin=args.qwen_tts_bin,
-                )
-            mp3_to_wav(mp3_path, wav_path, args.sample_rate)
+            if args.backend == "qwen3-tts":
+                if not wav_path.exists():
+                    if qwen_model is None:
+                        qwen_model = load_qwen_model(args.model_id)
+                    synthesize_with_selected_backend(
+                        backend=args.backend,
+                        text=segment.text_zh,
+                        output_path=wav_path,
+                        voice=args.voice,
+                        rate=args.rate,
+                        reference_audio=args.reference_audio,
+                        reference_text=qwen_reference_text,
+                        qwen_model=qwen_model,
+                    )
+            else:
+                if not mp3_path.exists():
+                    synthesize_with_selected_backend(
+                        backend=args.backend,
+                        text=segment.text_zh,
+                        output_path=mp3_path,
+                        voice=args.voice,
+                        rate=args.rate,
+                        reference_audio=args.reference_audio,
+                        reference_text=qwen_reference_text,
+                        qwen_model=qwen_model,
+                    )
+                mp3_to_wav(mp3_path, wav_path, args.sample_rate)
             samples = read_wav_as_float(wav_path, args.sample_rate)
             original_samples = len(samples)
             speedup_applied = 1.0

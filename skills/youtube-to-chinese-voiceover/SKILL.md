@@ -182,6 +182,7 @@ python scripts/generate_edge_tts.py \
 python scripts/generate_qwen3_voice_clone.py \
   --script artifacts/script.zh.txt \
   --reference-audio source/reference.wav \
+  --reference-text source/reference.en.txt \
   --mp3-out artifacts/narration.zh.clone.mp3 \
   --wav-out artifacts/narration.zh.clone.wav
 
@@ -191,6 +192,7 @@ python scripts/build_aligned_dub.py \
   --video source/video.mp4 \
   --backend qwen3-tts \
   --reference-audio source/reference.wav \
+  --reference-text source/reference.en.txt \
   --wav-out artifacts/narration.zh.aligned.wav \
   --report-out artifacts/narration.zh.aligned.json \
   --segment-dir artifacts/aligned-segments
@@ -200,6 +202,84 @@ python scripts/build_bilingual_ass.py \
   --zh-segments artifacts/script.zh.segments.txt \
   --ass-out artifacts/subtitles.zh-en.ass
 ```
+
+## 在 GPU 环境继续复现 / 续跑
+
+如果 CPU-only 环境已经验证过流程，但整片音色克隆太慢，不要从头重做。优先把**工作目录和缓存一起带到 GPU 环境**，直接续跑。
+
+最低要带走这些文件：
+
+```text
+reports/<task>/source/video.mp4
+reports/<task>/source/audio.mp3
+reports/<task>/source/reference.wav
+reports/<task>/source/reference.en.txt
+reports/<task>/artifacts/transcript.en.srt
+reports/<task>/artifacts/script.zh.segments.txt
+reports/<task>/artifacts/aligned-segments-clone/   # 如果已经生成过一部分段缓存，必须保留
+reports/<task>/.venv/                              # 可选；环境差异大时也可以重建
+reports/<task>/.hf/                                # 可选；可减少模型重复下载
+```
+
+推荐续跑顺序：
+
+1. 在 GPU 机器确认 `ffmpeg` / `ffprobe` 可用。
+2. 进入 `reports/<task>/`，优先复用已有 `.venv`；如果平台差异过大，再新建 `.venv` 并重装依赖。
+3. 安装或核对：`qwen-tts`、`soundfile`、`torch`、`torchaudio`、`transformers==4.57.3`、`accelerate==1.12.0`、`librosa`、`onnxruntime`、`einops`、`sox`。
+4. 把 `HF_HOME` 指向当前任务目录下的 `.hf`，避免模型缓存散落到全局目录。
+5. 直接重新运行 `build_aligned_dub.py --backend qwen3-tts ...`；脚本会跳过 `segment-dir` 中已存在的段缓存，只补未完成片段。
+6. 逐段缓存补齐后，再合成 clean 版 MP4、双语 ASS、双语烧录版 MP4。
+
+推荐命令模板：
+
+```bash
+export HF_HOME="$PWD/.hf"
+
+python scripts/build_aligned_dub.py \
+  --srt artifacts/transcript.en.srt \
+  --zh-segments artifacts/script.zh.segments.txt \
+  --video source/video.mp4 \
+  --backend qwen3-tts \
+  --reference-audio source/reference.wav \
+  --reference-text source/reference.en.txt \
+  --segment-dir artifacts/aligned-segments-clone \
+  --wav-out artifacts/narration.zh.clone.aligned.wav \
+  --report-out artifacts/narration.zh.clone.aligned.json
+
+ffmpeg -y \
+  -i source/video.mp4 \
+  -i artifacts/narration.zh.clone.aligned.wav \
+  -map 0:v:0 -map 1:a:0 \
+  -c:v copy -c:a aac \
+  artifacts/final-voiceover-clone.mp4
+
+python scripts/build_bilingual_ass.py \
+  --srt artifacts/transcript.en.srt \
+  --zh-segments artifacts/script.zh.segments.txt \
+  --ass-out artifacts/subtitles.zh-en.clone.ass
+
+ffmpeg -y \
+  -i artifacts/final-voiceover-clone.mp4 \
+  -vf "ass='artifacts/subtitles.zh-en.clone.ass'" \
+  -c:v libx264 -preset veryfast -crf 20 -c:a copy \
+  artifacts/final-voiceover-clone-bilingual.mp4
+```
+
+如果这是接着本仓库里 `What are AI agents` 的那次实跑继续，任务目录就是：
+
+```text
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/
+```
+
+它在 CPU 环境下已经留下这些可续跑输入：
+
+- `source/reference.wav`
+- `source/reference.en.txt`
+- `artifacts/transcript.en.srt`
+- `artifacts/script.zh.segments.txt`
+- `artifacts/aligned-segments-clone/segment-001.wav` 到 `segment-017.wav`
+
+因此在 GPU 机器上不应重新生成前 17 段，而应直接复用这些缓存继续补后续片段。
 
 ## 最终交付模式
 
@@ -242,7 +322,7 @@ python scripts/build_bilingual_ass.py \
 | `faster-whisper` 在模型下载前就报错 | 先检查代理变量；本仓库实跑里，`NO_PROXY` 的 IPv6 写法会让 `httpx` 解析失败 |
 | TTS 包装好了但命令入口不对 | 同时检查 Python import 路径和 `.venv/bin/` 里的 CLI，而不是立刻换库 |
 | 切到音色克隆后声音不像参考音色 | 优先检查参考音频质量、长度和说话人纯度；不要先怪对齐逻辑 |
-| Qwen3-TTS CLI 不存在或子命令不匹配 | 先确认本机安装的 `qwen-tts` CLI 语法，再修正脚本包装层 |
+| 以为 Qwen3-TTS 直接提供稳定 CLI，结果命令跑不通 | 回到官方 Python API 路径，确认 `Qwen3TTSModel.from_pretrained(...).generate_voice_clone(...)` 能在当前环境实际执行 |
 | 中文旁白比视频短很多 | 如果只在意总时长，可以补静音；如果在意同步，必须切到逐段对齐流程 |
 | 视频长度对了但句子还是越说越漂 | 你很可能做的是连续旁白；要改成基于字幕开始时间的逐段构建 |
 | 用户要求按标题命名，你却只产出内部 artifact 名 | 加显式 packaging/export 步骤，并验证最终文件名 |

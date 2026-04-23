@@ -154,6 +154,45 @@
 
 因为硬字幕需要重新编码视频，所以这个版本的视频编码变成了 `h264`，音频仍然是对齐后的中文 `aac`。
 
+### 3.10 音色克隆复跑（Qwen3-TTS）
+
+在完成普通中文旁白版之后，又继续尝试把同一个视频跑成“中文音色克隆版”。
+
+这次没有额外的外部参考音频，所以为了验证工作流，先从源音频里截出一段较连续、较干净的人声作为最小回退：
+
+- `source/reference.wav`：从 `32.09s` 到 `45.47s` 裁出的参考人声
+- `source/reference.en.txt`：这段参考音频对应的英文文本
+
+随后在原 report 的 `.venv` 里安装并调通了 `qwen-tts` 的 Python API 路径。这里踩到的关键点有两个：
+
+1. `qwen-tts` 官方不是 CLI 路线，而是 Python API
+2. 当前机器没有 GPU，必须改成 CPU-only 的 `torch` 安装路径，否则会默认拉取大量 CUDA 依赖
+
+在依赖补齐后，先做了一个最小 smoke test，用很短的一句中文验证“参考音频 + 参考文本 + 中文文本”确实能生成克隆音色语音。这个 smoke test 成功产出了：
+
+- `artifacts/narration.zh.clone.smoke.wav`
+- `artifacts/narration.zh.clone.smoke.mp3`
+
+但继续跑整片逐段克隆时，算力瓶颈立刻暴露出来：
+
+- 使用 `Qwen/Qwen3-TTS-12Hz-0.6B-Base`
+- 在 CPU-only 环境下，约 `1.6s` 的输出需要 `2 分 51 秒`
+- 整片逐段克隆连续跑了约 `8 小时`，只生成到第 `17` 段
+
+因此，这次没有在会话内完成全片 131 段的克隆版，而是把已成功生成的前 17 段复用起来，组装出一个可播放的真实样片：
+
+- `artifacts/narration.zh.clone.first17.aligned.wav`
+- `artifacts/narration.zh.clone.first17.aligned.json`
+- `artifacts/final-voiceover-clone-first17.mp4`
+- `artifacts/subtitles.zh-en.first17.ass`
+- `artifacts/final-voiceover-clone-first17-bilingual.mp4`
+
+另外又按标题复制出样片交付名：
+
+- `artifacts/What are AI agents-cloned-first17.mp4`
+- `artifacts/What are AI agents-cloned-first17.ass`
+- `artifacts/What are AI agents-cloned-first17-bilingual.mp4`
+
 ## 4. 产物清单
 
 ### 最终交付文件（按标题命名）
@@ -161,6 +200,9 @@
 - `artifacts/What are AI agents.mp4`：无字幕版
 - `artifacts/What are AI agents.ass`：字幕文件
 - `artifacts/What are AI agents-bilingual.mp4`：双语字幕版
+- `artifacts/What are AI agents-cloned-first17.mp4`：音色克隆样片（前 17 段）
+- `artifacts/What are AI agents-cloned-first17.ass`：音色克隆样片字幕
+- `artifacts/What are AI agents-cloned-first17-bilingual.mp4`：音色克隆样片双语字幕版
 
 ### source/
 
@@ -179,10 +221,20 @@
 - `narration.zh.wav`
 - `narration.zh.aligned.wav`
 - `narration.zh.aligned.json`
+- `narration.zh.clone.smoke.wav`
+- `narration.zh.clone.smoke.mp3`
+- `narration.zh.clone.first17.aligned.wav`
+- `narration.zh.clone.first17.aligned.json`
+- `narration.zh.clone.first17.trimmed.wav`
 - `final-voiceover.mp4`
 - `final-voiceover-aligned.mp4`
 - `subtitles.zh-en.ass`
 - `final-voiceover-aligned-bilingual.mp4`
+- `transcript.en.first17.srt`
+- `script.zh.first17.txt`
+- `subtitles.zh-en.first17.ass`
+- `final-voiceover-clone-first17.mp4`
+- `final-voiceover-clone-first17-bilingual.mp4`
 
 ### scripts/
 
@@ -230,6 +282,7 @@
 - 整个链路已经真实跑通：本地源文件 → 转写 → 中文稿 → 中文语音 → 最终成片
 - 对齐版流程已经跑通：逐段中文稿 → 逐段 TTS → 按原始开始时间对齐 → 对齐版成片
 - 双语字幕版本也已经跑通：中英双语 ASS → 硬烧录 → 双语成片
+- Qwen3-TTS 的参考音频驱动音色克隆在当前机器上已经真实跑通至少一个 smoke case，以及前 17 段的片段样片
 - 关键环境坑和回退策略都有记录，而不是只留下理想化说明
 - 已经具备抽象成 skill 的条件
 
@@ -238,6 +291,7 @@
 - 这次不是“原作者本人在说中文”，只是中文旁白版
 - 对齐版为了保住每句起点，有些片段做了轻微加速，个别片段仍可能因为中文更长而被裁到时间槽内
 - 直连 YouTube 的下载问题没有在当前机器上彻底解决，因此 skill 必须明确记录本地文件回退路径
+- 整片中文音色克隆版没有在本次会话内跑完，根因是当前机器没有 GPU，CPU-only 下 `Qwen3-TTS` 速度太慢；这次只完成了前 17 段样片
 
 ## 7. 版权与使用提醒
 
