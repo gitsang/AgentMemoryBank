@@ -21,3 +21,20 @@
 ## Current conclusion
 
 - The workflow is blocked at source intake until a human completes the verification challenge in a browser session, provides an already-downloaded local source file, or provides a reusable authenticated cookie source that works from this machine.
+
+## Transcription environment issue
+
+- After the local source file was provided, `faster-whisper` failed before model download with `httpx.InvalidURL: Invalid port: ':1]'`.
+- Investigation showed proxy variables were present and `NO_PROXY` was set to `localhost,127.0.0.1,[::1]`.
+- `curl https://huggingface.co` succeeded through the proxy, so the likely issue is the bracketed IPv6 loopback entry conflicting with `httpx` URL parsing. The next minimal fix is to rerun the model download with a sanitized `NO_PROXY` value.
+- Re-running `scripts/transcribe.py` with `NO_PROXY=localhost,127.0.0.1` and a local `HF_HOME` cache fixed the model download path and produced a valid English transcript.
+
+## TTS and timing notes
+
+- `edge-tts` worked as a lightweight no-key TTS path in this environment using `zh-CN-XiaoxiaoNeural`.
+- The generated Chinese narration is about `281.35s`, while the source video is about `357.00s`.
+- To preserve the full video length, the final assembly pads the Chinese narration with silence instead of trimming the video.
+
+## Skill baseline failure to guard against
+
+- Without a workflow skill, an agent is likely to make at least one of these mistakes: assume direct YouTube download will work from any network, claim a placeholder TTS file counts as completion, or write a reusable workflow before a real run proves the edge cases.
