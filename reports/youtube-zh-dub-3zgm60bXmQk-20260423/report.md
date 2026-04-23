@@ -133,7 +133,34 @@
 
 这个版本才真正满足“每句话从原始开始位置起播”的要求。
 
+### 3.9 烧录中英双语字幕
+
+在对齐版音画基础上，又新增了一步双语字幕烧录：
+
+1. 编写 `scripts/build_bilingual_ass.py`
+2. 用 `transcript.en.srt` 的时间轴作为基础
+3. 把 `script.zh.segments.txt` 中的中文逐段合并进去
+4. 生成 `artifacts/subtitles.zh-en.ass`
+5. 用 `ffmpeg` 的 `ass` 滤镜把字幕硬烧到对齐版视频里
+
+最终新增成片：
+
+- `artifacts/final-voiceover-aligned-bilingual.mp4`
+
+字幕布局为：
+
+- 上行中文（较大字号）
+- 下行英文（较小字号）
+
+因为硬字幕需要重新编码视频，所以这个版本的视频编码变成了 `h264`，音频仍然是对齐后的中文 `aac`。
+
 ## 4. 产物清单
+
+### 最终交付文件（按标题命名）
+
+- `artifacts/What are AI agents.mp4`：无字幕版
+- `artifacts/What are AI agents.ass`：字幕文件
+- `artifacts/What are AI agents-bilingual.mp4`：双语字幕版
 
 ### source/
 
@@ -154,6 +181,8 @@
 - `narration.zh.aligned.json`
 - `final-voiceover.mp4`
 - `final-voiceover-aligned.mp4`
+- `subtitles.zh-en.ass`
+- `final-voiceover-aligned-bilingual.mp4`
 
 ### scripts/
 
@@ -161,6 +190,7 @@
 - `rewrite_to_zh.py`
 - `generate_tts.py`
 - `build_aligned_dub.py`
+- `build_bilingual_ass.py`
 
 ### notes/
 
@@ -199,6 +229,7 @@
 
 - 整个链路已经真实跑通：本地源文件 → 转写 → 中文稿 → 中文语音 → 最终成片
 - 对齐版流程已经跑通：逐段中文稿 → 逐段 TTS → 按原始开始时间对齐 → 对齐版成片
+- 双语字幕版本也已经跑通：中英双语 ASS → 硬烧录 → 双语成片
 - 关键环境坑和回退策略都有记录，而不是只留下理想化说明
 - 已经具备抽象成 skill 的条件
 

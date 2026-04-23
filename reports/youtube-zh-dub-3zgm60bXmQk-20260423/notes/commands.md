@@ -24,3 +24,8 @@
 14. `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 .venv/bin/python scripts/build_aligned_dub.py`
 15. `ffmpeg -y -i source/video.mp4 -i artifacts/narration.zh.aligned.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac artifacts/final-voiceover-aligned.mp4`
 16. `ffprobe -v error -show_entries stream=index,codec_type,codec_name artifacts/final-voiceover-aligned.mp4`
+17. `.venv/bin/python scripts/build_bilingual_ass.py`
+18. `ffmpeg -y -i artifacts/final-voiceover-aligned.mp4 -vf "ass='.../subtitles.zh-en.ass'" -c:v libx264 -preset veryfast -crf 20 -c:a copy artifacts/final-voiceover-aligned-bilingual.mp4`
+19. `cp artifacts/final-voiceover-aligned.mp4 "artifacts/What are AI agents.mp4"`
+20. `cp artifacts/subtitles.zh-en.ass "artifacts/What are AI agents.ass"`
+21. `cp artifacts/final-voiceover-aligned-bilingual.mp4 "artifacts/What are AI agents-bilingual.mp4"`
