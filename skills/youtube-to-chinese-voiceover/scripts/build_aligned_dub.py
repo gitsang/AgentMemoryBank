@@ -1,0 +1,278 @@
+from __future__ import annotations
+
+import argparse
+import asyncio
+import json
+import subprocess
+import tempfile
+import wave
+from dataclasses import dataclass
+from pathlib import Path
+
+import edge_tts
+import numpy as np
+
+
+@dataclass
+class SubtitleSegment:
+    index: int
+    start: float
+    end: float
+    text_en: str
+    text_zh: str
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="按原始字幕时间轴构建逐段中文配音。")
+    parser.add_argument("--srt", type=Path, required=True, help="英文 SRT 路径")
+    parser.add_argument(
+        "--zh-segments", type=Path, required=True, help="逐段中文稿路径"
+    )
+    parser.add_argument("--video", type=Path, required=True, help="源视频路径")
+    parser.add_argument("--wav-out", type=Path, required=True, help="对齐后 WAV 输出")
+    parser.add_argument(
+        "--report-out", type=Path, required=True, help="逐段 timing report 输出"
+    )
+    parser.add_argument(
+        "--segment-dir", type=Path, required=True, help="逐段音频缓存目录"
+    )
+    parser.add_argument("--voice", default="zh-CN-XiaoxiaoNeural", help="edge-tts 音色")
+    parser.add_argument("--rate", default="+0%", help="edge-tts 语速")
+    parser.add_argument(
+        "--sample-rate", type=int, default=24000, help="输出 wav 采样率"
+    )
+    parser.add_argument(
+        "--max-speedup",
+        type=float,
+        default=1.5,
+        help="单段最大加速倍数，超出后才裁切",
+    )
+    return parser.parse_args()
+
+
+def parse_timestamp(value: str) -> float:
+    hh, mm, rest = value.split(":")
+    ss, ms = rest.split(",")
+    return int(hh) * 3600 + int(mm) * 60 + int(ss) + int(ms) / 1000
+
+
+def parse_srt(path: Path) -> list[tuple[int, float, float, str]]:
+    blocks = path.read_text(encoding="utf-8").strip().split("\n\n")
+    parsed: list[tuple[int, float, float, str]] = []
+    for block in blocks:
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        if len(lines) < 3:
+            continue
+        index = int(lines[0])
+        start_raw, end_raw = lines[1].split(" --> ")
+        text = " ".join(lines[2:])
+        parsed.append(
+            (index, parse_timestamp(start_raw), parse_timestamp(end_raw), text)
+        )
+    return parsed
+
+
+def read_segments(srt_path: Path, zh_segments_path: Path) -> list[SubtitleSegment]:
+    en_segments = parse_srt(srt_path)
+    zh_lines = [
+        line.rstrip("\n")
+        for line in zh_segments_path.read_text(encoding="utf-8").splitlines()
+    ]
+    if len(zh_lines) != len(en_segments):
+        raise SystemExit(
+            f"Segment count mismatch: {len(en_segments)} srt blocks vs {len(zh_lines)} zh lines"
+        )
+
+    return [
+        SubtitleSegment(
+            index=index, start=start, end=end, text_en=text_en, text_zh=text_zh
+        )
+        for (index, start, end, text_en), text_zh in zip(
+            en_segments, zh_lines, strict=True
+        )
+    ]
+
+
+def ffprobe_duration(path: Path) -> float:
+    result = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return float(result.stdout.strip())
+
+
+async def synthesize_segment(
+    text: str, output_path: Path, voice: str, rate: str
+) -> None:
+    communicator = edge_tts.Communicate(text, voice, rate=rate)
+    await communicator.save(str(output_path))
+
+
+def mp3_to_wav(src: Path, dst: Path, sample_rate: int) -> None:
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(src),
+            "-ac",
+            "1",
+            "-ar",
+            str(sample_rate),
+            "-c:a",
+            "pcm_s16le",
+            str(dst),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def read_wav_as_float(path: Path, sample_rate: int) -> np.ndarray:
+    with wave.open(str(path), "rb") as wav_file:
+        channels = wav_file.getnchannels()
+        sample_width = wav_file.getsampwidth()
+        frame_rate = wav_file.getframerate()
+        frames = wav_file.readframes(wav_file.getnframes())
+
+    if channels != 1 or sample_width != 2 or frame_rate != sample_rate:
+        raise SystemExit(f"Unexpected WAV format for {path}")
+
+    return np.frombuffer(frames, dtype=np.int16).astype(np.float32) / 32768.0
+
+
+def write_wav_from_float(path: Path, samples: np.ndarray, sample_rate: int) -> None:
+    clipped = np.clip(samples, -1.0, 1.0)
+    pcm = (clipped * 32767.0).astype(np.int16)
+    with wave.open(str(path), "wb") as wav_file:
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(sample_rate)
+        wav_file.writeframes(pcm.tobytes())
+
+
+def build_atempo_filter(speedup: float) -> str:
+    factors: list[float] = []
+    remaining = speedup
+    while remaining > 2.0:
+        factors.append(2.0)
+        remaining /= 2.0
+    while remaining < 0.5:
+        factors.append(0.5)
+        remaining /= 0.5
+    factors.append(remaining)
+    return ",".join(f"atempo={factor:.6f}" for factor in factors)
+
+
+def speed_up_wav(src: Path, dst: Path, speedup: float, sample_rate: int) -> None:
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(src),
+            "-filter:a",
+            build_atempo_filter(speedup),
+            "-ac",
+            "1",
+            "-ar",
+            str(sample_rate),
+            "-c:a",
+            "pcm_s16le",
+            str(dst),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def main() -> None:
+    args = parse_args()
+    segments = read_segments(args.srt, args.zh_segments)
+    args.segment_dir.mkdir(parents=True, exist_ok=True)
+    args.wav_out.parent.mkdir(parents=True, exist_ok=True)
+    args.report_out.parent.mkdir(parents=True, exist_ok=True)
+
+    video_duration = ffprobe_duration(args.video)
+    total_samples = int(round(video_duration * args.sample_rate))
+    final_audio = np.zeros(total_samples, dtype=np.float32)
+    report: list[dict[str, object]] = []
+
+    with tempfile.TemporaryDirectory(prefix="aligned-dub-") as temp_dir_str:
+        temp_dir = Path(temp_dir_str)
+        for idx, segment in enumerate(segments):
+            start_sample = int(round(segment.start * args.sample_rate))
+            next_start = (
+                segments[idx + 1].start if idx + 1 < len(segments) else video_duration
+            )
+            slot_duration = max(0.1, next_start - segment.start)
+            slot_samples = int(round(slot_duration * args.sample_rate))
+
+            mp3_path = args.segment_dir / f"segment-{segment.index:03d}.mp3"
+            wav_path = args.segment_dir / f"segment-{segment.index:03d}.wav"
+
+            if not mp3_path.exists():
+                asyncio.run(
+                    synthesize_segment(segment.text_zh, mp3_path, args.voice, args.rate)
+                )
+            mp3_to_wav(mp3_path, wav_path, args.sample_rate)
+            samples = read_wav_as_float(wav_path, args.sample_rate)
+            original_samples = len(samples)
+            speedup_applied = 1.0
+
+            if len(samples) > slot_samples:
+                requested_speedup = len(samples) / slot_samples
+                speedup_applied = min(requested_speedup, args.max_speedup)
+                sped_wav = temp_dir / f"segment-{segment.index:03d}-sped.wav"
+                speed_up_wav(wav_path, sped_wav, speedup_applied, args.sample_rate)
+                samples = read_wav_as_float(sped_wav, args.sample_rate)
+
+            if len(samples) > slot_samples:
+                samples = samples[:slot_samples]
+
+            end_sample = min(total_samples, start_sample + len(samples))
+            valid_samples = end_sample - start_sample
+            if valid_samples > 0:
+                final_audio[start_sample:end_sample] += samples[:valid_samples]
+
+            report.append(
+                {
+                    "index": segment.index,
+                    "start": segment.start,
+                    "end": segment.end,
+                    "slot_duration": slot_duration,
+                    "text_en": segment.text_en,
+                    "text_zh": segment.text_zh,
+                    "generated_duration": round(original_samples / args.sample_rate, 3),
+                    "placed_duration": round(valid_samples / args.sample_rate, 3),
+                    "speedup_applied": round(speedup_applied, 3),
+                    "truncated": original_samples > valid_samples,
+                }
+            )
+
+    write_wav_from_float(args.wav_out, final_audio, args.sample_rate)
+    args.report_out.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {"segments": len(report), "output": str(args.wav_out)}, ensure_ascii=False
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()
