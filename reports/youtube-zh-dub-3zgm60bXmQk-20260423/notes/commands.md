@@ -20,3 +20,7 @@
 10. `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 .venv/bin/python scripts/generate_tts.py`
 11. `ffmpeg -y -i source/video.mp4 -i artifacts/narration.zh.wav -filter_complex "[1:a]apad[a]" -map 0:v:0 -map "[a]" -c:v copy -c:a aac -shortest artifacts/final-voiceover.mp4`
 12. `ffprobe -v error -show_entries stream=index,codec_type,codec_name artifacts/final-voiceover.mp4`
+13. `.venv/bin/python -m py_compile scripts/build_aligned_dub.py`
+14. `NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 .venv/bin/python scripts/build_aligned_dub.py`
+15. `ffmpeg -y -i source/video.mp4 -i artifacts/narration.zh.aligned.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac artifacts/final-voiceover-aligned.mp4`
+16. `ffprobe -v error -show_entries stream=index,codec_type,codec_name artifacts/final-voiceover-aligned.mp4`

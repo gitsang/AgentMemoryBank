@@ -35,6 +35,14 @@
 - The generated Chinese narration is about `281.35s`, while the source video is about `357.00s`.
 - To preserve the full video length, the final assembly pads the Chinese narration with silence instead of trimming the video.
 
+## Sync correction
+
+- The first Chinese voiceover version used one continuous narration track, so it could preserve total video length but could not preserve sentence-level start times.
+- The corrected workflow switches to segment-based dubbing: each Chinese line is generated independently and then placed at the original subtitle `start` timestamp.
+- The new builder writes `artifacts/narration.zh.aligned.json`, which records per-segment generated duration, placed duration, applied speed-up, and truncation.
+- If a segment is longer than its available subtitle slot, the builder first applies bounded speed-up and then trims to fit the slot. This keeps each segment's start time aligned even when Chinese takes longer than English.
+
 ## Skill baseline failure to guard against
 
 - Without a workflow skill, an agent is likely to make at least one of these mistakes: assume direct YouTube download will work from any network, claim a placeholder TTS file counts as completion, or write a reusable workflow before a real run proves the edge cases.
+- Another likely failure is to generate a single continuous Chinese narration track and mistake duration matching for real sync. The corrected workflow treats original subtitle start times as the actual timing source.
