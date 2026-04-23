@@ -42,8 +42,10 @@ Minimum outputs:
 - normalized `video.mp4` and `audio.mp3`
 - English transcript text and SRT
 - final Chinese script
+- optional segment-aligned Chinese script when sync matters
 - real TTS audio
 - final voiceover video
+- bilingual subtitle file whenever subtitle delivery is requested
 - `notes/commands.md`
 - `notes/issues.md`
 - `report.md`
@@ -89,9 +91,34 @@ Minimum outputs:
    - Verify the final MP4 has both a video stream and an audio stream.
    - Keep a per-segment timing report so you can audit where acceleration or trimming happened.
 
-8. **Write the report after the run**
+8. **Package final deliverables explicitly**
+   - Do not stop at internal artifact names such as `final-voiceover-aligned.mp4`.
+   - If the user asks for title-based delivery, produce the named outputs they asked for.
+   - A common final packaging set is:
+
+```text
+{title}.mp4              # no subtitles
+{title}.ass              # subtitle file
+{title}-bilingual.mp4    # burned bilingual subtitle version
+```
+
+   - Treat this packaging step as separate from intermediate artifacts under `reports/<task>/artifacts/`.
+
+9. **Write the report after the run**
    - Record commands, blockers, fixes, artifacts, and honest limitations.
    - Only include steps that actually worked in this environment.
+
+## Final Deliverable Patterns
+
+When the user cares about output packaging, distinguish these clearly:
+
+| Deliverable | Meaning | Typical Source |
+|---|---|---|
+| `{title}.mp4` | clean aligned voiceover video with no burned subtitles | aligned dubbed video |
+| `{title}.ass` | external subtitle file, often bilingual and styled | generated ASS subtitle track |
+| `{title}-bilingual.mp4` | hard-subtitled bilingual export | clean video + burned ASS |
+
+If the user asks for "soft subtitles," that is a different deliverable from an external `.ass` file. Do not assume they are the same.
 
 ## Minimal Toolchain
 
@@ -109,6 +136,7 @@ Minimum outputs:
 - for sync-sensitive output, make sure the segment file has the same number of lines as the SRT blocks
 - after TTS, confirm the audio contains real speech
 - after assembly, confirm the output video still has both streams and expected duration
+- before handoff, confirm the final named deliverables exist and match the user's requested packaging
 
 ## Common Failure Modes
 
@@ -119,6 +147,8 @@ Minimum outputs:
 | TTS package installs but CLI/module entrypoint differs | Check both import path and `.venv/bin/` commands before changing libraries. |
 | Chinese narration is shorter than the video | If you only care about total duration, you can pad silence. If you care about sync, switch to segment-based alignment. |
 | The video length matches but the speech still drifts | You likely built one continuous narration track. Rebuild from subtitle start times instead. |
+| User asks for named exports but you only have internal artifact names | Add an explicit packaging/export step and verify the exact filenames. |
+| User asks for bilingual subtitles but you only have SRT or burned video | Build an ASS subtitle file or other requested subtitle artifact before finishing. |
 
 ## Red Flags
 
@@ -130,3 +160,5 @@ Do not claim the workflow is complete if any of these are true:
 - the report describes a direct YouTube download that never actually worked
 - the skill documents steps that were never validated in a real run
 - you matched only the total duration and called it "synced"
+- the user asked for final filenames and you handed off only intermediate artifact names
+- the user asked for subtitle deliverables and you handed off only a video file

@@ -46,3 +46,8 @@
 
 - Without a workflow skill, an agent is likely to make at least one of these mistakes: assume direct YouTube download will work from any network, claim a placeholder TTS file counts as completion, or write a reusable workflow before a real run proves the edge cases.
 - Another likely failure is to generate a single continuous Chinese narration track and mistake duration matching for real sync. The corrected workflow treats original subtitle start times as the actual timing source.
+
+## Skill update test evidence
+
+- Baseline test against `skills/youtube-to-chinese-voiceover/SKILL.md` failed on final packaging guidance: it did not specify `{title}.mp4`, `{title}.ass`, `{title}-bilingual.mp4`, or clearly separate intermediate artifacts from final deliverables.
+- After updating the skill, a re-test passed: the skill now explicitly documents title-based naming, external ASS delivery, burned bilingual export, and a review gate that checks final named deliverables before handoff.
