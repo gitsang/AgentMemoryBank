@@ -9,7 +9,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 把单个 YouTube 或本地视频转换为中文旁白版时，优先追求**可复现、可审计、真实交付**，而不是追求棚录级质量或自动化批处理。
 
-核心原则：每一步都要产出可检查的文件，所有命令、问题、修复方式、中间产物和最终交付物都沉淀到原始视频同级的输出目录中。不要把中间产物、占位音频、总时长对齐或理论步骤当作完成。
+核心原则：每一步都要产出可检查的文件，所有命令、问题、修复方式和中间产物都沉淀到原始视频同级的工作目录中；最终交付物单独放到该目录下的 `output/` 中。不要把中间产物、占位音频、总时长对齐或理论步骤当作完成。
 
 支持两种配音模式：
 
@@ -37,20 +37,22 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 ## 工作目录与交付约定
 
-每个任务必须先在原始视频同级创建独立输出目录。目录名使用原始视频文件名去掉扩展名后的 stem：
+每个任务必须先在原始视频同级创建独立工作目录。目录名使用原始视频文件名去掉扩展名后的 stem：
 
 ```text
 /path/to/Source-Video-Name.mp4  # 原始视频
-/path/to/Source-Video-Name/     # 所有中间产物和最终交付物输出目录
+/path/to/Source-Video-Name/     # 工作目录
+/path/to/Source-Video-Name/output/  # 最终交付物目录
 ```
 
-输出目录内部结构：
+工作目录内部结构：
 
 ```text
 /path/to/Source-Video-Name/
   source/       # 原始和标准化输入
-  artifacts/    # 转写、脚本、音频、字幕、视频等中间与最终产物
+  artifacts/    # 转写、脚本、音频、字幕、视频等中间产物
   notes/        # 命令、问题、限制、人工检查记录
+  output/       # 面向用户交付的最终文件
   scripts/      # 从 skill 复制过来的可复用脚本
   report.md     # 最终报告
 ```
@@ -67,8 +69,11 @@ description: Use when needing to turn a single YouTube or local video into a low
 | `artifacts/script.zh.segments.txt` | 句子级同步时的逐段中文稿 |
 | `source/reference.*` | 音色克隆模式下的外部参考音频和可选参考文本 |
 | `artifacts/narration*.wav/mp3` | 真实生成的中文 TTS 音频 |
-| `artifacts/final*.mp4` | 最终或候选中文旁白视频 |
-| `artifacts/subtitles*.ass` | 用户要求字幕时的字幕文件 |
+| `artifacts/final*.mp4` | 候选中文旁白视频或内部合成产物 |
+| `artifacts/subtitles*.ass` | 内部字幕产物 |
+| `output/{title}.mp4` | 面向用户交付的干净中文旁白视频 |
+| `output/{title}.ass` | 面向用户交付的外挂字幕文件 |
+| `output/{title}-bilingual.mp4` | 面向用户交付的双语字幕烧录版视频 |
 | `notes/commands.md` | 实际执行过的命令 |
 | `notes/issues.md` | 阻塞、失败、修复方式和限制 |
 | `report.md` | 面向用户的最终总结 |
@@ -85,7 +90,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 ### 2. 标准化媒体输入
 
 - 用 `ffprobe` 保存输入元信息，确认时长、视频流、音频流。
-- 在输出目录内把任意用户文件名转换成稳定路径，例如 `source/video.mp4` 与 `source/audio.mp3`。
+- 在工作目录内把任意用户文件名转换成稳定路径，例如 `source/video.mp4` 与 `source/audio.mp3`。
 - 后续脚本只引用标准化路径，避免空格、中文、特殊字符导致脚本失败。
 
 ### 3. 英文转写
@@ -142,20 +147,21 @@ description: Use when needing to turn a single YouTube or local video into a low
 ### 10. 交付包装与报告
 
 - 不要停在 `final-voiceover-aligned.mp4` 这类内部文件名。
-- 如果用户要求按标题命名，额外导出他们要求的最终文件名。
+- 最终交付物必须复制或导出到 `output/`，不要只留在 `artifacts/`。
+- 如果用户要求按标题命名，在 `output/` 中导出他们要求的最终文件名。
 - 报告只写当前环境真实跑通的做法，不写想象中的理想路径。
 
 常见交付集合：
 
 ```text
-{title}.mp4              # 干净中文旁白视频
-{title}.ass              # 外挂字幕文件
-{title}-bilingual.mp4    # 烧录双语字幕的视频
+output/{title}.mp4              # 干净中文旁白视频
+output/{title}.ass              # 外挂字幕文件
+output/{title}-bilingual.mp4    # 烧录双语字幕的视频
 ```
 
 ## 内置脚本
 
-优先把 skill 自带脚本复制到输出目录的 `scripts/` 下再运行，避免污染 skill 目录，也方便报告完整归档。
+优先把 skill 自带脚本复制到工作目录的 `scripts/` 下再运行，避免污染 skill 目录，也方便报告完整归档。
 
 | 脚本 | 用途 |
 |---|---|
@@ -224,7 +230,7 @@ python scripts/build_aligned_dub.py \
 ## 最小工具链
 
 - `ffmpeg` 和 `ffprobe`：抽取音频、检查媒体流、合成最终视频。
-- Python 虚拟环境：建议在输出目录内隔离依赖。
+- Python 虚拟环境：建议在工作目录内隔离依赖。
 - `faster-whisper`：英文转写和 SRT 生成。
 - `edge-tts`：普通中文旁白。
 - `qwen-tts`：外部参考音频驱动的音色克隆。
@@ -241,7 +247,7 @@ python scripts/build_aligned_dub.py \
 - 做音色克隆时，确认参考音频存在、可播放、单人清晰。
 - TTS 完成后，确认输出是真实语音，不是静音或占位。
 - 合成完成后，用 `ffprobe` 确认视频流和音频流都存在。
-- 交付前，确认最终命名文件真实存在并符合用户要求。
+- 交付前，确认最终命名文件真实存在于 `output/` 并符合用户要求。
 
 ## 常见失败模式
 
@@ -253,7 +259,7 @@ python scripts/build_aligned_dub.py \
 | 音色克隆不像参考音色 | 优先检查参考音频质量、长度、说话人纯度和后端输入格式 |
 | 中文旁白比视频短很多 | 只在意总时长可补静音；在意同步则必须逐段对齐 |
 | 视频长度对了但句子越说越漂 | 连续旁白不能保证句子同步；改用字幕开始时间锚定的逐段构建 |
-| 用户要求按标题命名但只有内部 artifact | 增加显式 packaging/export 步骤，并验证最终文件名 |
+| 用户要求按标题命名但只有内部 artifact | 增加显式 packaging/export 步骤，把最终文件导出到 `output/` 并验证最终文件名 |
 | 用户要求字幕但只有视频文件 | 补出 `.ass`、硬字幕视频或用户指定的字幕格式 |
 
 ## 红旗
@@ -266,18 +272,18 @@ python scripts/build_aligned_dub.py \
 - 只做了总时长对齐，却称为句子级同步成功。
 - 最终视频从未用 `ffprobe` 复核。
 - 报告声称 YouTube 下载成功，但实际没有跑通。
-- 用户要求最终命名交付，但只交了中间产物。
+- 用户要求最终命名交付，但 `output/` 里没有最终文件。
 - 用户要求字幕交付，但只交了视频。
-- 输出目录的 `notes/` 没有记录命令、失败和限制。
+- 工作目录的 `notes/` 没有记录命令、失败和限制。
 
 ## 完成前检查清单
 
-- [ ] 输出目录位于原始视频同级，且目录名等于原始视频 stem。
-- [ ] 输出目录内部结构完整。
+- [ ] 工作目录位于原始视频同级，且目录名等于原始视频 stem。
+- [ ] 工作目录内部结构完整，并包含 `output/`。
 - [ ] 源视频、音频、转写、中文稿、TTS、字幕和最终视频都有明确路径。
 - [ ] 关键命令写入 `notes/commands.md`。
 - [ ] 阻塞点、降级方案、质量限制写入 `notes/issues.md` 或 `report.md`。
 - [ ] 如果逐段同步，已保存 timing report 并说明加速或裁切情况。
 - [ ] 如果音色克隆，已记录参考音频来源、质量和限制。
 - [ ] 最终 MP4 经过 `ffprobe` 验证含视频流和音频流。
-- [ ] 用户要求的最终文件名、字幕形式和包装形式全部存在。
+- [ ] 用户要求的最终文件名、字幕形式和包装形式全部存在于 `output/`。
