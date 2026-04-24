@@ -9,7 +9,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 把单个 YouTube 或本地视频转换为中文旁白版时，优先追求**可复现、可审计、真实交付**，而不是追求棚录级质量或自动化批处理。
 
-核心原则：每一步都要产出可检查的文件，所有命令、问题、修复方式和最终交付物都沉淀到 `reports/<task>/` 中。不要把中间产物、占位音频、总时长对齐或理论步骤当作完成。
+核心原则：每一步都要产出可检查的文件，所有命令、问题、修复方式、中间产物和最终交付物都沉淀到原始视频同级的输出目录中。不要把中间产物、占位音频、总时长对齐或理论步骤当作完成。
 
 支持两种配音模式：
 
@@ -37,10 +37,17 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 ## 工作目录与交付约定
 
-每个任务必须先创建独立目录：
+每个任务必须先在原始视频同级创建独立输出目录。目录名使用原始视频文件名去掉扩展名后的 stem：
 
 ```text
-reports/<task-name>/
+/path/to/Source-Video-Name.mp4  # 原始视频
+/path/to/Source-Video-Name/     # 所有中间产物和最终交付物输出目录
+```
+
+输出目录内部结构：
+
+```text
+/path/to/Source-Video-Name/
   source/       # 原始和标准化输入
   artifacts/    # 转写、脚本、音频、字幕、视频等中间与最终产物
   notes/        # 命令、问题、限制、人工检查记录
@@ -78,7 +85,7 @@ reports/<task-name>/
 ### 2. 标准化媒体输入
 
 - 用 `ffprobe` 保存输入元信息，确认时长、视频流、音频流。
-- 把任意用户文件名转换成稳定路径，例如 `source/video.mp4` 与 `source/audio.mp3`。
+- 在输出目录内把任意用户文件名转换成稳定路径，例如 `source/video.mp4` 与 `source/audio.mp3`。
 - 后续脚本只引用标准化路径，避免空格、中文、特殊字符导致脚本失败。
 
 ### 3. 英文转写
@@ -148,7 +155,7 @@ reports/<task-name>/
 
 ## 内置脚本
 
-优先把 skill 自带脚本复制到 `reports/<task>/scripts/` 下再运行，避免污染 skill 目录，也方便报告完整归档。
+优先把 skill 自带脚本复制到输出目录的 `scripts/` 下再运行，避免污染 skill 目录，也方便报告完整归档。
 
 | 脚本 | 用途 |
 |---|---|
@@ -217,37 +224,11 @@ python scripts/build_aligned_dub.py \
 ## 最小工具链
 
 - `ffmpeg` 和 `ffprobe`：抽取音频、检查媒体流、合成最终视频。
-- Python 虚拟环境：建议在 `reports/<task>/` 内隔离依赖。
+- Python 虚拟环境：建议在输出目录内隔离依赖。
 - `faster-whisper`：英文转写和 SRT 生成。
 - `edge-tts`：普通中文旁白。
 - `qwen-tts`：外部参考音频驱动的音色克隆。
 - `numpy`、`soundfile` 等音频处理依赖：逐段对齐和 WAV 拼接需要。
-
-## GPU / 长任务续跑
-
-如果 CPU-only 环境已验证流程，但音色克隆或逐段生成太慢，不要从头重做。把工作目录和缓存一起带到 GPU 环境，直接续跑。
-
-最低应保留：
-
-```text
-reports/<task>/source/video.mp4
-reports/<task>/source/audio.mp3
-reports/<task>/source/reference.*
-reports/<task>/artifacts/transcript.en.srt
-reports/<task>/artifacts/script.zh.segments.txt
-reports/<task>/artifacts/aligned-segments*/
-reports/<task>/scripts/
-reports/<task>/notes/
-```
-
-续跑建议：
-
-1. 在目标机器确认 `ffmpeg` / `ffprobe` 可用。
-2. 进入 `reports/<task>/`，按需重建 `.venv`。
-3. 安装或核对 `qwen-tts`、`soundfile`、`torch`、`torchaudio`、`transformers`、`accelerate`、`librosa`、`onnxruntime`、`einops`、`sox`。
-4. 把模型缓存指向任务目录或显式记录缓存位置，例如 `HF_HOME="$PWD/.hf"`。
-5. 重新运行逐段构建命令；如果 `segment-dir` 已有缓存，脚本应跳过已存在片段，只补未完成片段。
-6. 缓存补齐后再合成 clean 版、字幕文件、字幕烧录版，并更新报告。
 
 ## 人工审阅关口
 
@@ -287,11 +268,12 @@ reports/<task>/notes/
 - 报告声称 YouTube 下载成功，但实际没有跑通。
 - 用户要求最终命名交付，但只交了中间产物。
 - 用户要求字幕交付，但只交了视频。
-- `reports/<task>/notes/` 没有记录命令、失败和限制。
+- 输出目录的 `notes/` 没有记录命令、失败和限制。
 
 ## 完成前检查清单
 
-- [ ] `reports/<task>/` 目录结构完整。
+- [ ] 输出目录位于原始视频同级，且目录名等于原始视频 stem。
+- [ ] 输出目录内部结构完整。
 - [ ] 源视频、音频、转写、中文稿、TTS、字幕和最终视频都有明确路径。
 - [ ] 关键命令写入 `notes/commands.md`。
 - [ ] 阻塞点、降级方案、质量限制写入 `notes/issues.md` 或 `report.md`。
