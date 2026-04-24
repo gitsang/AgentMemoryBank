@@ -1,1 +1,14 @@
 bin
+
+# Python bytecode
+__pycache__/
+
+# Local model caches
+reports/**/.hf/
+
+# Generated artifacts from the voice-clone rerun workspace
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/artifacts/narration.zh.clone.first17.aligned.json
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/artifacts/script.zh.first17.txt
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/artifacts/script.zh.smoke.txt
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/artifacts/transcript.en.first17.srt
+reports/youtube-zh-dub-3zgm60bXmQk-20260423/source/reference.en.txt
