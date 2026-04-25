@@ -14,7 +14,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 支持两种配音模式：
 
 - **普通中文旁白**：使用标准普通话 TTS 音色。
-- **外部参考音频驱动的中文音色克隆**：用户提供参考音频，中文配音尽量贴近该参考音色。
+- **参考音频驱动的中文音色克隆**：默认从源视频中截取清晰人声作为参考；如果用户提供了参考音频，则使用用户提供的参考音频，中文配音尽量贴近该参考音色。
 
 明确边界：本 skill 不负责自动从复杂原视频中提纯声纹，也不处理法律或授权风险高的“冒充原说话人”场景。
 
@@ -25,7 +25,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 - 用户给出 YouTube 链接或本地视频，要求制作中文旁白版。
 - 用户要求中文配音、句子级同步、双语字幕、按标题命名的最终视频。
 - 用户更重视低成本、透明过程、可复现证据，而不是专业录音棚成品。
-- 用户提供外部参考音频，希望生成接近参考人的中文克隆音色。
+- 用户要求音色克隆，希望默认使用源视频人声作为参考，或提供了单独参考音频。
 - 需要在 TTS 前人工审阅中文稿，避免机械直译。
 
 不适用于：
@@ -67,7 +67,7 @@ description: Use when needing to turn a single YouTube or local video into a low
 | `artifacts/transcript.en.srt` | 带时间轴的英文字幕 |
 | `artifacts/script.zh.txt` | 连续中文口播稿 |
 | `artifacts/script.zh.segments.txt` | 句子级同步时的逐段中文稿 |
-| `source/reference.*` | 音色克隆模式下的外部参考音频和可选参考文本 |
+| `source/reference.*` | 音色克隆模式下的参考音频和参考文本；默认来自源视频截取片段，用户提供参考音频时则使用用户文件 |
 | `artifacts/narration*.wav/mp3` | 真实生成的中文 TTS 音频 |
 | `artifacts/final*.mp4` | 候选中文旁白视频或内部合成产物 |
 | `artifacts/subtitles*.ass` | 内部字幕产物 |
@@ -108,15 +108,28 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 ### 5. 准备参考音频（仅音色克隆模式）
 
-只使用用户提供或明确授权的外部参考音频。参考音频尽量满足：
+默认从源视频中截取一段清晰单人讲话作为 `source/reference.wav`，并把该片段对应原文写入 `source/reference.txt`。如果用户提供了参考音频，则改用用户提供的参考音频，并尽量要求用户同时提供对应参考文本。
+
+参考音频尽量满足：
 
 - 单人说话。
 - 背景噪声低。
 - 3-15 秒清晰人声。
 - 不混入音乐、多人对话或强混响。
-- 可选提供对应参考文本，提升克隆后端稳定性。
+- 提供对应参考文本，提升克隆后端稳定性；默认从源视频截取时，可使用转写中对应时间段的英文文本。
 
-不要默认从原视频自动裁切参考段；那属于后续增强项，不是稳定流程。
+从源视频截取参考段时，必须记录：截取时间范围、参考文本来源、音频质量限制，以及这不是外部参考样本。用户提供参考音频时，必须记录用户文件路径、可播放性、时长、说话人纯度和参考文本来源。
+
+源视频参考段示例：
+
+```bash
+ffmpeg -y -ss 00:00:02.640 -to 00:00:15.000 \
+  -i source/video.mp4 \
+  -vn -ac 1 -ar 24000 -c:a pcm_s16le \
+  source/reference.wav
+
+printf '%s\n' 'Exact spoken text for this reference clip.' > source/reference.txt
+```
 
 ### 6. 生成真实中文 TTS
 
@@ -249,18 +262,148 @@ python scripts/build_aligned_dub.py \
 - 合成完成后，用 `ffprobe` 确认视频流和音频流都存在。
 - 交付前，确认最终命名文件真实存在于 `output/` 并符合用户要求。
 
-## 常见失败模式
+## 故障排查
 
-| 失败现象 | 处理方式 |
-|---|---|
-| `yt-dlp` 遇到 `429` 或 bot verification | 用浏览器复核；若浏览器也被 CAPTCHA 拦住，切换为用户提供的本地媒体 |
-| 模型下载前就失败 | 先检查代理变量、缓存目录、证书和网络，再考虑换工具 |
-| TTS 命令入口跑不通 | 同时检查 Python import 路径、虚拟环境和包提供的 CLI，不要立刻换库 |
-| 音色克隆不像参考音色 | 优先检查参考音频质量、长度、说话人纯度和后端输入格式 |
-| 中文旁白比视频短很多 | 只在意总时长可补静音；在意同步则必须逐段对齐 |
-| 视频长度对了但句子越说越漂 | 连续旁白不能保证句子同步；改用字幕开始时间锚定的逐段构建 |
-| 用户要求按标题命名但只有内部 artifact | 增加显式 packaging/export 步骤，把最终文件导出到 `output/` 并验证最终文件名 |
-| 用户要求字幕但只有视频文件 | 补出 `.ass`、硬字幕视频或用户指定的字幕格式 |
+### `yt-dlp` 遇到 `429`、bot verification 或 CAPTCHA
+
+**问题表现**：下载 YouTube 源视频或字幕时出现 `429`、bot verification、CAPTCHA、登录校验，或者长时间无响应。
+
+**应该如何解决**：不要把这类问题当作普通参数错误反复重试。先用浏览器复核页面状态；若浏览器也被 CAPTCHA 或登录拦住，停止绕路，改让用户提供本地媒体或字幕文件，并把失败信息写入 `notes/issues.md`。
+
+### Hugging Face、YouTube、ytscribe、PyPI 等网络请求超时
+
+**问题表现**：`faster-whisper`、`yt-dlp`、`webfetch`、`pip`、`uv`、`curl` 访问外部服务超时、TLS EOF、connection reset，导致转写、字幕或依赖下载失败。
+
+**应该如何解决**：先验证代理是否真的生效，例如：
+
+```bash
+curl -I https://huggingface.co
+curl -I https://www.youtube.com
+curl -I https://pypi.org/simple/
+```
+
+记录失败域名、错误和代理变量。不要把网络问题误判为脚本问题。代理恢复后重跑原命令；如果只有某个域名不可达，优先换镜像源或本地缓存，而不是更换整个工作流。
+
+### Python/httpx 报代理格式错误，例如 `Invalid port: ':1]'`
+
+**问题表现**：命令行 `curl` 可以访问网络，但 Python 包（如 `httpx`、`huggingface_hub`）报代理 URL 解析错误，常见错误包含 `Invalid port: ':1]'`。
+
+**应该如何解决**：检查代理环境变量：
+
+```bash
+```
+
+常见原因是 `NO_PROXY=localhost,127.0.0.1,[::1]` 中的 IPv6 写法被某些库解析异常。运行关键命令时可临时移除：
+
+```bash
+```
+
+### faster-whisper 模型下载失败或无本地缓存
+
+**问题表现**：英文转写阶段失败，提示无法下载 Whisper/faster-whisper 模型，或本地没有模型 snapshot。
+
+**应该如何解决**：先检查代理和缓存目录：`~/.cache/huggingface`、`~/.cache/ctranslate2`、`~/.cache/whisper`。网络恢复后重跑转写命令。若仍失败，可让用户提供这个视频对应的英文 SRT/转写，或改用已经安装且可离线运行的 ASR 工具；不要手写伪造 SRT。
+
+### Hugging Face 大模型权重跳转到 `cas-bridge.xethub.hf.co` 后 SSL EOF
+
+**问题表现**：小文件能下载，但 Qwen 等大权重下载时被重定向到 Xet/CAS 地址，然后 SSL EOF、broken pipe 或 connection reset。
+
+**应该如何解决**：先试：
+
+```bash
+HF_HUB_DISABLE_XET=1 python ...
+```
+
+如果仍然跳转 Xet/CAS，改用 ModelScope 下载模型快照到本地，再把 `--model-id` 指向本地目录，例如 `models/Qwen/Qwen3-TTS-12Hz-0___6B-Base`。报告中要记录实际模型来源和本地路径。
+
+### `uv python install 3.12` 从 GitHub release 下载失败
+
+**问题表现**：`uv python install 3.12` 下载 `python-build-standalone` 时出现 GitHub release TLS EOF、connection reset 或下载超时。
+
+**应该如何解决**：使用 uv 的 `--mirror`，并先用 `curl -I -L` 测试镜像是否能返回 Python tarball。例如：
+
+```bash
+uv python install 3.12 \
+  --mirror 'https://gh.llkk.cc/https://github.com/astral-sh/python-build-standalone/releases/download'
+```
+
+安装成功后用独立虚拟环境承载 TTS/GPU 依赖，不要污染主环境。
+
+### 当前 Python 版本过新，旧版 GPU 兼容 PyTorch 没有合适 wheel
+
+**问题表现**：系统只有 Python 3.13/3.14，但需要安装较旧的 CUDA PyTorch；pip 找不到对应 wheel，或解析出不兼容版本。
+
+**应该如何解决**：新建 Python 3.12/3.11 环境，例如 `.venv-qwen-p4`。不要在现有环境硬降 Python 或混装多个 torch。先固定 Python，再安装目标 torch，最后补 Qwen 依赖。
+
+### Tesla P4 报 `no kernel image is available for execution on the device`
+
+**问题表现**：Qwen 模型开始加载 GPU 后失败，PyTorch 报 `no kernel image is available for execution on the device`；日志显示 Tesla P4 compute capability `6.1`，但当前 torch 只支持 `sm_75+`。
+
+**应该如何解决**：根因是 PyTorch wheel 不支持 P4 的 `sm_61`。换用支持该架构的旧版 CUDA PyTorch，例如 Python 3.12 + `torch==2.4.1+cu121`。安装后必须用最小 CUDA tensor 脚本验证：
+
+```python
+import torch
+print(torch.__version__, torch.version.cuda)
+print(torch.cuda.get_device_name(0), torch.cuda.get_device_capability(0))
+x = torch.ones(4, device='cuda')
+print((x * 2).sum().item())
+```
+
+只有这个验证通过后，才继续跑 Qwen 推理。
+
+### 安装 `qwen-tts` 时自动升级到不兼容的 PyTorch
+
+**问题表现**：先装好了 P4 兼容 torch，但安装 `qwen-tts` 后 torch 被 pip 解析器升级到新版本，重新出现 GPU 架构不兼容。
+
+**应该如何解决**：先安装并验证目标 PyTorch，再用 `--no-deps` 安装 `qwen-tts`，随后根据导入错误逐项补依赖。这样可以避免 pip 重新解析并覆盖 torch。补依赖后再次验证 `torch.__version__` 和 CUDA tensor。
+
+### `transformers`、`huggingface-hub`、`accelerate` 版本冲突
+
+**问题表现**：导入 Qwen 或 Transformers 时出现版本约束错误，例如 `transformers 4.57.x` 要求 `huggingface-hub < 1.0`，或 `qwen-tts` 要求特定 `accelerate` 版本。
+
+**应该如何解决**：按实际报错钉版本，不要盲目升级所有包。例如可将 `huggingface-hub` 钉到 `<1.0`，将 `accelerate` 钉到 `qwen-tts` 要求的版本。每次调整后运行导入检查，确认 torch 没被替换。
+
+### 系统没有 `sox` 命令，Qwen 导入提示 `SoX could not be found`
+
+**问题表现**：Qwen 或音频库导入时打印 `SoX could not be found`，但脚本可能仍继续运行。
+
+**应该如何解决**：先判断这是否只是警告。如果生成能继续，记录限制即可；如果实际阻塞，再安装系统 SoX，或确认脚本是否只需要 Python `sox` 包。不要因为一个警告就重构整个 TTS 流程。
+
+### 音色克隆没有用户提供的参考音频
+
+**问题表现**：用户要求音色克隆，但没有上传独立参考音频或参考文本。
+
+**应该如何解决**：默认从源视频中选择 3-15 秒清晰单人语音作为 `source/reference.wav`，并用对应转写文本写入 `source/reference.txt`。如果用户后来提供了参考音频，则改用用户提供的文件。无论哪种来源，都要记录参考音频来源、时间范围或文件路径、文本来源和质量限制。
+
+### 音色克隆不像参考音色
+
+**问题表现**：生成音色明显不像原视频或用户参考音频，或者稳定性差。
+
+**应该如何解决**：优先检查参考音频质量：是否单人、是否 3-15 秒、是否有音乐/混响/多人重叠、参考文本是否精确匹配。源视频默认参考段不理想时，重新选择更干净的人声片段；用户参考音频不理想时，请用户提供更干净样本。
+
+### 中文旁白比视频短很多
+
+**问题表现**：整段中文音频明显短于视频，末尾空白很多。
+
+**应该如何解决**：如果只在意总时长，可以补静音；如果在意句子同步，必须逐段对齐，不能只把整段音频拉伸到视频长度。
+
+### 视频长度对了但句子越说越漂
+
+**问题表现**：最终视频总时长正确，但中文句子越来越偏离画面或字幕。
+
+**应该如何解决**：连续旁白不能保证句子同步。改用原始 SRT 的 start time 作为锚点逐段构建配音，并保存 timing report；中文过长时记录加速或裁切情况。
+
+### 用户要求按标题命名但只有内部 artifact
+
+**问题表现**：工作目录里只有 `artifacts/final-*.mp4`，没有用户可直接取用的最终命名文件。
+
+**应该如何解决**：增加显式 packaging/export 步骤，把最终文件复制或导出到 `output/`，使用用户要求的标题命名，并验证文件真实存在。
+
+### 用户要求字幕但只有视频文件
+
+**问题表现**：交付物只有 MP4，没有外挂字幕、硬字幕或用户要求的字幕格式。
+
+**应该如何解决**：补出 `.ass`、硬字幕视频或用户指定的字幕格式。报告中要区分外挂字幕、硬字幕和软字幕，不要用一个产物冒充另一个。
 
 ## 红旗
 
