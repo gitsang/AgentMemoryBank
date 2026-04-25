@@ -59,24 +59,24 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 最低建议产物：
 
-| 产物 | 说明 |
-|---|---|
-| `source/video.mp4` | 标准化后的视频输入 |
-| `source/audio.mp3` | 从视频抽取或用户提供的音频 |
-| `artifacts/transcript.en.txt` | 英文转写文本 |
-| `artifacts/transcript.en.srt` | 带时间轴的英文字幕 |
-| `artifacts/script.zh.txt` | 连续中文口播稿 |
-| `artifacts/script.zh.segments.txt` | 句子级同步时的逐段中文稿 |
-| `source/reference.*` | 音色克隆模式下的参考音频和参考文本；默认来自源视频截取片段，用户提供参考音频时则使用用户文件 |
-| `artifacts/narration*.wav/mp3` | 真实生成的中文 TTS 音频 |
-| `artifacts/final*.mp4` | 候选中文旁白视频或内部合成产物 |
-| `artifacts/subtitles*.ass` | 内部字幕产物 |
-| `output/{title}.mp4` | 面向用户交付的干净中文旁白视频 |
-| `output/{title}.ass` | 面向用户交付的外挂字幕文件 |
-| `output/{title}-bilingual.mp4` | 面向用户交付的双语字幕烧录版视频 |
-| `notes/commands.md` | 实际执行过的命令 |
-| `notes/issues.md` | 阻塞、失败、修复方式和限制 |
-| `report.md` | 面向用户的最终总结 |
+| 产物                               | 说明                                                                                         |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| `source/video.mp4`                 | 标准化后的视频输入                                                                           |
+| `source/audio.mp3`                 | 从视频抽取或用户提供的音频                                                                   |
+| `artifacts/transcript.en.txt`      | 英文转写文本                                                                                 |
+| `artifacts/transcript.en.srt`      | 带时间轴的英文字幕                                                                           |
+| `artifacts/script.zh.txt`          | 连续中文口播稿                                                                               |
+| `artifacts/script.zh.segments.txt` | 句子级同步时的逐段中文稿                                                                     |
+| `source/reference.*`               | 音色克隆模式下的参考音频和参考文本；默认来自源视频截取片段，用户提供参考音频时则使用用户文件 |
+| `artifacts/narration*.wav/mp3`     | 真实生成的中文 TTS 音频                                                                      |
+| `artifacts/final*.mp4`             | 候选中文旁白视频或内部合成产物                                                               |
+| `artifacts/subtitles*.ass`         | 内部字幕产物                                                                                 |
+| `output/{title}.mp4`               | 面向用户交付的干净中文旁白视频                                                               |
+| `output/{title}.ass`               | 面向用户交付的外挂字幕文件                                                                   |
+| `output/{title}-bilingual.mp4`     | 面向用户交付的双语字幕烧录版视频                                                             |
+| `notes/commands.md`                | 实际执行过的命令                                                                             |
+| `notes/issues.md`                  | 阻塞、失败、修复方式和限制                                                                   |
+| `report.md`                        | 面向用户的最终总结                                                                           |
 
 ## 推荐工作流
 
@@ -176,14 +176,14 @@ output/{title}-bilingual.mp4    # 烧录双语字幕的视频
 
 优先把 skill 自带脚本复制到工作目录的 `scripts/` 下再运行，避免污染 skill 目录，也方便报告完整归档。
 
-| 脚本 | 用途 |
-|---|---|
-| `scripts/transcribe_with_faster_whisper.py` | 把音频转成英文文本和 SRT |
-| `scripts/scaffold_rewrite_prompt.py` | 为中文改写生成可人工审阅的 prompt scaffold |
-| `scripts/generate_edge_tts.py` | 把整段中文稿生成 MP3/WAV |
-| `scripts/generate_qwen3_voice_clone.py` | 用参考音频和中文稿生成整段中文音色克隆 MP3/WAV |
-| `scripts/build_aligned_dub.py` | 逐段生成中文配音并按原始字幕开始时间拼到整条时间线上 |
-| `scripts/build_bilingual_ass.py` | 按英文时间轴生成中英双语 ASS 字幕 |
+| 脚本                                        | 用途                                                 |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `scripts/transcribe_with_faster_whisper.py` | 把音频转成英文文本和 SRT                             |
+| `scripts/scaffold_rewrite_prompt.py`        | 为中文改写生成可人工审阅的 prompt scaffold           |
+| `scripts/generate_edge_tts.py`              | 把整段中文稿生成 MP3/WAV                             |
+| `scripts/generate_qwen3_voice_clone.py`     | 用参考音频和中文稿生成整段中文音色克隆 MP3/WAV       |
+| `scripts/build_aligned_dub.py`              | 逐段生成中文配音并按原始字幕开始时间拼到整条时间线上 |
+| `scripts/build_bilingual_ass.py`            | 按英文时间轴生成中英双语 ASS 字幕                    |
 
 常用命令模板：
 
@@ -264,6 +264,11 @@ python scripts/build_aligned_dub.py \
 
 ## 故障排查
 
+### python index
+
+- index: https://pypi.tuna.tsinghua.edu.cn/simple
+- extra-index-url: https://mirrors.nju.edu.cn/pytorch/whl/cu121
+
 ### `yt-dlp` 遇到 `429`、bot verification 或 CAPTCHA
 
 **问题表现**：下载 YouTube 源视频或字幕时出现 `429`、bot verification、CAPTCHA、登录校验，或者长时间无响应。
@@ -291,11 +296,13 @@ curl -I https://pypi.org/simple/
 **应该如何解决**：检查代理环境变量：
 
 ```bash
+
 ```
 
 常见原因是 `NO_PROXY=localhost,127.0.0.1,[::1]` 中的 IPv6 写法被某些库解析异常。运行关键命令时可临时移除：
 
 ```bash
+
 ```
 
 ### faster-whisper 模型下载失败或无本地缓存
