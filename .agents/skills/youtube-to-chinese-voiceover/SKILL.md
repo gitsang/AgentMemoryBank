@@ -57,6 +57,21 @@ description: Use when needing to turn a single YouTube or local video into a low
   report.md     # 最终报告
 ```
 
+### 虚拟环境与模型文件复用约定
+
+`.venv-qwen`（Python 虚拟环境）和 `Qwen/`（大模型权重目录）**不应放在工作目录内部**，而应放在原始视频所在父级目录中（例如 `yt-video/.venv-qwen` 和 `yt-video/Qwen/`），以便多个视频任务共享复用。
+
+```text
+/path/to/yt-video/
+  .venv-qwen/       # 共享 Python 虚拟环境（含 PyTorch、faster-whisper、qwen-tts 等）
+  Qwen/             # 共享大模型权重目录
+    Qwen3-TTS-12Hz-0___6B-Base/   # ModelScope 下载的实际目录名
+    Qwen3-TTS-12Hz-0.6B-Base -> Qwen3-TTS-12Hz-0___6B-Base  # symlink（兼容原始 repo ID 格式）
+  Source-Video-Name/   # 工作目录（仅含 source/、artifacts/、output/ 等轻量产物）
+```
+
+工作目录内部只保留与该视频相关的中间产物，不重复安装环境或下载模型。
+
 最低建议产物：
 
 | 产物                               | 说明                                                                                         |
@@ -225,7 +240,7 @@ python scripts/build_bilingual_ass.py \
   --ass-out artifacts/subtitles.zh-en.ass
 ```
 
-音色克隆逐段对齐时，`build_aligned_dub.py` 必须提供参考音频：
+音色克隆逐段对齐时，`build_aligned_dub.py` 必须提供参考音频。`--model-id` 指向共享模型目录：
 
 ```bash
 python scripts/build_aligned_dub.py \
@@ -235,18 +250,22 @@ python scripts/build_aligned_dub.py \
   --backend qwen3-tts \
   --reference-audio source/reference.wav \
   --reference-text source/reference.txt \
+  --model-id ./Qwen/Qwen3-TTS-12Hz-0.6B-Base \
   --segment-dir artifacts/aligned-segments-clone \
   --wav-out artifacts/narration.zh.clone.aligned.wav \
   --report-out artifacts/narration.zh.clone.aligned.json
 ```
 
+**Tesla P4 推理性能**：Tesla P4 (compute capability 6.1) 不支持 flash-attn，每段 TTS 约 8-10 秒。187 段（约 8 分钟视频）总计约 25-30 分钟。脚本支持分段缓存，中断后可自动恢复。
+
 ## 最小工具链
 
 - `ffmpeg` 和 `ffprobe`：抽取音频、检查媒体流、合成最终视频。
-- Python 虚拟环境：建议在工作目录内隔离依赖。
+- Python 虚拟环境：放在视频父级目录（如 `yt-video/.venv-qwen`）中共享使用，内含 PyTorch（P4 兼容版）、faster-whisper、qwen-tts、edge-tts。
 - `faster-whisper`：英文转写和 SRT 生成。
 - `edge-tts`：普通中文旁白。
 - `qwen-tts`：外部参考音频驱动的音色克隆。
+- `modelscope`：从 ModelScope 下载 Qwen 大模型权重（推荐）。
 - `numpy`、`soundfile` 等音频处理依赖：逐段对齐和 WAV 拼接需要。
 
 ## 人工审阅关口
@@ -311,17 +330,33 @@ curl -I https://pypi.org/simple/
 
 **应该如何解决**：先检查代理和缓存目录：`~/.cache/huggingface`、`~/.cache/ctranslate2`、`~/.cache/whisper`。网络恢复后重跑转写命令。若仍失败，可让用户提供这个视频对应的英文 SRT/转写，或改用已经安装且可离线运行的 ASR 工具；不要手写伪造 SRT。
 
-### Hugging Face 大模型权重跳转到 `cas-bridge.xethub.hf.co` 后 SSL EOF
+### Hugging Face 大模型权重无法下载
 
-**问题表现**：小文件能下载，但 Qwen 等大权重下载时被重定向到 Xet/CAS 地址，然后 SSL EOF、broken pipe 或 connection reset。
+**问题表现**：从 HuggingFace 下载 Qwen3-TTS 等大模型权重时出现 SSL EOF、connection reset、超时，或重定向到 `cas-bridge.xethub.hf.co` 后 SSL EOF。
 
-**应该如何解决**：先试：
+**应该如何解决**：优先使用 ModelScope 下载模型快照到本地：
 
 ```bash
-HF_HUB_DISABLE_XET=1 python ...
+uv pip install modelscope -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+python3 -c "
+from modelscope import snapshot_download
+model_dir = snapshot_download('Qwen/Qwen3-TTS-12Hz-0.6B-Base', cache_dir='.')
+"
 ```
 
-如果仍然跳转 Xet/CAS，改用 ModelScope 下载模型快照到本地，再把 `--model-id` 指向本地目录，例如 `models/Qwen/Qwen3-TTS-12Hz-0___6B-Base`。报告中要记录实际模型来源和本地路径。
+将模型目录放在视频父级目录（如 `yt-video/Qwen/`）中以供复用。
+
+**ModelScope 下载路径命名注意**：ModelScope 会将文件名中的 `.` 替换为 `___`。例如 `Qwen3-TTS-12Hz-0.6B-Base` 会被下载为 `Qwen3-TTS-12Hz-0___6B-Base`。创建 symlink 兼容原始 repo ID：
+
+```bash
+cd yt-video/Qwen/
+ln -s Qwen3-TTS-12Hz-0___6B-Base Qwen3-TTS-12Hz-0.6B-Base
+```
+
+然后在 `--model-id` 参数中指向本地目录（如 `./Qwen/Qwen3-TTS-12Hz-0.6B-Base`）。
+
+报告中要记录实际模型来源和本地路径。
 
 ### `uv python install 3.12` 从 GitHub release 下载失败
 
@@ -411,6 +446,18 @@ print((x * 2).sum().item())
 **问题表现**：交付物只有 MP4，没有外挂字幕、硬字幕或用户要求的字幕格式。
 
 **应该如何解决**：补出 `.ass`、硬字幕视频或用户指定的字幕格式。报告中要区分外挂字幕、硬字幕和软字幕，不要用一个产物冒充另一个。
+
+### 文件名含空格导致 ffmpeg 失败
+
+**问题表现**：ffmpeg 或 Python 脚本处理含空格的视频文件名时报错，例如 `Invalid argument` 或找不到文件。
+
+**应该如何解决**：始终对含空格的路径加引号。ffmpeg 命令中用 `"output/文件名.mp4"`。标准化路径时不要去除空格（那是文件名的一部分），只需在命令行中正确引用。
+
+### 中文逐段稿行数与 SRT block 数不一致
+
+**问题表现**：`build_aligned_dub.py` 报 `Segment count mismatch` 错误。
+
+**应该如何解决**：逐段中文稿的每一行对应 SRT 中的一个字幕块。生成中文稿时，确保中文行数与 SRT block 数严格一致。如果中文翻译中某段英文被合并或拆分，需要调整中文稿使其一一对应。使用 `wc -l` 和 SRT 中的 block 编号做最终核对。
 
 ## 红旗
 
