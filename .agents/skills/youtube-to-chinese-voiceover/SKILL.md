@@ -59,18 +59,20 @@ description: Use when needing to turn a single YouTube or local video into a low
 
 ### 虚拟环境与模型文件复用约定
 
-`.venv-qwen`（Python 虚拟环境）和 `Qwen/`（大模型权重目录）**不应放在工作目录内部**，而应放在原始视频所在父级目录中（例如 `yt-video/.venv-qwen` 和 `yt-video/Qwen/`），以便多个视频任务共享复用。
+`.venv`（Python 虚拟环境）和 `models/`（大模型权重目录）**不应放在工作目录内部**，而应放在原始视频所在父级目录中（例如 `yt-video/.venv` 和 `yt-video/models/`），以便多个视频任务共享复用。
 
 ```text
 /path/to/yt-video/
-  .venv-qwen/       # 共享 Python 虚拟环境（含 PyTorch、faster-whisper、qwen-tts 等）
-  Qwen/             # 共享大模型权重目录
+  .venv/            # 共享 Python 虚拟环境（含 PyTorch、faster-whisper、qwen-tts 等）
+  models/           # 共享大模型权重目录
     Qwen3-TTS-12Hz-0___6B-Base/   # ModelScope 下载的实际目录名
     Qwen3-TTS-12Hz-0.6B-Base -> Qwen3-TTS-12Hz-0___6B-Base  # symlink（兼容原始 repo ID 格式）
   Source-Video-Name/   # 工作目录（仅含 source/、artifacts/、output/ 等轻量产物）
 ```
 
 工作目录内部只保留与该视频相关的中间产物，不重复安装环境或下载模型。
+
+`yt-video/` 目录包含 `.gitignore`，自动忽略 `.venv/` 和 `models/`。
 
 最低建议产物：
 
@@ -250,7 +252,7 @@ python scripts/build_aligned_dub.py \
   --backend qwen3-tts \
   --reference-audio source/reference.wav \
   --reference-text source/reference.txt \
-  --model-id ./Qwen/Qwen3-TTS-12Hz-0.6B-Base \
+  --model-id ./models/Qwen3-TTS-12Hz-0.6B-Base \
   --segment-dir artifacts/aligned-segments-clone \
   --wav-out artifacts/narration.zh.clone.aligned.wav \
   --report-out artifacts/narration.zh.clone.aligned.json
@@ -261,7 +263,7 @@ python scripts/build_aligned_dub.py \
 ## 最小工具链
 
 - `ffmpeg` 和 `ffprobe`：抽取音频、检查媒体流、合成最终视频。
-- Python 虚拟环境：放在视频父级目录（如 `yt-video/.venv-qwen`）中共享使用，内含 PyTorch（P4 兼容版）、faster-whisper、qwen-tts、edge-tts。
+- Python 虚拟环境：放在视频父级目录（如 `yt-video/.venv`）中共享使用，内含 PyTorch（P4 兼容版）、faster-whisper、qwen-tts、edge-tts。
 - `faster-whisper`：英文转写和 SRT 生成。
 - `edge-tts`：普通中文旁白。
 - `qwen-tts`：外部参考音频驱动的音色克隆。
@@ -345,16 +347,16 @@ model_dir = snapshot_download('Qwen/Qwen3-TTS-12Hz-0.6B-Base', cache_dir='.')
 "
 ```
 
-将模型目录放在视频父级目录（如 `yt-video/Qwen/`）中以供复用。
+将模型目录放在视频父级目录（如 `yt-video/models/`）中以供复用。
 
 **ModelScope 下载路径命名注意**：ModelScope 会将文件名中的 `.` 替换为 `___`。例如 `Qwen3-TTS-12Hz-0.6B-Base` 会被下载为 `Qwen3-TTS-12Hz-0___6B-Base`。创建 symlink 兼容原始 repo ID：
 
 ```bash
-cd yt-video/Qwen/
+cd yt-video/models/
 ln -s Qwen3-TTS-12Hz-0___6B-Base Qwen3-TTS-12Hz-0.6B-Base
 ```
 
-然后在 `--model-id` 参数中指向本地目录（如 `./Qwen/Qwen3-TTS-12Hz-0.6B-Base`）。
+然后在 `--model-id` 参数中指向本地目录（如 `./models/Qwen3-TTS-12Hz-0.6B-Base`）。
 
 报告中要记录实际模型来源和本地路径。
 
@@ -375,7 +377,7 @@ uv python install 3.12 \
 
 **问题表现**：系统只有 Python 3.13/3.14，但需要安装较旧的 CUDA PyTorch；pip 找不到对应 wheel，或解析出不兼容版本。
 
-**应该如何解决**：新建 Python 3.12/3.11 环境，例如 `.venv-qwen-p4`。不要在现有环境硬降 Python 或混装多个 torch。先固定 Python，再安装目标 torch，最后补 Qwen 依赖。
+**应该如何解决**：新建 Python 3.12/3.11 环境，例如 `.venv`（放 `yt-video/` 同级）。不要在现有环境硬降 Python 或混装多个 torch。先固定 Python，再安装目标 torch，最后补 Qwen 依赖。
 
 ### Tesla P4 报 `no kernel image is available for execution on the device`
 
