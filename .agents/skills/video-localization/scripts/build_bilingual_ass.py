@@ -22,22 +22,35 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="根据英文 SRT 与逐段中文稿生成双语 ASS 字幕。"
+        description="Generate bilingual ASS subtitles from source SRT and target-language segment script."
     )
-    parser.add_argument("--srt", type=Path, required=True, help="英文 SRT 路径")
+    parser.add_argument("--srt", type=Path, required=True, help="Source SRT path")
     parser.add_argument(
-        "--zh-segments", type=Path, required=True, help="逐段中文稿路径"
+        "--tgt-segments",
+        type=Path,
+        required=True,
+        help="Per-segment target-language script path",
     )
-    parser.add_argument("--ass-out", type=Path, required=True, help="ASS 输出路径")
-    parser.add_argument("--font-name", default="Noto Sans CJK SC", help="字体名")
-    parser.add_argument("--font-size", type=int, default=36, help="基础字体大小")
-    parser.add_argument("--zh-size", type=int, default=40, help="中文字幕字号")
-    parser.add_argument("--en-size", type=int, default=28, help="英文字幕字号")
-    parser.add_argument("--play-res-x", type=int, default=1920, help="ASS 画布宽度")
-    parser.add_argument("--play-res-y", type=int, default=1080, help="ASS 画布高度")
-    parser.add_argument("--margin-l", type=int, default=80, help="左边距")
-    parser.add_argument("--margin-r", type=int, default=80, help="右边距")
-    parser.add_argument("--margin-v", type=int, default=48, help="底边距")
+    parser.add_argument("--ass-out", type=Path, required=True, help="ASS output path")
+    parser.add_argument(
+        "--font-name",
+        default="Sans",
+        help="Font name (use a CJK-capable font like 'Noto Sans CJK SC' for Chinese/Japanese/Korean)",
+    )
+    parser.add_argument("--font-size", type=int, default=36, help="Base font size")
+    parser.add_argument(
+        "--tgt-size", type=int, default=40, help="Target-language subtitle font size"
+    )
+    parser.add_argument(
+        "--src-size", type=int, default=28, help="Source-language subtitle font size"
+    )
+    parser.add_argument("--play-res-x", type=int, default=1920, help="ASS canvas width")
+    parser.add_argument(
+        "--play-res-y", type=int, default=1080, help="ASS canvas height"
+    )
+    parser.add_argument("--margin-l", type=int, default=80, help="Left margin")
+    parser.add_argument("--margin-r", type=int, default=80, help="Right margin")
+    parser.add_argument("--margin-v", type=int, default=48, help="Bottom margin")
     return parser.parse_args()
 
 
@@ -82,13 +95,13 @@ def parse_srt_blocks(path: Path) -> list[tuple[str, str, str]]:
 def main() -> None:
     args = parse_args()
     srt_entries = parse_srt_blocks(args.srt)
-    zh_lines = [
+    tgt_lines = [
         line.rstrip("\n")
-        for line in args.zh_segments.read_text(encoding="utf-8").splitlines()
+        for line in args.tgt_segments.read_text(encoding="utf-8").splitlines()
     ]
-    if len(srt_entries) != len(zh_lines):
+    if len(srt_entries) != len(tgt_lines):
         raise SystemExit(
-            f"Segment count mismatch: {len(srt_entries)} subtitle blocks vs {len(zh_lines)} Chinese lines"
+            f"Segment count mismatch: {len(srt_entries)} subtitle blocks vs {len(tgt_lines)} target lines"
         )
 
     header = ASS_HEADER_TEMPLATE.format(
@@ -101,16 +114,14 @@ def main() -> None:
         margin_v=args.margin_v,
     )
     lines = [header]
-    for (start_raw, end_raw, en_text), zh_text in zip(
-        srt_entries, zh_lines, strict=True
+    for (start_raw, end_raw, src_text), tgt_text in zip(
+        srt_entries, tgt_lines, strict=True
     ):
         start_ass = to_ass_timestamp(start_raw)
         end_ass = to_ass_timestamp(end_raw)
-        zh_escaped = escape_ass_text(zh_text)
-        en_escaped = escape_ass_text(en_text)
-        text = (
-            f"{{\\fs{args.zh_size}}}{zh_escaped}\\N{{\\fs{args.en_size}}}{en_escaped}"
-        )
+        tgt_escaped = escape_ass_text(tgt_text)
+        src_escaped = escape_ass_text(src_text)
+        text = f"{{\\fs{args.tgt_size}}}{tgt_escaped}\\N{{\\fs{args.src_size}}}{src_escaped}"
         lines.append(f"Dialogue: 0,{start_ass},{end_ass},Bilingual,,0,0,0,,{text}")
 
     args.ass_out.parent.mkdir(parents=True, exist_ok=True)

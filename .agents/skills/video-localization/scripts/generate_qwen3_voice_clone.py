@@ -8,24 +8,35 @@ from pathlib import Path
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="使用 Qwen3-TTS 与参考音频生成中文音色克隆语音。"
-    )
-    parser.add_argument("--script", type=Path, required=True, help="中文稿路径")
-    parser.add_argument(
-        "--reference-audio", type=Path, required=True, help="参考音色音频路径"
+        description="Synthesize a script using Qwen3-TTS with reference-audio voice cloning."
     )
     parser.add_argument(
-        "--reference-text", type=Path, required=True, help="参考音频对应文本路径"
+        "--script", type=Path, required=True, help="Path to the target-language script"
     )
-    parser.add_argument("--mp3-out", type=Path, required=True, help="MP3 输出路径")
-    parser.add_argument("--wav-out", type=Path, required=True, help="WAV 输出路径")
+    parser.add_argument(
+        "--reference-audio", type=Path, required=True, help="Reference voice audio path"
+    )
+    parser.add_argument(
+        "--reference-text",
+        type=Path,
+        required=True,
+        help="Transcript of the reference audio",
+    )
+    parser.add_argument("--mp3-out", type=Path, required=True, help="MP3 output path")
+    parser.add_argument("--wav-out", type=Path, required=True, help="WAV output path")
+    parser.add_argument(
+        "--language",
+        default=None,
+        help="Target language hint for Qwen3-TTS (e.g. Chinese, French, Japanese). "
+        "Leave unset to let the model auto-detect.",
+    )
     parser.add_argument(
         "--model-id",
         default="Qwen/Qwen3-TTS-12Hz-0.6B-Base",
-        help="Qwen3-TTS Base 模型 ID",
+        help="Qwen3-TTS Base model ID or local path",
     )
     parser.add_argument(
-        "--sample-rate", type=int, default=24000, help="输出 MP3 时使用的采样率"
+        "--sample-rate", type=int, default=24000, help="Sample rate for MP3 output"
     )
     return parser.parse_args()
 
@@ -36,10 +47,11 @@ def synthesize(
     reference_text: Path,
     wav_out: Path,
     model_id: str,
+    language: str | None,
 ) -> int:
     text = script.read_text(encoding="utf-8").strip()
     if not text:
-        raise SystemExit("Chinese script is empty")
+        raise SystemExit("Script file is empty")
 
     ref_text = reference_text.read_text(encoding="utf-8").strip()
     if not ref_text:
@@ -53,13 +65,17 @@ def synthesize(
     device_map = "cuda:0" if torch.cuda.is_available() else "cpu"
     dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
     model = qwen_model.from_pretrained(model_id, device_map=device_map, dtype=dtype)
-    wavs, sample_rate = model.generate_voice_clone(
+
+    kwargs: dict[str, object] = dict(
         text=text,
-        language="Chinese",
         ref_audio=str(reference_audio),
         ref_text=ref_text,
         non_streaming_mode=True,
     )
+    if language is not None:
+        kwargs["language"] = language
+
+    wavs, sample_rate = model.generate_voice_clone(**kwargs)
     soundfile.write(str(wav_out), wavs[0], sample_rate)
     return sample_rate
 
@@ -90,6 +106,7 @@ def main() -> None:
         args.reference_text,
         args.wav_out,
         args.model_id,
+        args.language,
     )
     convert_to_mp3(args.wav_out, args.mp3_out, sample_rate or args.sample_rate)
     print(
