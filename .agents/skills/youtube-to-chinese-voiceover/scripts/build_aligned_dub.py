@@ -29,6 +29,7 @@ class QwenVoiceCloneModel(Protocol):
         language: str | None = None,
         ref_audio: str | None = None,
         ref_text: str | None = None,
+        x_vector_only_mode: bool = False,
         non_streaming_mode: bool = False,
         **kwargs: object,
     ) -> tuple[list[np.ndarray], int]: ...
@@ -64,7 +65,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--reference-text",
         type=Path,
-        help="当 backend=qwen3-tts 时必填，参考音频对应文本",
+        help="当 backend=qwen3-tts 且未启用 --x-vector-only 时必填，参考音频对应文本",
+    )
+    parser.add_argument(
+        "--x-vector-only",
+        action="store_true",
+        help="使用 Qwen3-TTS x-vector-only 模式，只使用声纹向量，避免参考文本 prompt 残留",
     )
     parser.add_argument(
         "--model-id",
@@ -158,7 +164,8 @@ def synthesize_segment_with_qwen(
     text: str,
     wav_output_path: Path,
     reference_audio: Path,
-    reference_text: str,
+    reference_text: str | None,
+    x_vector_only: bool,
     model: QwenVoiceCloneModel,
 ) -> None:
     soundfile = importlib.import_module("soundfile")
@@ -167,6 +174,7 @@ def synthesize_segment_with_qwen(
         language="Chinese",
         ref_audio=str(reference_audio),
         ref_text=reference_text,
+        x_vector_only_mode=x_vector_only,
         non_streaming_mode=True,
     )
     soundfile.write(str(wav_output_path), wavs[0], sample_rate)
@@ -181,15 +189,18 @@ def synthesize_with_selected_backend(
     rate: str,
     reference_audio: Path | None,
     reference_text: str | None,
+    x_vector_only: bool,
     qwen_model: QwenVoiceCloneModel | None,
 ) -> None:
     if backend == "edge-tts":
         asyncio.run(synthesize_segment(text, output_path, voice, rate))
         return
 
-    if reference_audio is None or reference_text is None or qwen_model is None:
+    if reference_audio is None or qwen_model is None:
+        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+    if reference_text is None and not x_vector_only:
         raise SystemExit(
-            "--reference-audio and --reference-text are required when --backend=qwen3-tts"
+            "--reference-text is required when --backend=qwen3-tts unless --x-vector-only is set"
         )
 
     synthesize_segment_with_qwen(
@@ -197,6 +208,7 @@ def synthesize_with_selected_backend(
         output_path,
         reference_audio,
         reference_text,
+        x_vector_only,
         qwen_model,
     )
 
@@ -292,11 +304,15 @@ def speed_up_wav(src: Path, dst: Path, speedup: float, sample_rate: int) -> None
 
 def main() -> None:
     args = parse_args()
-    if args.backend == "qwen3-tts" and (
-        args.reference_audio is None or args.reference_text is None
+    if args.backend == "qwen3-tts" and args.reference_audio is None:
+        raise SystemExit("--reference-audio is required when --backend=qwen3-tts")
+    if (
+        args.backend == "qwen3-tts"
+        and args.reference_text is None
+        and not args.x_vector_only
     ):
         raise SystemExit(
-            "--reference-audio and --reference-text are required when --backend=qwen3-tts"
+            "--reference-text is required when --backend=qwen3-tts unless --x-vector-only is set"
         )
 
     segments = read_segments(args.srt, args.zh_segments)
@@ -340,6 +356,7 @@ def main() -> None:
                         rate=args.rate,
                         reference_audio=args.reference_audio,
                         reference_text=qwen_reference_text,
+                        x_vector_only=args.x_vector_only,
                         qwen_model=qwen_model,
                     )
             else:
@@ -352,6 +369,7 @@ def main() -> None:
                         rate=args.rate,
                         reference_audio=args.reference_audio,
                         reference_text=qwen_reference_text,
+                        x_vector_only=args.x_vector_only,
                         qwen_model=qwen_model,
                     )
                 mp3_to_wav(mp3_path, wav_path, args.sample_rate)
@@ -383,6 +401,7 @@ def main() -> None:
                     "text_en": segment.text_en,
                     "text_zh": segment.text_zh,
                     "backend": args.backend,
+                    "x_vector_only": args.x_vector_only,
                     "generated_duration": round(original_samples / args.sample_rate, 3),
                     "placed_duration": round(valid_samples / args.sample_rate, 3),
                     "speedup_applied": round(speedup_applied, 3),
