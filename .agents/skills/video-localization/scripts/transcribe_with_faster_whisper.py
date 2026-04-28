@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import json
 from pathlib import Path
 
 
@@ -17,32 +18,30 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Transcribe audio to plain text and SRT using faster-whisper."
     )
-    parser.add_argument(
-        "--audio", type=Path, required=True, help="Input audio file path"
-    )
-    parser.add_argument(
-        "--txt-out", type=Path, required=True, help="Plain text output path"
-    )
-    parser.add_argument("--srt-out", type=Path, required=True, help="SRT output path")
+    parser.add_argument("--audio", type=Path, required=True, help="Input audio file")
+    parser.add_argument("--txt-out", type=Path, required=True, help="Plain text output")
+    parser.add_argument("--srt-out", type=Path, required=True, help="SRT output")
     parser.add_argument(
         "--model",
         default="small",
-        help="Whisper model name (tiny/base/small/medium/large)",
+        help="Whisper model name or local path (tiny/base/small/medium/large)",
     )
     parser.add_argument(
         "--language",
+        "--source-lang",
+        dest="language",
         default=None,
-        help="Source language code (e.g. en, zh, fr, ja). Leave unset for auto-detection.",
+        help="Source language code, e.g. en, zh, fr, ja; omit for auto-detection",
     )
-    parser.add_argument("--device", default="cpu", help="Inference device (cpu/cuda)")
+    parser.add_argument("--device", default="cpu", help="Inference device: cpu or cuda")
     parser.add_argument(
-        "--compute-type", default="int8", help="Whisper compute_type parameter"
+        "--compute-type", default="int8", help="faster-whisper compute_type"
     )
     parser.add_argument("--beam-size", type=int, default=5, help="Beam size")
     parser.add_argument(
         "--disable-vad-filter",
         action="store_true",
-        help="Disable VAD filter (enabled by default)",
+        help="Disable VAD filter, which is enabled by default",
     )
     return parser.parse_args()
 
@@ -58,10 +57,10 @@ def main() -> None:
         args.model, device=args.device, compute_type=args.compute_type
     )
 
-    transcribe_kwargs: dict[str, object] = dict(
-        beam_size=args.beam_size,
-        vad_filter=not args.disable_vad_filter,
-    )
+    transcribe_kwargs: dict[str, object] = {
+        "beam_size": args.beam_size,
+        "vad_filter": not args.disable_vad_filter,
+    }
     if args.language is not None:
         transcribe_kwargs["language"] = args.language
 
@@ -88,18 +87,17 @@ def main() -> None:
             output_index += 1
 
     print(
-        {
-            "language": info.language,
-            "duration": info.duration,
-            "segments": len(segment_list),
-            "txt_out": str(args.txt_out),
-            "srt_out": str(args.srt_out),
-        }
+        json.dumps(
+            {
+                "language": info.language,
+                "duration": info.duration,
+                "segments": len(segment_list),
+                "txt_out": str(args.txt_out),
+                "srt_out": str(args.srt_out),
+            },
+            ensure_ascii=False,
+        )
     )
-
-
-if __name__ == "__main__":
-    main()
 
 
 if __name__ == "__main__":

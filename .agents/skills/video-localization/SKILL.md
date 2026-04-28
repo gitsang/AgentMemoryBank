@@ -1,136 +1,128 @@
 ---
 name: video-localization
-description: Use when needing to localize a video (YouTube or local) into any target language; generate dubbed audio, sentence-level alignment, bilingual subtitles, final video deliverables; or use external reference audio for voice cloning in the target language.
+description: Use when localizing a single YouTube, web, or local video into another language with translated dubbing, sentence-level alignment, bilingual subtitles, final deliverables, or authorized reference-audio voice cloning.
 ---
 
 # Video Localization
 
 ## Overview
 
-Convert a single YouTube or local video into a dubbed version in any target language, prioritizing **reproducible, auditable, real deliverables** over studio quality or batch automation.
+Localize one video into another language with **reproducible, auditable, real deliverables**. The workflow favors verifiable artifacts over black-box automation or studio-grade promises.
 
-Core principle: every step produces inspectable artifacts. All commands, issues, fixes, and intermediates go into a working directory next to the source video; final deliverables go into `output/`. Do not treat placeholder audio, total-duration alignment, or theoretical steps as completion.
+Core principle: every step must leave evidence. Save commands, failures, fixes, transcripts, scripts, generated audio, subtitles, timing reports, and final outputs in a work directory next to the source video. Do not claim completion from prompt scaffolds, placeholder audio, total-duration-only alignment, or theoretical steps.
 
-Two dubbing modes:
+Supported modes:
 
-- **Standard TTS dubbing**: synthesize using a standard TTS voice for the target language.
-- **Reference-audio voice cloning**: use an external reference clip to clone the speaker's voice; defaults to extracting a clean speech segment from the source video, or uses a user-supplied reference if provided.
+- **Standard target-language dubbing**: synthesize narration with a TTS voice that explicitly supports the target language.
+- **Reference-audio voice cloning**: use authorized reference audio. Default to a clean 3-15 second single-speaker clip extracted from the source video only when appropriate; switch to user-provided reference audio if supplied.
 
-Out of scope: automatic voice fingerprint purification, legal/rights issues of speaker impersonation.
+Out of scope: batch pipelines, automatic voiceprint purification, voice authentication, lip sync, rights bypassing, or guaranteeing 100% speaker replication.
 
 ## When to Use
 
-Apply when:
+Use this when:
 
-- User provides a YouTube URL or local video and requests a dubbed version in another language.
-- User asks for dubbed audio, sentence-level sync, bilingual subtitles, or title-named final video.
-- User values low cost, transparent process, and reproducible evidence over studio output.
-- User requests voice cloning with either source-extracted or user-provided reference audio.
-- Manual review of the translated script is required before TTS synthesis.
+- User provides a YouTube URL, web video, or local video and asks for translation, dubbing, subtitles, or localized video output.
+- The task needs source-language transcription, target-language narration, sentence-level sync, bilingual subtitles, or title-named final files.
+- User asks for voice cloning with a clear reference-audio source and acceptable usage rights.
+- Manual script review is needed before TTS to avoid literal or awkward translation.
 
-Do NOT apply when:
+Do not use this when:
 
-- Batch pipeline processing many videos.
-- Goal is automated voice fingerprinting, liveness detection, lip sync, or 100% speaker replication.
-- Source video, subtitles, or reference audio lack clear usage rights.
-- User requires a black-box, non-auditable process.
+- Processing many videos as a batch system.
+- The source, subtitles, translated script, or reference audio lack clear processing permission.
+- User requests unaudited processing with no intermediate artifacts.
+- The goal is lip-sync, identity verification, or impersonation without authorization.
 
-## Working Directory Convention
+## Language and Naming Conventions
 
-Create an isolated working directory next to the source video. Use the source file's stem as the directory name:
+Confirm the language direction before producing final artifacts:
+
+| Placeholder | Example | Meaning |
+|---|---|---|
+| `{src_lang}` | `en`, `zh`, `es`, `fr` | Main source-video language |
+| `{tgt_lang}` | `zh`, `en`, `de`, `ja` | Target narration/subtitle language |
+| `{lang_pair}` | `en-zh`, `es-en` | Source-to-target direction |
+
+Use ISO 639-1, BCP-47, or clear language names consistently. For `edge-tts`, use a concrete voice locale such as `zh-CN-XiaoxiaoNeural`, `en-US-AriaNeural`, `fr-FR-DeniseNeural`, or `ja-JP-NanamiNeural`; run `edge-tts --list-voices` to choose a voice matching `{tgt_lang}`.
+
+## Work Directory Convention
+
+Create an isolated work directory next to the source video. The directory name is the source filename stem:
 
 ```text
-/path/to/Source-Video.mp4          # source video
-/path/to/Source-Video/             # working directory
-/path/to/Source-Video/output/      # final deliverables
+/path/to/Source-Video.mp4
+/path/to/Source-Video/
+/path/to/Source-Video/output/
 ```
 
 Internal layout:
 
 ```text
 /path/to/Source-Video/
-  source/       # normalized inputs
-  artifacts/    # transcripts, scripts, audio, subtitles, intermediate video
-  notes/        # commands, issues, manual inspection logs
+  source/       # normalized inputs and reference audio/text
+  artifacts/    # transcripts, scripts, TTS, subtitles, intermediate video
+  notes/        # commands, issues, manual checks, constraints
   output/       # user-facing final files
-  scripts/      # copies of skill scripts
+  scripts/      # copied skill scripts
   report.md     # final summary
 ```
 
-### Virtualenv and Model Reuse
+Keep shared `.venv/` and `models/` in the source video's parent directory, not inside the per-video work directory, so multiple localization tasks can reuse dependencies and model weights. Ensure that parent-level `.gitignore` ignores `.venv/` and `models/`.
 
-`.venv` and `models/` live **in the parent directory** (e.g. `video-loc/.venv`, `video-loc/models/`) so multiple video tasks share them.
+Minimum artifacts:
 
-```text
-/path/to/video-loc/
-  .venv/           # shared Python env (PyTorch, faster-whisper, TTS libs, etc.)
-  models/          # shared model weights
-  Source-Video/    # working directory (source/, artifacts/, output/ only)
-```
-
-`video-loc/.gitignore` must ignore `.venv/` and `models/`.
-
-### Minimum Required Artifacts
-
-| Artifact                                   | Description                                              |
-| ------------------------------------------ | -------------------------------------------------------- |
-| `source/video.mp4`                         | normalized source video                                  |
-| `source/audio.mp3`                         | extracted or user-supplied audio                         |
-| `artifacts/transcript.{src_lang}.txt`      | source-language transcription                            |
-| `artifacts/transcript.{src_lang}.srt`      | timestamped source-language subtitles                    |
-| `artifacts/script.{tgt_lang}.txt`          | continuous target-language narration script              |
-| `artifacts/script.{tgt_lang}.segments.txt` | per-segment target-language script (sentence-level sync) |
-| `source/reference.*`                       | reference audio + text for voice cloning mode            |
-| `artifacts/narration*.wav/mp3`             | real synthesized TTS audio                               |
-| `artifacts/final*.mp4`                     | candidate dubbed video or intermediate composite         |
-| `artifacts/subtitles*.ass`                 | internal subtitle artifacts                              |
-| `output/{title}.mp4`                       | clean dubbed video for delivery                          |
-| `output/{title}.ass`                       | external subtitle file                                   |
-| `output/{title}-bilingual.mp4`             | bilingual subtitle burn-in video                         |
-| `notes/commands.md`                        | actual commands executed                                 |
-| `notes/issues.md`                          | blockers, failures, fixes, limitations                   |
-| `report.md`                                | user-facing final summary                                |
+| Artifact | Description |
+|---|---|
+| `source/video.mp4` | Normalized video input |
+| `source/audio.mp3` | Extracted or user-provided audio |
+| `artifacts/transcript.{src_lang}.txt` | Source-language transcript |
+| `artifacts/transcript.{src_lang}.srt` | Timed source-language SRT |
+| `artifacts/script.{tgt_lang}.txt` | Continuous target-language narration script |
+| `artifacts/script.{tgt_lang}.segments.txt` | One target-language line per SRT block |
+| `source/reference.wav` and `source/reference.txt` | Reference audio/text for voice cloning |
+| `artifacts/narration.{tgt_lang}*.wav/mp3` | Real generated target-language audio |
+| `artifacts/narration.{tgt_lang}.aligned.json` | Segment timing report |
+| `artifacts/subtitles.{lang_pair}.ass` | Internal bilingual subtitle artifact |
+| `output/{title}.{tgt_lang}.mp4` | Clean localized video |
+| `output/{title}.{lang_pair}.ass` | External bilingual subtitle file |
+| `output/{title}.{lang_pair}-bilingual.mp4` | Burned bilingual subtitle video |
+| `notes/commands.md` | Actually executed commands |
+| `notes/issues.md` | Blockers, fixes, fallbacks, constraints |
+| `report.md` | User-facing summary of what actually ran |
 
 ## Recommended Workflow
 
-### 1. Acquire and Verify Source Media
+### 1. Acquire and verify source media
 
-- For YouTube URLs, try `yt-dlp` first; do not treat `429`, bot verification, or CAPTCHA as ordinary parameter errors.
-- When page state, login, network requests, or CAPTCHA need inspection, use `chrome-devtools` per repository browser rules.
-- If browser access is also blocked, stop workarounds and ask the user to provide a local file.
-- Record acquisition method, failures, and final input source.
+- For YouTube or web links, try `yt-dlp` first, but do not treat `429`, bot verification, login checks, or CAPTCHA as ordinary parameter errors.
+- If browser state, login, network requests, or CAPTCHA need inspection, use the repository's browser tooling rules.
+- If browser access is also blocked, stop bypass attempts and ask the user for a local media or subtitle file.
+- Record acquisition method, failures, final source path, and source permissions.
 
-### 2. Normalize Media Inputs
+### 2. Normalize media inputs
 
-- Run `ffprobe` to save input metadata: duration, video stream, audio stream.
-- Canonicalize to stable paths: `source/video.mp4`, `source/audio.mp3`.
-- All scripts reference canonical paths; avoid spaces, special characters, non-ASCII in paths.
+- Use `ffprobe` to save metadata and confirm duration, video stream, and audio stream.
+- Copy or transcode to stable paths: `source/video.mp4` and `source/audio.mp3`.
+- Quote paths with spaces. Prefer canonical internal paths for scripts.
 
-### 3. Transcribe Source Audio
+### 3. Transcribe source audio
 
-- Preferred tool: `faster-whisper` — outputs plain text and SRT.
-- Specify `--language` if source language is known; otherwise let Whisper auto-detect.
-- Sample-check quality after transcription: proper nouns, numbers, sentence breaks.
+- Prefer `faster-whisper` for text and SRT.
+- Specify `--language`/`--source-lang` when the source language is known; otherwise allow auto-detection.
+- Sample-check transcript quality: names, numbers, technical terms, sentence breaks, and SRT block count.
+- If model download fails, check proxy/cache first; do not fabricate subtitles.
 
-### 4. Translate to Target Language Script
+### 4. Produce target-language script
 
-- Translation should be natural, concise, and suitable for voiceover in the target language; preserve original meaning over literal word-for-word translation.
-- Continuous dubbing: produce `script.{tgt_lang}.txt`.
-- Sentence-level sync: produce `script.{tgt_lang}.segments.txt` — one line per SRT block, same count.
-- **Manual review gate**: confirm the file contains the final translated script, not a prompt scaffold.
+- Write natural, concise, spoken target-language narration; preserve meaning over literal translation.
+- For continuous narration, create `artifacts/script.{tgt_lang}.txt`.
+- For sentence-level sync, create `artifacts/script.{tgt_lang}.segments.txt` with exactly one line per SRT block.
+- Treat `scaffold_rewrite_prompt.py` output as a manual prompt scaffold, not the final script. Overwrite it with reviewed final target-language text before TTS.
 
-### 5. Prepare Reference Audio (voice cloning mode only)
+### 5. Prepare reference audio for voice cloning
 
-Default: extract a 3-15 s clean single-speaker segment from the source video as `source/reference.wav`; write the corresponding source transcript text to `source/reference.txt`.
-If the user supplies a reference audio file, use that instead and request its corresponding transcript text.
-
-Reference audio quality targets:
-
-- Single speaker, low background noise, 3-15 s of clear speech.
-- No music, crosstalk, or strong reverb.
-- Matching reference transcript increases clone stability.
-
-Record: time range (or file path), reference text source, audio quality notes, and whether this is source-extracted or user-provided.
+Default source-extracted reference:
 
 ```bash
 ffmpeg -y -ss 00:00:02.640 -to 00:00:15.000 \
@@ -141,286 +133,174 @@ ffmpeg -y -ss 00:00:02.640 -to 00:00:15.000 \
 printf '%s\n' 'Exact spoken text for this reference clip.' > source/reference.txt
 ```
 
-### 6. Synthesize Target-Language TTS
+Reference audio should be single-speaker, low-noise, 3-15 seconds, no music/crosstalk/reverb, and paired with exact reference text unless using an explicit x-vector-only mode. Record time range or file path, source, authorization, quality constraints, and text source.
 
-- Standard dubbing: use a lightweight, reproducible TTS that supports the target language — e.g. `edge-tts` (100+ language locales via `--voice` flag).
-- Voice cloning: use a zero-shot voice cloning backend — e.g. `Qwen3-TTS`.
-- Silent files, blank files, or placeholder files are **not** completion.
-- After generation: verify audio is non-silent, duration is reasonable, format is usable by `ffmpeg`.
+### 6. Generate real target-language TTS
 
-**Choosing the right `edge-tts` voice**: run `edge-tts --list-voices` and filter by target language code (e.g. `fr-FR`, `de-DE`, `ja-JP`, `es-MX`).
+- Standard mode: use `edge-tts` or another backend that supports `{tgt_lang}`.
+- Voice cloning mode: use Qwen3-TTS or another authorized zero-shot backend.
+- Silent, blank, corrupt, or placeholder files are not completion.
+- Verify generated audio is playable, non-silent, reasonable duration, and usable by `ffmpeg`.
 
-### 7. Align to Source Timeline
+### 7. Align to source timeline
 
-- For sentence-level sync, do **not** stretch a single continuous narration to match total video duration.
-- Use each SRT block's `start` timestamp as an anchor; place each TTS segment at the corresponding subtitle start.
-- If the target-language segment is too long: first apply limited speed-up, then trim only if necessary. Record the timing report.
-- "Total video duration unchanged" does not equal "audio is sentence-synchronized."
+- For sentence-level sync, do not stretch one full narration to the total video duration.
+- Use each SRT block start time as an anchor and place generated target-language segments on the original timeline.
+- If a target segment is too long, first apply bounded speed-up, then trim only if necessary. Save and report speed-up/truncation data.
 
-### 8. Generate Subtitle Artifacts
+### 8. Generate subtitles
 
-- Prefer exporting a standalone subtitle file before deciding whether to burn in.
-- Bilingual subtitles: reuse source-language SRT timestamps and map per-segment translated lines into matching blocks.
-- Distinguish external subtitles, hard-coded burn-in, and soft subtitles — do not substitute one for another.
+- Produce standalone subtitles before deciding whether to burn them into video.
+- Bilingual subtitles must reuse source SRT timing and pair each source block with its matching target-language segment.
+- Distinguish external subtitles, hard subtitles, and soft subtitles in the report.
+- Name subtitle files with `{lang_pair}` (e.g. `subtitles.en-zh.ass`) so multiple language pairs can coexist without filename collision.
 
-### 9. Compose Final Video
+### 9. Compose final video
 
-- Replace or overlay source audio track with the dubbed audio.
-- Verify with `ffprobe` that the final MP4 contains both video and audio streams.
-- Retain clean version and subtitle version commands for re-runs.
+- Replace or overlay the source audio track with the dubbed audio.
+- Use `ffprobe` to confirm final MP4 contains both video and audio streams.
+- Export final named files into `output/`; do not leave only internal `artifacts/final*.mp4` files.
 
-### 10. Package and Report
+### 10. Package and report
 
-- Do not stop at internal artifact names like `final-dubbed-aligned.mp4`.
-- Copy or export all final files to `output/` with user-requested names.
-- Report only what actually ran successfully in the current environment.
-
-Typical delivery set:
-
-```text
-output/{title}.mp4              # clean dubbed video
-output/{title}.ass              # external subtitle file
-output/{title}-bilingual.mp4    # bilingual subtitle burn-in video
-```
+- Copy the clean video, subtitle file, and burned subtitle version to `output/` using user-requested names.
+- Use `{lang_pair}` in subtitle and bilingual video names; use `{tgt_lang}` in the clean dubbed video name.
+- `report.md` must describe only commands and artifacts that actually ran in the current environment.
+- Include limitations: transcription quality, TTS backend, voice-clone reference quality, speed-up/truncation, network/model constraints.
 
 ## Bundled Scripts
 
-Copy skill scripts to the working directory's `scripts/` before running.
+Copy scripts into the work directory's `scripts/` folder before running so the task archive is self-contained.
 
-| Script                                      | Purpose                                                               |
-| ------------------------------------------- | --------------------------------------------------------------------- |
-| `scripts/transcribe_with_faster_whisper.py` | Transcribe audio to text and SRT                                      |
-| `scripts/scaffold_rewrite_prompt.py`        | Generate a human-review prompt scaffold for translation               |
-| `scripts/generate_edge_tts.py`              | Synthesize continuous script to MP3/WAV via edge-tts                  |
-| `scripts/generate_qwen3_voice_clone.py`     | Synthesize with reference-audio voice cloning via Qwen3-TTS           |
-| `scripts/build_aligned_dub.py`              | Per-segment synthesis + alignment to source SRT timeline              |
-| `scripts/build_bilingual_ass.py`            | Generate bilingual ASS subtitle from source SRT + translated segments |
+| Script | Purpose |
+|---|---|
+| `scripts/transcribe_with_faster_whisper.py` | Transcribe audio to text and SRT |
+| `scripts/scaffold_rewrite_prompt.py` | Generate a human-review translation prompt scaffold |
+| `scripts/generate_edge_tts.py` | Synthesize a continuous script to MP3/WAV via edge-tts |
+| `scripts/generate_qwen3_voice_clone.py` | Synthesize with reference-audio voice cloning via Qwen3-TTS |
+| `scripts/build_aligned_dub.py` | Per-segment synthesis aligned to source SRT start times |
+| `scripts/build_bilingual_ass.py` | Generate bilingual ASS subtitles from source SRT and target segments |
 
-Common command patterns:
+Common commands:
 
 ```bash
 python scripts/transcribe_with_faster_whisper.py \
   --audio source/audio.mp3 \
-  --txt-out artifacts/transcript.en.txt \
-  --srt-out artifacts/transcript.en.srt
-  # Add --language en to force; omit for auto-detect
+  --txt-out artifacts/transcript.{src_lang}.txt \
+  --srt-out artifacts/transcript.{src_lang}.srt \
+  --language {src_lang}
 
 python scripts/scaffold_rewrite_prompt.py \
-  --transcript artifacts/transcript.en.txt \
-  --output artifacts/script.fr.txt \
-  --target-lang French \
+  --transcript artifacts/transcript.{src_lang}.txt \
+  --output artifacts/script.{tgt_lang}.txt \
+  --source-lang <SourceLanguageName> \
+  --target-lang <TargetLanguageName> \
   --mode continuous
 
 python scripts/generate_edge_tts.py \
-  --script artifacts/script.fr.txt \
-  --voice fr-FR-DeniseNeural \
-  --mp3-out artifacts/narration.fr.mp3 \
-  --wav-out artifacts/narration.fr.wav
-
-python scripts/generate_qwen3_voice_clone.py \
-  --script artifacts/script.fr.txt \
-  --reference-audio source/reference.wav \
-  --reference-text source/reference.txt \
-  --mp3-out artifacts/narration.fr.clone.mp3 \
-  --wav-out artifacts/narration.fr.clone.wav
+  --script artifacts/script.{tgt_lang}.txt \
+  --voice <voice-id-for-{tgt_lang}> \
+  --mp3-out artifacts/narration.{tgt_lang}.mp3 \
+  --wav-out artifacts/narration.{tgt_lang}.wav
 
 python scripts/build_aligned_dub.py \
-  --srt artifacts/transcript.en.srt \
-  --tgt-segments artifacts/script.fr.segments.txt \
+  --srt artifacts/transcript.{src_lang}.srt \
+  --tgt-segments artifacts/script.{tgt_lang}.segments.txt \
   --video source/video.mp4 \
   --backend edge-tts \
-  --voice fr-FR-DeniseNeural \
-  --wav-out artifacts/narration.fr.aligned.wav \
-  --report-out artifacts/narration.fr.aligned.json \
+  --voice <voice-id-for-{tgt_lang}> \
+  --wav-out artifacts/narration.{tgt_lang}.aligned.wav \
+  --report-out artifacts/narration.{tgt_lang}.aligned.json \
   --segment-dir artifacts/aligned-segments
 
 python scripts/build_bilingual_ass.py \
-  --srt artifacts/transcript.en.srt \
-  --tgt-segments artifacts/script.fr.segments.txt \
-  --ass-out artifacts/subtitles.fr-en.ass
+  --srt artifacts/transcript.{src_lang}.srt \
+  --tgt-segments artifacts/script.{tgt_lang}.segments.txt \
+  --lang-pair {src_lang}-{tgt_lang} \
+  --ass-out artifacts/subtitles.{src_lang}-{tgt_lang}.ass
 ```
 
-Voice cloning aligned dubbing:
+Voice-cloned aligned dubbing:
 
 ```bash
+python scripts/generate_qwen3_voice_clone.py \
+  --script artifacts/script.{tgt_lang}.txt \
+  --reference-audio source/reference.wav \
+  --reference-text source/reference.txt \
+  --language <TargetLanguageName> \
+  --mp3-out artifacts/narration.{tgt_lang}.clone.mp3 \
+  --wav-out artifacts/narration.{tgt_lang}.clone.wav
+
 python scripts/build_aligned_dub.py \
-  --srt artifacts/transcript.en.srt \
-  --tgt-segments artifacts/script.fr.segments.txt \
+  --srt artifacts/transcript.{src_lang}.srt \
+  --tgt-segments artifacts/script.{tgt_lang}.segments.txt \
   --video source/video.mp4 \
   --backend qwen3-tts \
   --reference-audio source/reference.wav \
   --reference-text source/reference.txt \
-  --model-id ./models/Qwen3-TTS-12Hz-0.6B-Base \
+  --language <TargetLanguageName> \
+  --model-id ../models/Qwen3-TTS-12Hz-0.6B-Base \
   --segment-dir artifacts/aligned-segments-clone \
-  --wav-out artifacts/narration.fr.clone.aligned.wav \
-  --report-out artifacts/narration.fr.clone.aligned.json
+  --wav-out artifacts/narration.{tgt_lang}.clone.aligned.wav \
+  --report-out artifacts/narration.{tgt_lang}.clone.aligned.json
 ```
 
-**Tesla P4 inference note**: Tesla P4 (compute capability 6.1) does not support flash-attn; each TTS segment takes ~8-10 s. Scripts support per-segment caching and resume after interruption.
+Scripts accept compatibility aliases: `--translated-segments`, `--target-segments`, and `--tgt-segments`; `--language`, `--target-lang`, and `--target-language`; `--source-lang` and `--source-language`.
 
-## Minimum Toolchain
+> **Note**: `--source-lang` / `--target-lang` / `--language` for `scaffold_rewrite_prompt.py` and `generate_qwen3_voice_clone.py` accept language **names** (e.g. `English`, `Chinese`, `French`). `--language` for `transcribe_with_faster_whisper.py` and `build_aligned_dub.py` accepts ISO 639-1 **codes** (e.g. `en`, `zh`, `fr`).
 
-- `ffmpeg` / `ffprobe`: audio extraction, stream verification, final video composition.
-- Python virtualenv (in parent dir): PyTorch (P4-compatible build), faster-whisper, edge-tts, qwen-tts, numpy, soundfile.
+## Minimal Toolchain
+
+- `ffmpeg` / `ffprobe`: media extraction, conversion, stream verification, final composition.
+- Python virtual environment in the parent directory.
 - `faster-whisper`: transcription and SRT generation.
-- `edge-tts`: standard TTS dubbing for 100+ language locales.
-- `qwen-tts`: zero-shot voice cloning from reference audio.
-- `modelscope`: download Qwen model weights (recommended over Hugging Face).
+- `edge-tts`: standard TTS for supported locales.
+- `qwen-tts`, PyTorch, `soundfile`: reference-audio voice cloning.
+- `numpy`: segment mixing and WAV timeline construction.
+- `modelscope`: recommended fallback for Qwen model weights when Hugging Face downloads fail.
 
-## Manual Review Gates
-
-Stop and inspect real artifacts at these checkpoints:
-
-- After source acquisition failure: confirm root cause (network, login, CAPTCHA, session block).
-- After transcription: sample-check transcript text and SRT block count.
-- After translation: confirm file contains final translated script, not a prompt scaffold.
-- Before segment-level sync: confirm translated segment line count equals SRT block count.
-- Before voice cloning: confirm reference audio exists, is playable, single-speaker, clean.
-- After TTS synthesis: confirm output is real speech, not silence or a placeholder.
-- After composition: `ffprobe` confirms video + audio streams present.
-- Before delivery: confirm final named files actually exist in `output/` matching user requirements.
+Tesla P4 note: P4 compute capability is 6.1 and may require Python 3.12 plus `torch==2.4.1+cu121`. Verify CUDA with a minimal tensor script before Qwen inference. P4 does not support flash-attn; expect slow per-segment synthesis. Segment caching allows resume after interruption.
 
 ## Troubleshooting
 
-### Python package index
-
-- index: https://pypi.tuna.tsinghua.edu.cn/simple
-- extra-index-url: https://mirrors.nju.edu.cn/pytorch/whl/cu121
-
-### `yt-dlp` returns 429, bot verification, or CAPTCHA
-
-Do not retry as ordinary parameter errors. Check page state in browser; if browser is also blocked, stop and ask user for local media. Record failures in `notes/issues.md`.
-
-### Network timeouts (Hugging Face, PyPI, YouTube, etc.)
-
-Verify proxy is active:
-
-```bash
-curl -I https://huggingface.co
-curl -I https://pypi.org/simple/
-```
-
-Record failing domains and proxy variables. Do not misattribute network issues as script bugs.
-
-### Python proxy parse error
-
-Often caused by `NO_PROXY=localhost,127.0.0.1,[::1]` IPv6 notation that some libraries misparse. Temporarily unset `NO_PROXY` when running affected commands.
-
-### faster-whisper model download failure
-
-Check proxy and cache dirs (`~/.cache/huggingface`, `~/.cache/ctranslate2`). Retry after network recovery. If still failing, ask user to provide an SRT or transcript; do not fabricate SRT content.
-
-### Hugging Face large model download failure
-
-Use ModelScope instead:
-
-```bash
-uv pip install modelscope -i https://pypi.tuna.tsinghua.edu.cn/simple
-
-python3 -c "
-from modelscope import snapshot_download
-model_dir = snapshot_download('Qwen/Qwen3-TTS-12Hz-0.6B-Base', cache_dir='.')
-"
-```
-
-ModelScope replaces `.` with `___` in directory names. Create a symlink for compatibility:
-
-```bash
-cd video-loc/models/
-ln -s Qwen3-TTS-12Hz-0___6B-Base Qwen3-TTS-12Hz-0.6B-Base
-```
-
-### `uv python install` fails (GitHub release download)
-
-Use a mirror:
-
-```bash
-uv python install 3.12 \
-  --mirror 'https://gh.llkk.cc/https://github.com/astral-sh/python-build-standalone/releases/download'
-```
-
-### Python version too new for GPU-compatible PyTorch
-
-Create a Python 3.12 virtualenv in the parent directory. Do not downgrade the system Python or mix torch versions.
-
-### Tesla P4: `no kernel image is available for execution on the device`
-
-P4 is compute capability 6.1 (sm_61). Use Python 3.12 + `torch==2.4.1+cu121`. Validate before running Qwen inference:
-
-```python
-import torch
-print(torch.__version__, torch.version.cuda)
-print(torch.cuda.get_device_name(0), torch.cuda.get_device_capability(0))
-x = torch.ones(4, device='cuda')
-print((x * 2).sum().item())
-```
-
-### `qwen-tts` install upgrades PyTorch to incompatible version
-
-Install and validate target PyTorch first, then install `qwen-tts` with `--no-deps`. Add dependencies one by one. Re-validate `torch.__version__` and CUDA tensor after each change.
-
-### `transformers` / `huggingface-hub` / `accelerate` version conflicts
-
-Pin versions to what the error requires. Do not blindly upgrade all packages. Run import checks after each pin change.
-
-### `SoX could not be found` warning
-
-Determine whether it blocks execution. If synthesis continues, log the limitation. Do not restructure the entire TTS pipeline over a warning.
-
-### No user-supplied reference audio for voice cloning
-
-Extract a 3-15 s clean single-speaker segment from the source video. Record: time range, reference text source, quality limits. If user later provides reference audio, switch to that file.
-
-### Voice clone does not match reference
-
-Check reference audio quality: single speaker, 3-15 s, no music or crosstalk, reference transcript is accurate. Re-extract a cleaner segment or ask user for a better sample.
-
-### Target-language audio much shorter than video
-
-For total-duration alignment: pad with silence. For sentence-level sync: use per-segment alignment with SRT anchors.
-
-### Sentence drift despite correct total duration
-
-Continuous narration cannot guarantee sentence sync. Rebuild using source SRT `start` timestamps as anchors. Save timing report; document speed-up or trim applied.
-
-### User requests title-named output but only internal artifacts exist
-
-Add an explicit packaging step: copy final files to `output/` with user-specified title names. Verify the files exist before reporting completion.
-
-### User requests subtitles but only a video was delivered
-
-Produce `.ass`, burn-in video, or whatever subtitle format was requested. Distinguish external subtitles, hard-coded, and soft.
-
-### Path with spaces causes ffmpeg failure
-
-Always quote paths. Normalize to canonical paths in `source/`; do not strip spaces — just quote them in every command.
-
-### Translated segment count does not match SRT block count
-
-Each translated segment line must correspond exactly to one SRT block. Adjust translation so line count equals SRT block count. Use `wc -l` and SRT block index for verification.
+| Symptom | Response |
+|---|---|
+| `yt-dlp` returns `429`, bot verification, login, CAPTCHA | Inspect page state; if blocked, ask for local media/subtitles and record failure. |
+| Hugging Face, YouTube, PyPI, or model downloads time out | Verify proxy and failing domains; use mirrors/cache where appropriate; do not rewrite workflow prematurely. |
+| Python proxy parse error like `Invalid port: ':1]'` | Check proxy env vars; some libraries misparse `NO_PROXY=[::1]`; temporarily unset only for affected commands. |
+| faster-whisper model unavailable | Check `~/.cache/huggingface`, `~/.cache/ctranslate2`, proxy, and local cache; request SRT/transcript if unavailable. |
+| Qwen model download fails on Hugging Face | Prefer ModelScope and create a symlink if `.` becomes `___` in the local directory name. |
+| Current Python too new for GPU PyTorch | Create a Python 3.12/3.11 virtualenv; do not pollute system Python. |
+| `qwen-tts` upgrades PyTorch incompatibly | Install verified PyTorch first, then install `qwen-tts --no-deps` and add dependencies based on import errors. |
+| `SoX could not be found` warning | Determine whether it blocks execution; if synthesis continues, log the limitation and proceed. |
+| TTS backend does not support target language | Choose a backend/voice that supports `{tgt_lang}`; failed pronunciation or silence is not completion. |
+| Voice clone does not match reference | Re-check single speaker, 3-15 s duration, no music/reverb/crosstalk, exact reference text. |
+| Final duration correct but sentences drift | Rebuild per-segment audio anchored to SRT starts; total-duration alignment is insufficient. |
+| Segment count mismatch | Ensure target segment lines exactly equal SRT block count; no merged, split, blank, or numbered lines. |
+| User requested subtitles but only video exists | Produce requested external, hard, or soft subtitle deliverable and label it correctly. |
+| User requested title-named output but only artifacts exist | Add packaging/export step into `output/` and verify final filenames exist. |
 
 ## Red Flags
 
-Do not claim completion if any of these are true:
+Do not claim completion if any are true:
 
-- Only a prompt scaffold exists; no final translated script.
-- Voice cloning claimed but no reference audio or authorization.
-- TTS output is a silent, blank, or placeholder file.
-- Only total-duration alignment done but sentence-level sync claimed.
-- Final video never verified with `ffprobe`.
-- Report claims YouTube download succeeded but it was never actually completed.
-- User requested title-named delivery but `output/` is empty or wrong.
-- User requested subtitles but only a video was delivered.
-- `notes/` has no record of commands, failures, or limitations.
+- Source/target language direction is unclear.
+- Only a prompt scaffold exists; final target-language script has not been reviewed.
+- TTS output is silent, blank, corrupt, or placeholder.
+- Voice cloning is claimed without authorized reference audio and quality notes.
+- Only total-duration alignment was done but sentence-level sync is claimed.
+- Final MP4 was not verified with `ffprobe` for video and audio streams.
+- `notes/commands.md` and `notes/issues.md` do not record real commands, failures, fixes, and constraints.
+- Final user-requested files are missing from `output/`.
 
 ## Pre-Delivery Checklist
 
-- [ ] Working directory is next to source video; directory name equals source video stem.
-- [ ] Internal structure is complete including `output/`.
-- [ ] Source video, audio, transcript, translated script, TTS audio, subtitles, and final video all have documented paths.
-- [ ] Key commands written to `notes/commands.md`.
-- [ ] Blockers, fallbacks, quality limitations written to `notes/issues.md` or `report.md`.
-- [ ] If sentence-level sync: timing report saved; speed-up and trim documented.
-- [ ] If voice cloning: reference audio source, quality, and limitations documented.
-- [ ] Final MP4 verified with `ffprobe` for video + audio streams.
-- [ ] All user-requested final filenames, subtitle formats, and packaging exist in `output/`.
+- [ ] `{src_lang}`, `{tgt_lang}`, `{lang_pair}`, output filenames, and subtitle requirements are clear.
+- [ ] Work directory is next to the source video and contains `source/`, `artifacts/`, `notes/`, `output/`, `scripts/`, and `report.md`.
+- [ ] Source video/audio, transcript, reviewed target script, TTS audio, subtitles, timing report, and final video have documented paths.
+- [ ] Key commands are written to `notes/commands.md`.
+- [ ] Blockers, fallbacks, quality limits, and authorization notes are written to `notes/issues.md` or `report.md`.
+- [ ] If sentence-level sync was requested, timing report records speed-up/truncation.
+- [ ] If voice cloning was used, reference audio source, quality, reference text, and **authorization** are recorded in `notes/issues.md` or `report.md`.
+- [ ] Final MP4 passed `ffprobe` video/audio stream verification.
+- [ ] All requested final filenames and subtitle formats exist in `output/`.

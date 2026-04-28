@@ -4,25 +4,27 @@ import argparse
 from pathlib import Path
 
 
-CONTINUOUS_PROMPT_TEMPLATE = (
-    "Rewrite the following video transcript into a natural voiceover script in {target_lang}. "
-    "Requirements:\n"
-    "1. Preserve original meaning\n"
-    "2. Use natural spoken {target_lang} — avoid literal translations\n"
-    "3. Keep sentences short and suitable for dubbing\n"
-    "4. Avoid overly formal or written register\n"
-    "5. Output only the {target_lang} script, no explanations\n"
-)
+def build_prompt(source_lang: str, target_lang: str, mode: str) -> str:
+    if mode == "continuous":
+        return (
+            f"Rewrite the following {source_lang} video transcript into a natural "
+            f"voiceover script in {target_lang}. Requirements:\n"
+            "1. Preserve the original meaning\n"
+            f"2. Use natural spoken {target_lang}; avoid literal translation\n"
+            "3. Keep sentences short and suitable for dubbing\n"
+            "4. Avoid overly formal or written register\n"
+            f"5. Output only the final {target_lang} script, no explanations"
+        )
 
-SEGMENT_PROMPT_TEMPLATE = (
-    "Rewrite the following subtitles line-by-line into a {target_lang} dubbing script. "
-    "Requirements:\n"
-    "1. One subtitle block per output line\n"
-    "2. Preserve original meaning, avoid word-for-word translation\n"
-    "3. Prefer concise, natural phrasing suitable for dubbing\n"
-    "4. Do not output numbering, explanations, or blank lines\n"
-    "5. The number of output lines MUST equal the number of input subtitle blocks\n"
-)
+    return (
+        f"Rewrite each {source_lang} subtitle block into one {target_lang} dubbing "
+        "line. Requirements:\n"
+        f"1. Each input subtitle block corresponds to exactly one {target_lang} line\n"
+        "2. Preserve meaning and avoid word-for-word translation\n"
+        "3. Prefer concise, natural phrasing suitable for dubbing\n"
+        "4. Do not output numbering, explanations, or blank lines\n"
+        "5. The output line count MUST match the input subtitle block count"
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -30,21 +32,28 @@ def parse_args() -> argparse.Namespace:
         description="Generate a human-review translation prompt scaffold."
     )
     parser.add_argument(
-        "--transcript", type=Path, required=True, help="Source transcript input path"
+        "--transcript", type=Path, required=True, help="Input transcript"
     )
+    parser.add_argument("--output", type=Path, required=True, help="Scaffold output")
     parser.add_argument(
-        "--output", type=Path, required=True, help="Scaffold output path"
+        "--source-lang",
+        "--source-language",
+        dest="source_lang",
+        default="source language",
+        help="Source language name, e.g. English, Chinese, Spanish",
     )
     parser.add_argument(
         "--target-lang",
-        default="Chinese",
-        help="Target language name in English (e.g. French, Japanese, Spanish)",
+        "--target-language",
+        dest="target_lang",
+        default="target language",
+        help="Target language name, e.g. Chinese, English, French",
     )
     parser.add_argument(
         "--mode",
         choices=["continuous", "segments"],
         default="continuous",
-        help="continuous=full narration script; segments=per-segment dubbing script",
+        help="continuous=full narration script; segments=one target line per SRT block",
     )
     return parser.parse_args()
 
@@ -52,15 +61,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     transcript = args.transcript.read_text(encoding="utf-8").strip()
-
-    if args.mode == "continuous":
-        prompt = CONTINUOUS_PROMPT_TEMPLATE.format(target_lang=args.target_lang)
-    else:
-        prompt = SEGMENT_PROMPT_TEMPLATE.format(target_lang=args.target_lang)
+    prompt = build_prompt(args.source_lang, args.target_lang, args.mode)
 
     output = (
         "# Manual step required\n\n"
-        f"Submit the prompt below to your LLM of choice, then overwrite this file with the final {args.target_lang} script.\n\n"
+        "Submit the prompt below to your chosen LLM, review the result, then overwrite "
+        f"this file with the final {args.target_lang} script. This scaffold is not "
+        "a deliverable.\n\n"
         f"{prompt}\n\n=== TRANSCRIPT START ===\n{transcript}\n=== TRANSCRIPT END ===\n"
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
