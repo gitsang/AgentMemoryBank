@@ -3,7 +3,6 @@
   "skills": {
     "video-localization": {
       "source": "gitsang/skills",
-      "ref": "main",
       "sourceType": "github",
       "skillPath": "skills/video-localization/SKILL.md",
       "computedHash": "0ec7f0e6590b41e158ecd63c9e7c964b9f13c0d26d47a09ca521d8b7803fb176"
