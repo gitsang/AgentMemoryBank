@@ -1,0 +1,67 @@
+1
+00:00:02,610 --> 00:00:05,010
+What are AI agents?
+
+2
+00:00:05,010 --> 00:00:07,290
+What are the best use cases for them?
+
+3
+00:00:07,290 --> 00:00:09,570
+And what do we need to start building them?
+
+4
+00:00:09,570 --> 00:00:11,330
+We're going to answer these questions
+
+5
+00:00:11,330 --> 00:00:15,250
+in this first lesson of the AI agents for beginners course.
+
+6
+00:00:15,250 --> 00:00:18,250
+In this course, we're going to take you from concept to code
+
+7
+00:00:18,250 --> 00:00:21,890
+covering the fundamentals of building AI agents.
+
+8
+00:00:21,890 --> 00:00:23,650
+And in this short video, it follows along
+
+9
+00:00:23,650 --> 00:00:26,810
+with the written lesson, including translations
+
+10
+00:00:26,810 --> 00:00:29,610
+and a code sample that you can find the link to
+
+11
+00:00:29,610 --> 00:00:32,090
+above and below this video.
+
+12
+00:00:32,090 --> 00:00:35,210
+Well, let's get started looking at the parts of an AI agent.
+
+13
+00:00:35,210 --> 00:00:37,930
+And the first part is a large language model,
+
+14
+00:00:37,930 --> 00:00:45,470
+which powers the reasoning behind our AI agents.
+
+15
+00:00:45,470 --> 00:00:48,110
+And what we mean by reasoning is being able to identify
+
+16
+00:00:48,110 --> 00:00:51,470
+a task requested by users, create a plan to complete
+
+17
+00:00:51,470 --> 00:00:55,310
+that task and perform the actions of that plan.
