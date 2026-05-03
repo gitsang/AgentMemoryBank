@@ -1,1 +1,0 @@
-Well, let's get started looking at the parts of an AI agent. And the first part is a large language model, which powers the reasoning behind our AI agents.
