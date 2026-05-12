@@ -1,0 +1,69 @@
+{
+  "sources": [
+    {
+      "id": "driver-license-172",
+      "title": "机动车驾驶证申领和使用规定",
+      "authority": "公安部",
+      "order_number": "公安部令第172号",
+      "effective_date": "2025-01-01",
+      "canonical_url": "https://www.gov.cn/gongbao/2025/issue_11866/202502/content_7004031.html",
+      "retrieved_at": "2026-05-12",
+      "current_version_basis": "公安部令第172号已修改《机动车驾驶证申领和使用规定》，涉及变更条款时不要继续引用旧的第162号版本。",
+      "notes": "驾驶证申领、准驾车型、考试、换证、补证、实习期等。"
+    },
+    {
+      "id": "points-163",
+      "title": "道路交通安全违法行为记分管理办法",
+      "authority": "公安部",
+      "order_number": "公安部令第163号",
+      "effective_date": "2022-04-01",
+      "canonical_url": "https://www.gov.cn/gongbao/content/2022/content_5679697.htm",
+      "retrieved_at": "2026-05-12",
+      "current_version_basis": "现行记分档位为12/9/6/3/1，不再使用旧2分档。",
+      "notes": "道路交通安全违法行为记分规则。"
+    },
+    {
+      "id": "registration-164",
+      "title": "机动车登记规定",
+      "authority": "公安部",
+      "order_number": "公安部令第164号",
+      "effective_date": "2022-05-01",
+      "canonical_url": "https://www.gov.cn/gongbao/content/2022/content_5682413.htm",
+      "retrieved_at": "2026-05-12",
+      "current_version_basis": "公安部令第164号替代旧机动车登记规则。",
+      "notes": "登记、号牌、行驶证、临牌、变更、转让等。"
+    },
+    {
+      "id": "road-safety-law",
+      "title": "中华人民共和国道路交通安全法",
+      "authority": "全国人大常委会",
+      "order_number": "2021修正",
+      "effective_date": null,
+      "canonical_url": "https://flk.npc.gov.cn/detail?fileId=&id=ff8081817ab231eb017abd617ef70519&title=%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E9%81%93%E8%B7%AF%E4%BA%A4%E9%80%9A%E5%AE%89%E5%85%A8%E6%B3%95&type=",
+      "retrieved_at": "2026-05-12",
+      "source_lookup_note": "国家法律法规数据库 detail URL 可能包含空 fileId；如无法访问，请在 flk.npc.gov.cn 以标题检索现行版本。",
+      "notes": "基本义务、处罚、执法等。"
+    },
+    {
+      "id": "road-safety-implementation-regulation",
+      "title": "中华人民共和国道路交通安全法实施条例",
+      "authority": "国务院",
+      "order_number": "国务院令第405号，2017年按国务院令第687号修订",
+      "effective_date": "2017-10-07",
+      "canonical_url": "https://jtgl.beijing.gov.cn/jgj/jgxx/flfg/xzfg/119781/index.html",
+      "retrieved_at": "2026-05-12",
+      "source_lookup_note": "暂用北京交管局转载的2017修正版作为稳定可读来源；最终发布材料应优先核对国务院/司法部或国家法律法规数据库。",
+      "notes": "道路通行、速度、车道、超车、会车、掉头、灯光、停车和高速公路等具体规则。"
+    },
+    {
+      "id": "exam-scope-pedagogical",
+      "title": "科目一考试范围与教学性知识点",
+      "authority": "教学归类",
+      "order_number": null,
+      "effective_date": null,
+      "canonical_url": "https://www.gov.cn/gongbao/2025/issue_11866/202502/content_7004031.html",
+      "retrieved_at": "2026-05-12",
+      "notes": "安全文明驾驶、仪表、操作基础等未必逐条对应单一法条的考试范围和教学性归纳。"
+    }
+  ]
+}
