@@ -28,3 +28,15 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.tip-block {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--ifm-color-primary);
+  border-radius: 0 0.35rem 0.35rem 0;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.tip-block > :last-child {
+  margin-bottom: 0;
+}

@@ -15,8 +15,8 @@ export default function Home(): ReactNode {
             <Heading as="h1">{siteConfig.title}</Heading>
             <p>{siteConfig.tagline}</p>
             <p>
-              Open the handbook or start the local practice page from the
-              normalized subject 1 dataset.
+              Open the handbook, drill with the local practice page, or use the
+              final-review sheet for high-density exam memory.
             </p>
             <div className="button-group button-group--block">
               <Link className="button button--primary button--lg" to="/docs/handbook-outline">
@@ -24,6 +24,9 @@ export default function Home(): ReactNode {
               </Link>
               <Link className="button button--secondary button--lg" to="/practice">
                 Start practice
+              </Link>
+              <Link className="button button--outline button--primary button--lg" to="/final-review">
+                Final review
               </Link>
             </div>
           </div>

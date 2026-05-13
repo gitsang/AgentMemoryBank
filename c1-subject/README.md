@@ -21,4 +21,6 @@ npm run start
 - `data/processed/questions.json` — 2,545 normalized C1 科目一 records.
 - `data/audits/stale-risk-report.md` — stale-law/source-scope findings for manual review.
 - `cli/study.py` — local quiz, review, and search CLI.
-- `docs/` and `src/pages/practice.tsx` — Docusaurus handbook and browser practice page.
+- `docs/chapter-02-traffic-signals.md` through `docs/chapter-05-new-rules-local-notes.md` — expanded handbook chapters for signals, safe driving, vehicle operation, and stale/local-rule handling.
+- `src/pages/practice.tsx` — browser practice page.
+- `src/pages/final-review.tsx` — high-density final-review page for points, fines, speeds, time limits, signs, gestures, and document facts.

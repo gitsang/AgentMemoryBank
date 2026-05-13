@@ -68,6 +68,7 @@ const config: Config = {
           label: 'Docs',
         },
         {to: '/practice', label: 'Practice', position: 'left'},
+        {to: '/final-review', label: 'Final Review', position: 'left'},
       ],
     },
     footer: {
@@ -88,6 +89,10 @@ const config: Config = {
             {
               label: 'Practice',
               to: '/practice',
+            },
+            {
+              label: 'Final Review',
+              to: '/final-review',
             },
             {
               label: 'Source question bank',
