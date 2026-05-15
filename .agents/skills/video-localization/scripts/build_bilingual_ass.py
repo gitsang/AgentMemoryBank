@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 
@@ -22,22 +23,59 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="根据英文 SRT 与逐段中文稿生成双语 ASS 字幕。"
+        description="Generate bilingual ASS subtitles from source SRT and target segments."
     )
-    parser.add_argument("--srt", type=Path, required=True, help="英文 SRT 路径")
+    parser.add_argument("--srt", type=Path, required=True, help="Source SRT path")
     parser.add_argument(
-        "--zh-segments", type=Path, required=True, help="逐段中文稿路径"
+        "--tgt-segments",
+        "--target-segments",
+        "--translated-segments",
+        dest="tgt_segments",
+        type=Path,
+        required=True,
+        help="Per-segment target-language script path",
     )
-    parser.add_argument("--ass-out", type=Path, required=True, help="ASS 输出路径")
-    parser.add_argument("--font-name", default="Noto Sans CJK SC", help="字体名")
-    parser.add_argument("--font-size", type=int, default=36, help="基础字体大小")
-    parser.add_argument("--zh-size", type=int, default=40, help="中文字幕字号")
-    parser.add_argument("--en-size", type=int, default=28, help="英文字幕字号")
-    parser.add_argument("--play-res-x", type=int, default=1920, help="ASS 画布宽度")
-    parser.add_argument("--play-res-y", type=int, default=1080, help="ASS 画布高度")
-    parser.add_argument("--margin-l", type=int, default=80, help="左边距")
-    parser.add_argument("--margin-r", type=int, default=80, help="右边距")
-    parser.add_argument("--margin-v", type=int, default=48, help="底边距")
+    parser.add_argument("--ass-out", type=Path, required=True, help="ASS output path")
+    parser.add_argument(
+        "--lang-pair",
+        default=None,
+        help=(
+            "Language pair code used in the output filename (e.g. en-zh, fr-de). "
+            "Informational only; does not affect subtitle content."
+        ),
+    )
+    parser.add_argument(
+        "--font-name",
+        default="Sans",
+        help=(
+            "Font name. Use a CJK-capable font (e.g. 'Noto Sans CJK SC') "
+            "when target or source language is Chinese, Japanese, or Korean."
+        ),
+    )
+    parser.add_argument("--font-size", type=int, default=36, help="Base font size")
+    parser.add_argument(
+        "--target-size",
+        "--tgt-size",
+        dest="target_size",
+        type=int,
+        default=40,
+        help="Target-language subtitle font size",
+    )
+    parser.add_argument(
+        "--source-size",
+        "--src-size",
+        dest="source_size",
+        type=int,
+        default=28,
+        help="Source-language subtitle font size",
+    )
+    parser.add_argument("--play-res-x", type=int, default=1920, help="ASS canvas width")
+    parser.add_argument(
+        "--play-res-y", type=int, default=1080, help="ASS canvas height"
+    )
+    parser.add_argument("--margin-l", type=int, default=80, help="Left margin")
+    parser.add_argument("--margin-r", type=int, default=80, help="Right margin")
+    parser.add_argument("--margin-v", type=int, default=48, help="Bottom margin")
     return parser.parse_args()
 
 
@@ -82,13 +120,13 @@ def parse_srt_blocks(path: Path) -> list[tuple[str, str, str]]:
 def main() -> None:
     args = parse_args()
     srt_entries = parse_srt_blocks(args.srt)
-    zh_lines = [
+    target_lines = [
         line.rstrip("\n")
-        for line in args.zh_segments.read_text(encoding="utf-8").splitlines()
+        for line in args.tgt_segments.read_text(encoding="utf-8").splitlines()
     ]
-    if len(srt_entries) != len(zh_lines):
+    if len(srt_entries) != len(target_lines):
         raise SystemExit(
-            f"Segment count mismatch: {len(srt_entries)} subtitle blocks vs {len(zh_lines)} Chinese lines"
+            f"Segment count mismatch: {len(srt_entries)} subtitle blocks vs {len(target_lines)} target lines"
         )
 
     header = ASS_HEADER_TEMPLATE.format(
@@ -101,21 +139,31 @@ def main() -> None:
         margin_v=args.margin_v,
     )
     lines = [header]
-    for (start_raw, end_raw, en_text), zh_text in zip(
-        srt_entries, zh_lines, strict=True
+    for (start_raw, end_raw, source_text), target_text in zip(
+        srt_entries, target_lines, strict=True
     ):
         start_ass = to_ass_timestamp(start_raw)
         end_ass = to_ass_timestamp(end_raw)
-        zh_escaped = escape_ass_text(zh_text)
-        en_escaped = escape_ass_text(en_text)
+        target_escaped = escape_ass_text(target_text)
+        source_escaped = escape_ass_text(source_text)
         text = (
-            f"{{\\fs{args.zh_size}}}{zh_escaped}\\N{{\\fs{args.en_size}}}{en_escaped}"
+            f"{{\\fs{args.target_size}}}{target_escaped}"
+            f"\\N{{\\fs{args.source_size}}}{source_escaped}"
         )
         lines.append(f"Dialogue: 0,{start_ass},{end_ass},Bilingual,,0,0,0,,{text}")
 
     args.ass_out.parent.mkdir(parents=True, exist_ok=True)
     args.ass_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(args.ass_out)
+    print(
+        json.dumps(
+            {
+                "ass_out": str(args.ass_out),
+                "lang_pair": args.lang_pair,
+                "blocks": len(srt_entries),
+            },
+            ensure_ascii=False,
+        )
+    )
 
 
 if __name__ == "__main__":

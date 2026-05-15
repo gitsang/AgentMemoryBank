@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import json
 from pathlib import Path
 
 
@@ -15,23 +16,32 @@ def format_ts(seconds: float) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="使用 faster-whisper 生成英文转写文本和 SRT。"
+        description="Transcribe audio to plain text and SRT using faster-whisper."
     )
-    parser.add_argument("--audio", type=Path, required=True, help="输入音频文件路径")
+    parser.add_argument("--audio", type=Path, required=True, help="Input audio file")
+    parser.add_argument("--txt-out", type=Path, required=True, help="Plain text output")
+    parser.add_argument("--srt-out", type=Path, required=True, help="SRT output")
     parser.add_argument(
-        "--txt-out", type=Path, required=True, help="英文纯文本输出路径"
+        "--model",
+        default="small",
+        help="Whisper model name or local path (tiny/base/small/medium/large)",
     )
-    parser.add_argument("--srt-out", type=Path, required=True, help="英文 SRT 输出路径")
-    parser.add_argument("--model", default="small", help="Whisper 模型名")
-    parser.add_argument("--device", default="cpu", help="运行设备")
     parser.add_argument(
-        "--compute-type", default="int8", help="Whisper compute_type 参数"
+        "--language",
+        "--source-lang",
+        dest="language",
+        default=None,
+        help="Source language code, e.g. en, zh, fr, ja; omit for auto-detection",
     )
-    parser.add_argument("--beam-size", type=int, default=5, help="beam size")
+    parser.add_argument("--device", default="cpu", help="Inference device: cpu or cuda")
+    parser.add_argument(
+        "--compute-type", default="int8", help="faster-whisper compute_type"
+    )
+    parser.add_argument("--beam-size", type=int, default=5, help="Beam size")
     parser.add_argument(
         "--disable-vad-filter",
         action="store_true",
-        help="关闭 vad_filter（默认开启）",
+        help="Disable VAD filter, which is enabled by default",
     )
     return parser.parse_args()
 
@@ -46,11 +56,15 @@ def main() -> None:
     model = whisper_model(
         args.model, device=args.device, compute_type=args.compute_type
     )
-    segments, info = model.transcribe(
-        str(args.audio),
-        beam_size=args.beam_size,
-        vad_filter=not args.disable_vad_filter,
-    )
+
+    transcribe_kwargs: dict[str, object] = {
+        "beam_size": args.beam_size,
+        "vad_filter": not args.disable_vad_filter,
+    }
+    if args.language is not None:
+        transcribe_kwargs["language"] = args.language
+
+    segments, info = model.transcribe(str(args.audio), **transcribe_kwargs)
     segment_list = list(segments)
 
     args.txt_out.write_text(
@@ -73,13 +87,16 @@ def main() -> None:
             output_index += 1
 
     print(
-        {
-            "language": info.language,
-            "duration": info.duration,
-            "segments": len(segment_list),
-            "txt_out": str(args.txt_out),
-            "srt_out": str(args.srt_out),
-        }
+        json.dumps(
+            {
+                "language": info.language,
+                "duration": info.duration,
+                "segments": len(segment_list),
+                "txt_out": str(args.txt_out),
+                "srt_out": str(args.srt_out),
+            },
+            ensure_ascii=False,
+        )
     )
 
 
