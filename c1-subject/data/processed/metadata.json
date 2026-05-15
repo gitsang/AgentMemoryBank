@@ -1,0 +1,31 @@
+{
+  "source": "DrivingTestSubjectOne",
+  "source_url": "https://github.com/doupoa/DrivingTestSubjectOne",
+  "source_data_url": "https://raw.githubusercontent.com/doupoa/DrivingTestSubjectOne/main/q.json",
+  "source_license": "MIT",
+  "source_retrieved_at": "2026-05-12",
+  "raw_count": 4378,
+  "processed_subject1_count": 2545,
+  "invalid_subject1_count": 0,
+  "subject_counts": {
+    "1": 2545,
+    "4": 1833
+  },
+  "question_type_counts": {
+    "single_choice": 1264,
+    "true_false": 1281
+  },
+  "chapter_counts": {
+    "1": 1242,
+    "14": 59,
+    "15": 121,
+    "2": 547,
+    "3": 184,
+    "4": 41,
+    "5": 351
+  },
+  "answer_length_counts": {
+    "1": 2545
+  },
+  "question_type_policy": "C1 科目一只建模判断题 true_false 和单选题 single_choice。"
+}
