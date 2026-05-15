@@ -13,3 +13,4 @@ yt-video
 # Agents
 .sisyphus
 browser-data/
+.playwright-mcp/
