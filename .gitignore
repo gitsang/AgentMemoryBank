@@ -1,3 +1,4 @@
+# Builds
 bin
 
 # Python bytecode
@@ -6,4 +7,8 @@ __pycache__/
 # Local model caches
 .hf/
 
+# Videos
 yt-video
+
+# Agents
+.sisyphus
