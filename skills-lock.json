@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "procurement-analysis": {
+      "source": "gitsang/skills",
+      "sourceType": "github",
+      "skillPath": "skills/procurement-analysis/SKILL.md",
+      "computedHash": "5424a116c8484dff77d8d8f0b0e521b7468d036811482d1f283f1c792fda7b80"
+    }
+  }
+}

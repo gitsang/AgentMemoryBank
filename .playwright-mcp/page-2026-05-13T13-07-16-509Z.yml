@@ -1,0 +1,190 @@
+- generic [ref=e2]:
+  - region "Skip to main content":
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#__docusaurus_skipToContent_fallback"
+  - navigation "Main" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - link "C1 Subject 1 Logo C1 Subject 1" [ref=e7] [cursor=pointer]:
+          - /url: /c1-subject/
+          - img "C1 Subject 1 Logo" [ref=e9]
+          - generic [ref=e10]: C1 Subject 1
+        - link "Docs" [ref=e11] [cursor=pointer]:
+          - /url: /c1-subject/docs/handbook-outline
+        - link "Practice" [ref=e12] [cursor=pointer]:
+          - /url: /c1-subject/practice
+        - link "Final Review" [ref=e13] [cursor=pointer]:
+          - /url: /c1-subject/final-review
+      - button "Switch between dark and light mode (currently system mode)" [disabled] [ref=e16]:
+        - img [ref=e17]
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - heading "科目一考前速查手册" [level=1] [ref=e22]
+      - paragraph [ref=e23]: 高分速记 · 数字打通 · 高频陷阱标注
+    - generic [ref=e24]:
+      - strong [ref=e25]: 来源提示：
+      - text: 本页按整理时的公开法规和本地第三方练习题高频点归纳，用作临考速记；练习题来自非官方开源题库 DrivingTestSubjectOne，遇到题库、App 或地方口径不一致时，以公安交管现行法规和考试系统为准。
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - emphasis [ref=e28]: "100"
+        - text: 满分100分
+      - generic [ref=e29]:
+        - emphasis [ref=e30]: "90"
+        - text: 合格分数线
+      - generic [ref=e31]:
+        - emphasis [ref=e32]: 45min
+        - text: 考试时长
+      - generic [ref=e33]:
+        - emphasis [ref=e34]: 单选+判断
+        - text: 题型
+    - tablist "考前速查分类" [ref=e35]:
+      - tab "记分" [selected] [ref=e36] [cursor=pointer]
+      - tab "罚款" [ref=e37] [cursor=pointer]
+      - tab "速度" [ref=e38] [cursor=pointer]
+      - tab "时间" [ref=e39] [cursor=pointer]
+      - tab "标志标线" [ref=e40] [cursor=pointer]
+      - tab "交警手势" [ref=e41] [cursor=pointer]
+      - tab "证件相关" [ref=e42] [cursor=pointer]
+    - tabpanel "记分" [ref=e43]:
+      - generic [ref=e44]:
+        - strong [ref=e45]: 口诀
+        - text: ：12分看行为严重性（酒驾、逃逸、伪造、高速逆行），6分看信号灯与应急车道
+      - generic [ref=e46]:
+        - heading "一次记12分" [level=3] [ref=e47]
+        - table [ref=e49]:
+          - rowgroup [ref=e50]:
+            - row "违法行为 备注" [ref=e51]:
+              - columnheader "违法行为" [ref=e52]
+              - columnheader "备注" [ref=e53]
+          - rowgroup [ref=e54]:
+            - row "酒驾（饮酒后驾驶机动车）" [ref=e55]:
+              - cell "酒驾（饮酒后驾驶机动车）" [ref=e56]
+              - cell [ref=e57]
+            - row "逃逸（造成事故后逃逸，尚不构成犯罪）" [ref=e58]:
+              - cell "逃逸（造成事故后逃逸，尚不构成犯罪）" [ref=e59]
+              - cell [ref=e60]
+            - row "伪造、变造或使用伪造、变造的机动车牌证" [ref=e61]:
+              - cell "伪造、变造或使用伪造、变造的机动车牌证" [ref=e62]
+              - cell [ref=e63]
+            - row "高速公路倒车、逆行、穿越中央分隔带掉头 高速场景⚠" [ref=e64]:
+              - cell "高速公路倒车、逆行、穿越中央分隔带掉头" [ref=e65]
+              - cell "高速场景⚠" [ref=e66]
+            - row "高速/城市快速路超速50%以上（普通机动车） 严重超速⚠" [ref=e67]:
+              - cell "高速/城市快速路超速50%以上（普通机动车）" [ref=e68]
+              - cell "严重超速⚠" [ref=e69]
+            - row "代替他人接受处罚和记分牟利 卖分⚠" [ref=e70]:
+              - cell "代替他人接受处罚和记分牟利" [ref=e71]
+              - cell "卖分⚠" [ref=e72]
+      - generic [ref=e73]:
+        - heading "一次记9分" [level=3] [ref=e74]
+        - table [ref=e76]:
+          - rowgroup [ref=e77]:
+            - row "违法行为 备注" [ref=e78]:
+              - columnheader "违法行为" [ref=e79]
+              - columnheader "备注" [ref=e80]
+          - rowgroup [ref=e81]:
+            - row "高速违法停车" [ref=e82]:
+              - cell "高速违法停车" [ref=e83]
+              - cell [ref=e84]
+            - row "未悬挂号牌或故意遮挡、污损号牌 常见陷阱⚠" [ref=e85]:
+              - cell "未悬挂号牌或故意遮挡、污损号牌" [ref=e86]
+              - cell "常见陷阱⚠" [ref=e87]
+            - row "与准驾车型不符" [ref=e88]:
+              - cell "与准驾车型不符" [ref=e89]
+              - cell [ref=e90]
+            - row "连续驾驶中型以上客车/危运车超4小时未休息或休息少于20分钟 疲劳驾驶⚠" [ref=e91]:
+              - cell "连续驾驶中型以上客车/危运车超4小时未休息或休息少于20分钟" [ref=e92]
+              - cell "疲劳驾驶⚠" [ref=e93]
+      - generic [ref=e94]:
+        - heading "一次记6分" [level=3] [ref=e95]
+        - table [ref=e97]:
+          - rowgroup [ref=e98]:
+            - row "违法行为 备注" [ref=e99]:
+              - columnheader "违法行为" [ref=e100]
+              - columnheader "备注" [ref=e101]
+          - rowgroup [ref=e102]:
+            - row "违反道路交通信号灯通行（闯红灯）" [ref=e103]:
+              - cell "违反道路交通信号灯通行（闯红灯）" [ref=e104]
+              - cell [ref=e105]
+            - row "占用应急车道行驶 高速/城市快速路⚠" [ref=e106]:
+              - cell "占用应急车道行驶" [ref=e107]
+              - cell "高速/城市快速路⚠" [ref=e108]
+            - row "不按规定避让校车" [ref=e109]:
+              - cell "不按规定避让校车" [ref=e110]
+              - cell [ref=e111]
+            - row "低能见度气象条件下高速不按规定行驶" [ref=e112]:
+              - cell "低能见度气象条件下高速不按规定行驶" [ref=e113]
+              - cell [ref=e114]
+            - row "驾驶证被暂扣/扣留期间仍驾驶机动车" [ref=e115]:
+              - cell "驾驶证被暂扣/扣留期间仍驾驶机动车" [ref=e116]
+              - cell [ref=e117]
+      - generic [ref=e118]:
+        - heading "一次记3分" [level=3] [ref=e119]
+        - table [ref=e121]:
+          - rowgroup [ref=e122]:
+            - row "违法行为 备注" [ref=e123]:
+              - columnheader "违法行为" [ref=e124]
+              - columnheader "备注" [ref=e125]
+          - rowgroup [ref=e126]:
+            - row "货车超载30%~50%或违规载客" [ref=e127]:
+              - cell "货车超载30%~50%或违规载客" [ref=e128]
+              - cell [ref=e129]
+            - row "行驶超速20%~50% 高速/快速路以外⚠" [ref=e130]:
+              - cell "行驶超速20%~50%" [ref=e131]
+              - cell "高速/快速路以外⚠" [ref=e132]
+            - row "不按规定超车、让行" [ref=e133]:
+              - cell "不按规定超车、让行" [ref=e134]
+              - cell [ref=e135]
+            - row "拨打、接听手持电话等妨碍安全驾驶" [ref=e136]:
+              - cell "拨打、接听手持电话等妨碍安全驾驶" [ref=e137]
+              - cell [ref=e138]
+            - row "不按规定安装机动车号牌" [ref=e139]:
+              - cell "不按规定安装机动车号牌" [ref=e140]
+              - cell [ref=e141]
+            - row "行经人行横道不减速、不停车、不避让行人" [ref=e142]:
+              - cell "行经人行横道不减速、不停车、不避让行人" [ref=e143]
+              - cell [ref=e144]
+      - generic [ref=e145]:
+        - heading "一次记1分" [level=3] [ref=e146]
+        - table [ref=e148]:
+          - rowgroup [ref=e149]:
+            - row "违法行为 备注" [ref=e150]:
+              - columnheader "违法行为" [ref=e151]
+              - columnheader "备注" [ref=e152]
+          - rowgroup [ref=e153]:
+            - row "不按规定使用灯光" [ref=e154]:
+              - cell "不按规定使用灯光" [ref=e155]
+              - cell [ref=e156]
+            - row "违反禁令标志、禁止标线" [ref=e157]:
+              - cell "违反禁令标志、禁止标线" [ref=e158]
+              - cell [ref=e159]
+            - row "货车超载未达30%" [ref=e160]:
+              - cell "货车超载未达30%" [ref=e161]
+              - cell [ref=e162]
+            - row "高速/快速路以外不按规定倒车、掉头" [ref=e163]:
+              - cell "高速/快速路以外不按规定倒车、掉头" [ref=e164]
+              - cell [ref=e165]
+  - contentinfo [ref=e166]:
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - generic [ref=e170]: Docs
+          - list [ref=e171]:
+            - listitem [ref=e172]:
+              - link "Handbook" [ref=e173] [cursor=pointer]:
+                - /url: /c1-subject/docs/handbook-outline
+        - generic [ref=e174]:
+          - generic [ref=e175]: More
+          - list [ref=e176]:
+            - listitem [ref=e177]:
+              - link "Practice" [ref=e178] [cursor=pointer]:
+                - /url: /c1-subject/practice
+            - listitem [ref=e179]:
+              - link "Final Review" [ref=e180] [cursor=pointer]:
+                - /url: /c1-subject/final-review
+            - listitem [ref=e181]:
+              - link "Source question bank(opens in new tab)" [ref=e182] [cursor=pointer]:
+                - /url: https://github.com/doupoa/DrivingTestSubjectOne
+                - text: Source question bank
+                - img "(opens in new tab)" [ref=e183]
+      - generic [ref=e186]: Copyright © 2026 C1 Subject 1. Built with Docusaurus.
