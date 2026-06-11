@@ -300,6 +300,12 @@
       background: var(--color-primary-bg);
     }
 
+    .timeline-header.highlight {
+      background: var(--color-accent-bg);
+      box-shadow: 0 0 0 3px var(--color-accent);
+      transition: all 0.3s ease;
+    }
+
     .day-icon {
       width: 40px;
       height: 40px;
@@ -1635,11 +1641,12 @@
       color: '#F44336',
       weight: 4,
       opacity: 0.8,
-      dashArray: '10, 8',
-      lineCap: 'round',
+        dashArray: '10, 8',
+        lineCap: 'round',
+        interactive: true,
     });
 
-    addPopup(routeDay1, '6月19日交通路线', '上饶火车站 → 忘仙谷 → 三清山金沙索道片区<br>约12:30出发，总车程约2.5小时', 'transport');
+    addPopup(routeDay1, '6月19日交通路线', '上饶火车站 → 忘仙谷 → 三清山金沙索道片区<br>约12:30出发，总车程约2.5小时<br><em>点击可跳转到 Day 1 时间线</em>', 'transport');
     markerGroups.routeDay1.addLayer(routeDay1);
 
     // Add start marker
@@ -1669,9 +1676,10 @@
       weight: 4,
       opacity: 0.8,
       lineCap: 'round',
+      interactive: true,
     });
 
-    addPopup(routeDay2, '6月20日游览路线', '金沙索道 → 南清园 → 阳光海岸 → 西海岸 → 三清宫 → 返回酒店<br>约08:30-17:00', 'attraction');
+    addPopup(routeDay2, '6月20日游览路线', '金沙索道 → 南清园 → 阳光海岸 → 西海岸 → 三清宫 → 返回酒店<br>约08:30-17:00<br><em>点击可跳转到 Day 2 时间线</em>', 'attraction');
     markerGroups.routeDay2.addLayer(routeDay2);
 
     // Route Day 3: 酒店 -> 龟峰 -> 弋阳站 -> 上饶站
@@ -1686,9 +1694,10 @@
       opacity: 0.8,
       dashArray: '10, 8',
       lineCap: 'round',
+      interactive: true,
     });
 
-    addPopup(routeDay3, '6月21日返程路线', '酒店 → 龟峰 → 弋阳站 → 上饶站<br>G1362次高铁 15:55-16:12', 'transport');
+    addPopup(routeDay3, '6月21日返程路线', '酒店 → 龟峰 → 弋阳站 → 上饶站<br>G1362次高铁 15:55-16:12<br><em>点击可跳转到 Day 3 时间线</em>', 'transport');
     markerGroups.routeDay3.addLayer(routeDay3);
 
     // Add 龟峰 marker
@@ -1738,6 +1747,53 @@
       COORDS.yiyangStation,
     ]);
     map.fitBounds(allBounds, { padding: [50, 50] });
+
+    // ==========================================
+    // Route Click → Focus on Timeline Day
+    // ==========================================
+    function focusOnDay(dayNumber) {
+      // 1. Find the day element
+      const dayElement = document.querySelector(`.day-${dayNumber}`);
+      if (!dayElement) return;
+
+      const header = dayElement.querySelector('.timeline-header');
+      const body = header.nextElementSibling;
+
+      // 2. Expand if collapsed
+      if (!body.classList.contains('expanded')) {
+        toggleTimeline(header);
+      }
+
+      // 3. Smooth scroll to the day
+      dayElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      // 4. Brief highlight effect
+      header.classList.add('highlight');
+      setTimeout(() => {
+        header.classList.remove('highlight');
+      }, 2000);
+    }
+
+    routeDay1.on('click', function() { focusOnDay(1); });
+    routeDay2.on('click', function() { focusOnDay(2); });
+    routeDay3.on('click', function() { focusOnDay(3); });
+
+    // Route hover: change color on mouseover
+    function setRouteHover(route, color) {
+      route.on('mouseover', function() {
+        route.setStyle({ weight: 6, opacity: 1 });
+      });
+      route.on('mouseout', function() {
+        route.setStyle({ weight: 4, opacity: 0.8 });
+      });
+    }
+
+    setRouteHover(routeDay1, '#F44336');
+    setRouteHover(routeDay2, '#1976D2');
+    setRouteHover(routeDay3, '#4CAF50');
   </script>
 </body>
 </html>
