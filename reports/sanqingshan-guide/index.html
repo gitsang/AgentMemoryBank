@@ -417,6 +417,11 @@
       border-color: var(--color-success);
     }
 
+    .timeline-item.transport::before {
+      background: var(--color-secondary);
+      border-color: var(--color-secondary);
+    }
+
     .timeline-item.highlight {
       background: var(--color-accent-bg);
       box-shadow: 0 0 0 3px var(--color-accent);
@@ -1077,12 +1082,12 @@
               <div class="item-title"><i class="fas fa-map-marker-alt"></i> 上饶火车站集合</div>
             </li>
             <li class="timeline-item meal">
-              <div class="item-time">13:00</div>
+              <div class="item-time">13:00-14:00</div>
               <div class="item-title"><i class="fas fa-utensils"></i> 午餐</div>
               <div class="item-note">火车站附近餐厅，品尝上饶特色菜</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">14:00</div>
+            <li class="timeline-item transport">
+              <div class="item-time">14:00-15:00</div>
               <div class="item-title"><i class="fas fa-bus"></i> 前往忘仙谷</div>
               <div class="item-note">车程约1小时</div>
             </li>
@@ -1091,15 +1096,15 @@
               <div class="item-title"><i class="fas fa-water"></i> 游览忘仙谷</div>
               <div class="item-note">下午入园，可观赏夜景，体验悬崖栈道、瀑布灯光秀</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">18:30</div>
+            <li class="timeline-item transport">
+              <div class="item-time">18:30-20:00</div>
               <div class="item-title"><i class="fas fa-bus"></i> 前往酒店</div>
               <div class="item-note">三清山金沙索道片区，约1.5小时车程</div>
             </li>
             <li class="timeline-item lodging">
               <div class="item-time">20:00</div>
-              <div class="item-title"><i class="fas fa-bed"></i> 入住酒店，晚餐</div>
-              <div class="item-note">三清山金沙索道片区酒店，享用晚餐</div>
+              <div class="item-title"><i class="fas fa-bed"></i> 入住酒店</div>
+              <div class="item-note">三清山金沙索道片区酒店</div>
             </li>
           </ul>
         </div>
@@ -1118,27 +1123,62 @@
         <div class="timeline-body">
           <ul class="timeline-list">
             <li class="timeline-item meal">
-              <div class="item-time">07:00</div>
+              <div class="item-time">07:00-08:00</div>
               <div class="item-title"><i class="fas fa-coffee"></i> 早餐</div>
               <div class="item-note">酒店内早餐</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">08:00</div>
+            <li class="timeline-item transport">
+              <div class="item-time">08:00-08:30</div>
               <div class="item-title"><i class="fas fa-cable-car"></i> 前往金沙索道</div>
               <div class="item-note">步行约5分钟即可到达索道站</div>
             </li>
             <li class="timeline-item sightseeing">
-              <div class="item-time">08:30-16:30</div>
-              <div class="item-title"><i class="fas fa-mountain"></i> 游览三清山</div>
-              <div class="item-note">金沙索道上山 → 南清园（东方女神、巨蟒出山）→ 阳光海岸栈道 → 西海岸栈道 → 三清宫 → 索道下山</div>
-            </li>
-            <li class="timeline-item">
-              <div class="item-time">17:00</div>
-              <div class="item-title"><i class="fas fa-bus"></i> 返回酒店</div>
-              <div class="item-note">步行返回金沙索道片区酒店</div>
+              <div class="item-time">08:30-12:00</div>
+              <div class="item-title"><i class="fas fa-mountain"></i> 游览南清园</div>
+              <div class="item-note">核心景区，东方女神、巨蟒出山</div>
             </li>
             <li class="timeline-item meal">
+              <div class="item-time">12:00-13:00</div>
+              <div class="item-title"><i class="fas fa-utensils"></i> 山上午餐</div>
+              <div class="item-note">山上休息区用餐</div>
+            </li>
+            <li class="timeline-item transport">
+              <div class="item-time">13:00-13:30</div>
+              <div class="item-title"><i class="fas fa-hiking"></i> 前往阳光海岸</div>
+              <div class="item-note">沿栈道步行前往</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">13:30-15:30</div>
+              <div class="item-title"><i class="fas fa-sun"></i> 游览阳光海岸</div>
+              <div class="item-note">高空栈道，视野开阔，云海绝佳观赏点</div>
+            </li>
+            <li class="timeline-item transport">
+              <div class="item-time">15:30-16:00</div>
+              <div class="item-title"><i class="fas fa-hiking"></i> 前往西海岸</div>
+              <div class="item-note">沿栈道步行前往</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">16:00-17:00</div>
+              <div class="item-title"><i class="fas fa-cloud-sun"></i> 游览西海岸</div>
+              <div class="item-note">全长约4km，观赏云海绝佳位置</div>
+            </li>
+            <li class="timeline-item transport">
+              <div class="item-time">17:00-17:30</div>
+              <div class="item-title"><i class="fas fa-hiking"></i> 前往三清宫</div>
+              <div class="item-note">步行前往道教圣地</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">17:30-18:00</div>
+              <div class="item-title"><i class="fas fa-torii-gate"></i> 游览三清宫</div>
+              <div class="item-note">道教圣地，海拔约1500米</div>
+            </li>
+            <li class="timeline-item">
               <div class="item-time">18:00</div>
+              <div class="item-title"><i class="fas fa-bus"></i> 返回酒店</div>
+              <div class="item-note">索道下山，步行返回金沙索道片区酒店</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">18:30</div>
               <div class="item-title"><i class="fas fa-utensils"></i> 晚餐</div>
               <div class="item-note">酒店附近餐厅，品尝当地特色菜</div>
             </li>
@@ -1159,44 +1199,34 @@
         <div class="timeline-body">
           <ul class="timeline-list">
             <li class="timeline-item meal">
-              <div class="item-time">07:00</div>
+              <div class="item-time">07:00-08:00</div>
               <div class="item-title"><i class="fas fa-coffee"></i> 早餐，退房</div>
               <div class="item-note">酒店内早餐后退房</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">08:00</div>
+            <li class="timeline-item transport">
+              <div class="item-time">08:00-09:30</div>
               <div class="item-title"><i class="fas fa-car"></i> 前往龟峰</div>
               <div class="item-note">自驾约1.5小时</div>
             </li>
             <li class="timeline-item sightseeing">
-              <div class="item-time">09:30</div>
-              <div class="item-title"><i class="fas fa-dragon"></i> 抵达龟峰，开始游览</div>
+              <div class="item-time">09:30-13:30</div>
+              <div class="item-title"><i class="fas fa-dragon"></i> 游览龟峰</div>
               <div class="item-note">丹霞地貌，无龟不成峰，约4小时游览时间</div>
             </li>
-            <li class="timeline-item sightseeing">
-              <div class="item-time">13:30</div>
-              <div class="item-title"><i class="fas fa-flag-checkered"></i> 游览结束</div>
-              <div class="item-note">全程约4小时</div>
-            </li>
             <li class="timeline-item meal">
-              <div class="item-time">14:00</div>
+              <div class="item-time">14:00-15:00</div>
               <div class="item-title"><i class="fas fa-utensils"></i> 午餐</div>
               <div class="item-note">景区附近餐厅，品尝弋阳特色菜</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">15:00</div>
-              <div class="item-title"><i class="fas fa-taxi"></i> 从龟峰前往弋阳站</div>
+            <li class="timeline-item transport">
+              <div class="item-time">15:00-15:20</div>
+              <div class="item-title"><i class="fas fa-taxi"></i> 前往弋阳站</div>
               <div class="item-note">打车约20分钟</div>
             </li>
-            <li class="timeline-item">
-              <div class="item-time">15:20</div>
-              <div class="item-title"><i class="fas fa-train"></i> 抵达弋阳站</div>
-              <div class="item-note">候车准备</div>
-            </li>
-            <li class="timeline-item">
-              <div class="item-time">15:55</div>
-              <div class="item-title"><i class="fas fa-train"></i> 乘坐G1362次高铁</div>
-              <div class="item-note">弋阳 → 上饶，16:12到达</div>
+            <li class="timeline-item transport">
+              <div class="item-time">15:55-16:12</div>
+              <div class="item-title"><i class="fas fa-train"></i> 乘坐G1362次高铁返回上饶</div>
+              <div class="item-note">弋阳 → 上饶</div>
             </li>
             <li class="timeline-item">
               <div class="item-time">16:30</div>
@@ -1516,31 +1546,31 @@
     // Coordinates
     const COORDS = {
       // 交通节点
-      shangraoStation:  [28.4944972, 118.0033222],  // 上饶站（更新）
-      yiyangStation:    [28.4147222, 117.4397222],  // 弋阳站（更新）
+      shangraoStation:  [28.5866027, 117.7857833],   // 上饶站
+      yiyangStation:    [28.40423, 117.4308917],     // 弋阳站
 
       // 景区
-      wangxianValley:   [28.4453, 117.9372],        // 望仙谷景区入口（新增）
-      sanqingshanCenter:[28.895335, 118.066475],    // 三清山景区中心（新增）
-      jinshaService:    [28.87878, 118.06689],      // 金沙索道片区（更新）
-      westCoast:        [28.904393, 118.06025],     // 西海岸（更新）
-      guifengCenter:    [28.318453, 117.42638],     // 龟峰景区入口（新增）
-      guifengWestGate:  [28.318375, 117.399789],    // 龟峰西门（新增）
+      wangxianValley:   [28.4453, 117.9372],         // 望仙谷景区入口
+      sanqingshan:      [28.9102672, 118.0573608],   // 三清山
+      jinshaService:    [28.923721, 118.0924887],    // 金沙索道
+      guifeng:          [28.4449302, 117.9544107],   // 龟峰
 
       // 保留原有坐标
-      nanqingyuan:      [28.9050, 118.0750],        // 南清园（保留）
-      sunshineCoast:    [28.9100, 118.0630],        // 阳光海岸（保留）
-      sanqingPalace:    [28.9150, 118.0480],        // 三清宫（保留）
+      nanqingyuan:      [28.9050, 118.0750],         // 南清园（保留）
+      sunshineCoast:    [28.9100, 118.0630],         // 阳光海岸（保留）
+      westCoast:        [28.904393, 118.06025],      // 西海岸（保留）
+      sanqingPalace:    [28.9150, 118.0480],         // 三清宫（保留）
 
       // 辅助坐标
-      hotel:            [28.87878, 118.06689],      // 三清山金沙索道片区酒店
-      restaurant1:      [28.4453, 117.9372],        // 忘仙谷附近餐饮
-      restaurant2:      [28.87878, 118.0680],       // 三清山山下餐饮
-      restaurant3:      [28.318453, 117.42638],     // 龟峰附近餐饮
+      hotel:            [28.923721, 118.0924887],    // 三清山金沙索道片区酒店
+      restaurant1:      [28.4453, 117.9372],         // 忘仙谷附近餐饮
+      restaurant2:      [28.923721, 118.0924887],    // 三清山山下餐饮
+      restaurant3:      [28.4449302, 117.9544107],   // 龟峰附近餐饮
       // 兼容旧引用
-      wangxiangu:       [28.4453, 117.9372],        // 兼容旧代码
-      sanqingshan:      [28.895335, 118.066475],    // 兼容旧代码
-      guifeng:          [28.318453, 117.42638],     // 兼容旧代码
+      wangxiangu:       [28.4453, 117.9372],         // 兼容旧代码
+      sanqingshanCenter:[28.9102672, 118.0573608],   // 兼容旧代码
+      guifengCenter:    [28.4449302, 117.9544107],   // 兼容旧代码
+      guifengWestGate:  [28.4449302, 117.9544107],   // 兼容旧代码
     };
 
     // Initialize map - center to show the whole trip area
@@ -1630,14 +1660,15 @@
     });
 
     // --- Attractions ---
+    // segmentIndex maps to the timeline item index for focusOnSegment
     const attractions = [
-      { name: '忘仙谷', latlng: COORDS.wangxiangu, desc: '悬崖栈道、瀑布灯光秀、夜景绝美', type: 'attraction' },
+      { name: '忘仙谷', latlng: COORDS.wangxianValley, desc: '悬崖栈道、瀑布灯光秀、夜景绝美', type: 'attraction', day: 1, segmentIndex: 3 },
       { name: '三清山风景区', latlng: COORDS.sanqingshan, desc: '5A级国家级风景区，东方女神、巨蟒出山', type: 'attraction' },
-      { name: '南清园', latlng: COORDS.nanqingyuan, desc: '核心景区，东方女神、巨蟒出山', type: 'attraction' },
-      { name: '阳光海岸栈道', latlng: COORDS.sunshineCoast, desc: '高空栈道，视野开阔', type: 'attraction' },
-      { name: '西海岸栈道', latlng: COORDS.westCoast, desc: '全长约4km，观赏云海绝佳位置', type: 'attraction' },
-      { name: '三清宫', latlng: COORDS.sanqingPalace, desc: '道教圣地，海拔约1500米', type: 'attraction' },
-      { name: '龟峰', latlng: COORDS.guifeng, desc: '丹霞地貌世界自然遗产，无龟不成峰', type: 'attraction' },
+      { name: '南清园', latlng: COORDS.nanqingyuan, desc: '核心景区，东方女神、巨蟒出山', type: 'attraction', day: 2, segmentIndex: 2 },
+      { name: '阳光海岸栈道', latlng: COORDS.sunshineCoast, desc: '高空栈道，视野开阔', type: 'attraction', day: 2, segmentIndex: 5 },
+      { name: '西海岸栈道', latlng: COORDS.westCoast, desc: '全长约4km，观赏云海绝佳位置', type: 'attraction', day: 2, segmentIndex: 7 },
+      { name: '三清宫', latlng: COORDS.sanqingPalace, desc: '道教圣地，海拔约1500米', type: 'attraction', day: 2, segmentIndex: 9 },
+      { name: '龟峰', latlng: COORDS.guifeng, desc: '丹霞地貌世界自然遗产，无龟不成峰', type: 'attraction', day: 3, segmentIndex: 2 },
     ];
 
     attractions.forEach(a => {
@@ -1645,6 +1676,12 @@
         icon: createIcon('#2196F3', 'camera', '#fff')
       });
       addPopup(marker, a.name, a.desc, a.type);
+      // Add click handler for attractions with segment mapping
+      if (a.day && a.segmentIndex !== undefined) {
+        marker.on('click', function() {
+          focusOnSegment(a.day, a.segmentIndex);
+        });
+      }
       markerGroups.attractions.addLayer(marker);
     });
 
@@ -1681,116 +1718,88 @@
     }
 
     // --- Day 1 Segments ---
-    // Segment 0: 上饶站 → 望仙谷 (对应 14:00 前往忘仙谷)
+    // Segment 2: 上饶站 → 望仙谷 (对应 14:00-15:00 前往忘仙谷)
     const d1s0 = createRouteSegment(
       [COORDS.shangraoStation, COORDS.wangxianValley],
-      '#F44336', 1, 0,
+      '#F44336', 1, 2,
       '路段：上饶站 → 望仙谷',
-      '14:00 前往望仙谷，车程约1小时'
+      '14:00-15:00 前往忘仙谷，车程约1小时'
     );
     markerGroups.routeDay1.addLayer(d1s0);
 
-    // Segment 1: 望仙谷 → 三清山酒店 (对应 18:30 前往酒店)
+    // Segment 4: 望仙谷 → 三清山酒店 (对应 18:30-20:00 前往酒店)
     const d1s1 = createRouteSegment(
-      [COORDS.wangxianValley, COORDS.jinshaService],
-      '#F44336', 1, 1,
+      [COORDS.wangxianValley, COORDS.hotel],
+      '#F44336', 1, 4,
       '路段：望仙谷 → 三清山酒店',
-      '18:30 前往酒店，约1.5小时车程'
+      '18:30-20:00 前往酒店，约1.5小时车程'
     );
     markerGroups.routeDay1.addLayer(d1s1);
 
-    // Day 1 start marker
-    markerGroups.routeDay1.addLayer(L.marker(COORDS.shangraoStation, {
-      icon: createIcon('#F44336', 'train', '#fff')
-    }).bindPopup('<div class="popup-title">上饶火车站（起点）</div><div class="popup-desc">6月19日 12:30集合出发</div><span class="popup-type transport">transport</span>'));
-
-    // Day 1 望仙谷 marker
-    markerGroups.routeDay1.addLayer(L.marker(COORDS.wangxianValley, {
-      icon: createIcon('#2E7D32', 'water', '#fff')
-    }).bindPopup('<div class="popup-title">望仙谷</div><div class="popup-desc">6月19日 15:00-18:00游览<br>悬崖栈道、瀑布灯光秀、夜景</div><span class="popup-type attraction">attraction</span>'));
-
     // --- Day 2 Segments ---
-    // Segment 0: 酒店 → 金沙索道 (对应 08:00 前往索道)
+    // Segment 1: 酒店 → 金沙索道 (对应 08:00-08:30 前往金沙索道)
     const d2s0 = createRouteSegment(
       [COORDS.hotel, COORDS.jinshaService],
-      '#1976D2', 2, 0,
+      '#1976D2', 2, 1,
       '路段：酒店 → 金沙索道',
-      '08:00 前往金沙索道，步行约5分钟'
+      '08:00-08:30 前往金沙索道，步行约5分钟'
     );
     markerGroups.routeDay2.addLayer(d2s0);
 
-    // Segment 1: 金沙索道 → 南清园 (对应 08:30 游览南清园)
+    // Segment 4: 南清园 → 阳光海岸 (对应 13:00-13:30 前往阳光海岸)
     const d2s1 = createRouteSegment(
-      [COORDS.jinshaService, COORDS.nanqingyuan],
-      '#1976D2', 2, 1,
-      '路段：金沙索道 → 南清园',
-      '08:30 游览南清园，核心景区'
+      [COORDS.nanqingyuan, COORDS.sunshineCoast],
+      '#1976D2', 2, 4,
+      '路段：南清园 → 阳光海岸',
+      '13:00-13:30 前往阳光海岸栈道'
     );
     markerGroups.routeDay2.addLayer(d2s1);
 
-    // Segment 2: 南清园 → 阳光海岸 (对应 13:30 游览阳光海岸)
+    // Segment 6: 阳光海岸 → 西海岸 (对应 15:30-16:00 前往西海岸)
     const d2s2 = createRouteSegment(
-      [COORDS.nanqingyuan, COORDS.sunshineCoast],
-      '#1976D2', 2, 2,
-      '路段：南清园 → 阳光海岸',
-      '13:30 游览阳光海岸栈道'
+      [COORDS.sunshineCoast, COORDS.westCoast],
+      '#1976D2', 2, 6,
+      '路段：阳光海岸 → 西海岸',
+      '15:30-16:00 前往西海岸栈道'
     );
     markerGroups.routeDay2.addLayer(d2s2);
 
-    // Segment 3: 阳光海岸 → 西海岸 (对应 15:30 游览西海岸)
+    // Segment 8: 西海岸 → 三清宫 (对应 17:00-17:30 前往三清宫)
     const d2s3 = createRouteSegment(
-      [COORDS.sunshineCoast, COORDS.westCoast],
-      '#1976D2', 2, 3,
-      '路段：阳光海岸 → 西海岸',
-      '15:30 游览西海岸栈道'
+      [COORDS.westCoast, COORDS.sanqingPalace],
+      '#1976D2', 2, 8,
+      '路段：西海岸 → 三清宫',
+      '17:00-17:30 前往三清宫，道教圣地'
     );
     markerGroups.routeDay2.addLayer(d2s3);
 
-    // Segment 4: 西海岸 → 三清宫 (对应 17:00 游览三清宫)
-    const d2s4 = createRouteSegment(
-      [COORDS.westCoast, COORDS.sanqingPalace],
-      '#1976D2', 2, 4,
-      '路段：西海岸 → 三清宫',
-      '17:00 游览三清宫，道教圣地'
-    );
-    markerGroups.routeDay2.addLayer(d2s4);
-
     // --- Day 3 Segments ---
-    // Segment 0: 酒店 → 龟峰 (对应 08:00 前往龟峰)
+    // Segment 1: 酒店 → 龟峰 (对应 08:00-09:30 前往龟峰)
     const d3s0 = createRouteSegment(
-      [COORDS.hotel, COORDS.guifengCenter],
-      '#4CAF50', 3, 0,
+      [COORDS.hotel, COORDS.guifeng],
+      '#4CAF50', 3, 1,
       '路段：酒店 → 龟峰',
-      '08:00 前往龟峰，自驾约1.5小时'
+      '08:00-09:30 前往龟峰，自驾约1.5小时'
     );
     markerGroups.routeDay3.addLayer(d3s0);
 
-    // Segment 1: 龟峰 → 弋阳站 (对应 15:00 前往弋阳站)
+    // Segment 4: 龟峰 → 弋阳站 (对应 15:00-15:20 前往弋阳站)
     const d3s1 = createRouteSegment(
-      [COORDS.guifengCenter, COORDS.yiyangStation],
-      '#4CAF50', 3, 1,
+      [COORDS.guifeng, COORDS.yiyangStation],
+      '#4CAF50', 3, 4,
       '路段：龟峰 → 弋阳站',
-      '15:00 前往弋阳站，打车约20分钟'
+      '15:00-15:20 前往弋阳站，打车约20分钟'
     );
     markerGroups.routeDay3.addLayer(d3s1);
 
-    // Segment 2: 弋阳站 → 上饶站 (对应 15:55 乘坐高铁)
+    // Segment 5: 弋阳站 → 上饶站 (对应 15:55-16:12 乘坐G1362次高铁)
     const d3s2 = createRouteSegment(
       [COORDS.yiyangStation, COORDS.shangraoStation],
-      '#4CAF50', 3, 2,
+      '#4CAF50', 3, 5,
       '路段：弋阳站 → 上饶站',
-      '15:55 乘坐G1362次高铁，16:12到达'
+      '15:55-16:12 乘坐G1362次高铁返回上饶'
     );
     markerGroups.routeDay3.addLayer(d3s2);
-
-    // Day 3 markers
-    markerGroups.routeDay3.addLayer(L.marker(COORDS.guifengCenter, {
-      icon: createIcon('#4CAF50', 'dragon', '#fff')
-    }).bindPopup('<div class="popup-title">龟峰风景区</div><div class="popup-desc">6月21日 09:30-13:30游览<br>丹霞地貌，世界自然遗产</div><span class="popup-type attraction">attraction</span>'));
-
-    markerGroups.routeDay3.addLayer(L.marker(COORDS.yiyangStation, {
-      icon: createIcon('#4CAF50', 'train', '#fff')
-    }).bindPopup('<div class="popup-title">弋阳站</div><div class="popup-desc">6月21日 15:20抵达<br>15:55乘坐G1362次高铁返回上饶</div><span class="popup-type transport">transport</span>'));
 
     // ==========================================
     // Add all groups to map
@@ -1821,8 +1830,13 @@
       COORDS.shangraoStation,
       COORDS.wangxianValley,
       COORDS.jinshaService,
-      COORDS.guifengCenter,
+      COORDS.guifeng,
       COORDS.yiyangStation,
+      COORDS.sanqingshan,
+      COORDS.nanqingyuan,
+      COORDS.sunshineCoast,
+      COORDS.westCoast,
+      COORDS.sanqingPalace,
     ]);
     map.fitBounds(allBounds, { padding: [50, 50] });
 
