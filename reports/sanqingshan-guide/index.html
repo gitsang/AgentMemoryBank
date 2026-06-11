@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>清山端午之旅攻略 | 2026年6月19-21日</title>
+  <meta name="description" content="三清山端午节（6月19-21日）旅游攻略，包含时间线、交互式地图、住宿餐饮推荐、交通指南等实用信息。">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+  <style>
+    /* ============================================
+       DESIGN TOKENS - Nature Mountain Theme
+       ============================================ */
+    :root {
+      /* Primary palette - forest & mountain */
+      --color-primary:       #2E7D32;
+      --color-primary-light:  #4CAF50;
+      --color-primary-dark:   #1B5E20;
+      --color-primary-bg:     #E8F5E9;
+
+      /* Secondary - sky */
+      --color-secondary:      #1976D2;
+      --color-secondary-light: #42A5F5;
+      --color-secondary-dark:  #0D47A1;
+      --color-secondary-bg:    #E3F2FD;
+
+      /* Accent - sunrise/sunset */
+      --color-accent:         #FF9800;
+      --color-accent-light:   #FFB74D;
+      --color-accent-dark:    #E65100;
+      --color-accent-bg:      #FFF3E0;
+
+      /* Neutral */
+      --color-bg:             #F5F5F5;
+      --color-bg-white:       #FFFFFF;
+      --color-bg-dark:        #263238;
+      --color-text:           #212121;
+      --color-text-secondary: #616161;
+      --color-text-light:     #9E9E9E;
+      --color-border:         #E0E0E0;
+      --color-border-light:   #F0F0F0;
+
+      /* Semantic */
+      --color-success:        #4CAF50;
+      --color-warning:        #FF9800;
+      --color-error:          #F44336;
+      --color-info:           #2196F3;
+
+      /* Typography scale */
+      --font-display:  "Georgia", "SimSun", serif;
+      --font-body:     "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono:     "Consolas", "Courier New", monospace;
+
+      --fs-xl:     2rem;    /* 32px - page title */
+      --fs-lg:     1.5rem;  /* 24px - section heading */
+      --fs-base:   1rem;    /* 16px - body */
+      --fs-sm:     0.875rem;/* 14px - small text */
+      --fs-xs:     0.75rem; /* 12px - caption */
+
+      /* Spacing scale - 8px base */
+      --space-0:   0;
+      --space-1:   0.25rem;  /* 4px  */
+      --space-2:   0.5rem;   /* 8px  */
+      --space-3:   0.75rem;  /* 12px */
+      --space-4:   1rem;     /* 16px */
+      --space-5:   1.25rem;  /* 20px */
+      --space-6:   1.5rem;   /* 24px */
+      --space-8:   2rem;     /* 32px */
+      --space-10:  2.5rem;   /* 40px */
+      --space-12:  3rem;     /* 48px */
+
+      /* Border radius */
+      --radius-sm:  0.375rem;  /* 6px  */
+      --radius-md:  0.5rem;    /* 8px  */
+      --radius-lg:  0.75rem;   /* 12px */
+      --radius-xl:  1rem;      /* 16px */
+      --radius-full: 50%;
+
+      /* Shadows */
+      --shadow-sm:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+      --shadow-md:  0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg:  0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+      --shadow-xl:  0 20px 25px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.04);
+
+      /* Transitions */
+      --transition-fast: 0.15s ease;
+      --transition-base: 0.3s ease;
+      --transition-slow: 0.5s ease;
+
+      /* Layout */
+      --max-width: 1400px;
+      --sidebar-width: 380px;
+      --header-height: 280px;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--fs-base);
+      line-height: 1.6;
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: var(--color-secondary);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    a:hover { color: var(--color-secondary-dark); }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    ul, ol { list-style: none; }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .page-header {
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);
+      color: white;
+      padding: var(--space-8) var(--space-6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .header-content {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-size: var(--fs-xl);
+      font-weight: 700;
+      margin-bottom: var(--space-1);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .header-title i {
+      margin-right: var(--space-2);
+      color: var(--color-accent-light);
+    }
+
+    .header-date {
+      font-size: var(--fs-lg);
+      opacity: 0.9;
+      margin-bottom: var(--space-6);
+    }
+
+    .header-date i {
+      margin-right: var(--space-1);
+    }
+
+    /* Summary cards row */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .summary-card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      text-align: center;
+      transition: transform var(--transition-base), background var(--transition-fast);
+    }
+
+    .summary-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.25);
+    }
+
+    .summary-card .day {
+      font-size: var(--fs-sm);
+      opacity: 0.8;
+      margin-bottom: var(--space-1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .summary-card .title {
+      font-size: var(--fs-lg);
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+
+    .summary-card .desc {
+      font-size: var(--fs-sm);
+      opacity: 0.85;
+    }
+
+    /* ============================================
+       MAIN LAYOUT
+       ============================================ */
+    .main-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-6);
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    /* ============================================
+       TIMELINE (Left sidebar)
+       ============================================ */
+    .timeline-panel {
+      position: sticky;
+      top: var(--space-4);
+      max-height: calc(100vh - var(--space-8));
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-primary-light) var(--color-border);
+    }
+
+    .timeline-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+    .timeline-panel::-webkit-scrollbar-track {
+      background: var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    .timeline-panel::-webkit-scrollbar-thumb {
+      background: var(--color-primary-light);
+      border-radius: var(--radius-sm);
+    }
+
+    .timeline-day {
+      margin-bottom: var(--space-4);
+    }
+
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3) var(--space-4);
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-header:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary-light);
+    }
+
+    .timeline-header.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-bg);
+    }
+
+    .day-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--fs-base);
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .day-1 .day-icon { background: var(--color-primary); }
+    .day-2 .day-icon { background: var(--color-secondary); }
+    .day-3 .day-icon { background: var(--color-accent); }
+
+    .day-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .day-name {
+      font-weight: 600;
+      font-size: var(--fs-base);
+      line-height: 1.3;
+    }
+
+    .day-theme {
+      font-size: var(--fs-xs);
+      color: var(--color-text-secondary);
+    }
+
+    .toggle-icon {
+      font-size: var(--fs-sm);
+      color: var(--color-text-light);
+      transition: transform var(--transition-base);
+    }
+
+    .timeline-header.active .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .timeline-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-slow);
+    }
+
+    .timeline-body.expanded {
+      max-height: 2000px;
+    }
+
+    .timeline-list {
+      position: relative;
+      padding: var(--space-4) var(--space-2) var(--space-4) var(--space-8);
+    }
+
+    /* Vertical line */
+    .timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: var(--space-4);
+      bottom: var(--space-4);
+      width: 2px;
+      background: var(--color-border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: var(--space-3) 0 var(--space-3) var(--space-6);
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Timeline dot */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: var(--space-4);
+      width: 12px;
+      height: 12px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--color-primary);
+      background: var(--color-bg-white);
+    }
+
+    .day-2 .timeline-item::before { border-color: var(--color-secondary); }
+    .day-3 .timeline-item::before { border-color: var(--color-accent); }
+
+    /* Meal markers */
+    .timeline-item.meal::before {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .timeline-item.lodging::before {
+      background: var(--color-secondary);
+      border-color: var(--color-secondary);
+    }
+
+    .timeline-item.sightseeing::before {
+      background: var(--color-success);
+      border-color: var(--color-success);
+    }
+
+    .item-time {
+      font-weight: 600;
+      font-size: var(--fs-sm);
+      color: var(--color-primary);
+      font-family: var(--font-mono);
+    }
+
+    .day-2 .item-time { color: var(--color-secondary); }
+    .day-3 .item-time { color: var(--color-accent-dark); }
+
+    .item-title {
+      font-size: var(--fs-sm);
+      margin-top: var(--space-1);
+      color: var(--color-text);
+    }
+
+    .item-note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-1);
+    }
+
+    /* ============================================
+       MAP AREA (Right side)
+       ============================================ */
+    .map-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .map-wrapper {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 2px solid var(--color-border);
+    }
+
+    #map {
+      width: 100%;
+      height: 600px;
+      background: var(--color-bg);
+    }
+
+    /* Layer control panel */
+    .layer-panel {
+      background: var(--color-bg-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .layer-panel h3 {
+      font-size: var(--fs-base);
+      margin-bottom: var(--space-3);
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .layer-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .layer-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      cursor: pointer;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      background: var(--color-bg);
+      transition: all var(--transition-fast);
+      font-size: var(--fs-sm);
+      user-select: none;
+    }
+
+    .layer-toggle:hover {
+      background: var(--color-border);
+    }
+
+    .layer-toggle input[type="checkbox"] {
+      display: none;
+    }
+
+    .layer-toggle .check-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: white;
+      transition: all var(--transition-fast);
+    }
+
+    .layer-toggle input:checked + .check-mark {
+      opacity: 1;
+    }
+
+    .layer-toggle:not(:has(input:checked)) .check-mark {
+      opacity: 0.3;
+    }
+
+    .layer-toggle.layer-transport .check-mark { background: #F44336; }
+    .layer-toggle.layer-day1-route .check-mark { background: #F44336; }
+    .layer-toggle.layer-day2-route .check-mark { background: #1976D2; }
+    .layer-toggle.layer-day3-route .check-mark { background: #4CAF50; }
+    .layer-toggle.layer-hotels .check-mark { background: #9C27B0; }
+    .layer-toggle.layer-restaurants .check-mark { background: #FF9800; }
+    .layer-toggle.layer-attractions .check-mark { background: #2196F3; }
+
+    /* ============================================
+       SECTION CARDS (below main)
+       ============================================ */
+    .content-sections {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 var(--space-6) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--fs-lg);
+      color: var(--color-primary-dark);
+      margin-bottom: var(--space-6);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 3px solid var(--color-primary);
+    }
+
+    .section-title i {
+      color: var(--color-accent);
+    }
+
+    /* Card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-5);
+    }
+
+    /* ============================================
+       ACCOMMODATION CARDS
+       ============================================ */
+    .hotel-card {
+      background: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+      border: 1px solid var(--color-border);
+    }
+
+    .hotel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hotel-header {
+      background: linear-gradient(135deg, var(--color-secondary-dark), var(--color-secondary));
+      color: white;
+      padding: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .hotel-header i {
+      font-size: var(--fs-lg);
+    }
+
+    .hotel-name {
+      font-weight: 600;
+      font-size: var(--fs-base);
+    }
+
+    .hotel-location {
+      font-size: var(--fs-xs);
+      opacity: 0.85;
+    }
+
+    .hotel-body {
+      padding: var(--space-4);
+    }
+
+    .hotel-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .hotel-meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--fs-sm);
+      color: var(--color-text-secondary);
+      background: var(--color-bg);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+    }
+
+    .hotel-meta-item i {
+      color: var(--color-accent);
+      font-size: var(--fs-xs);
+    }
+
+    .hotel-price {
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      color: var(--color-accent-dark);
+    }
+
+    .hotel-price span {
+      font-size: var(--fs-sm);
+      font-weight: normal;
+      color: var(--color-text-secondary);
+    }
+
+    .hotel-source {
+      font-size: var(--fs-xs);
+      color: var(--color-text-light);
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .hotel-source a {
+      word-break: break-all;
+    }
+
+    /* ============================================
+       RESTAURANT CARDS
+       ============================================ */
+    .restaurant-card {
+      background: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+      border: 1px solid var(--color-border);
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .restaurant-header {
+      background: linear-gradient(135deg, var(--color-accent-dark), var(--color-accent));
+      color: white;
+      padding: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .restaurant-header i {
+      font-size: var(--fs-lg);
+    }
+
+    .restaurant-name {
+      font-weight: 600;
+      font-size: var(--fs-base);
+    }
+
+    .restaurant-location {
+      font-size: var(--fs-xs);
+      opacity: 0.85;
+    }
+
+    .restaurant-body {
+      padding: var(--space-4);
+    }
+
+    .restaurant-dishes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .dish-tag {
+      background: var(--color-accent-bg);
+      color: var(--color-accent-dark);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+      font-size: var(--fs-xs);
+      font-weight: 500;
+    }
+
+    .restaurant-per-head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--fs-base);
+      font-weight: 600;
+      color: var(--color-primary-dark);
+    }
+
+    .restaurant-per-head span {
+      font-size: var(--fs-sm);
+      font-weight: normal;
+      color: var(--color-text-secondary);
+    }
+
+    .restaurant-source {
+      font-size: var(--fs-xs);
+      color: var(--color-text-light);
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    /* ============================================
+       PRACTICAL INFO
+       ============================================ */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+
+    .info-card {
+      background: var(--color-bg-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .info-card h3 {
+      font-size: var(--fs-base);
+      color: var(--color-primary-dark);
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .info-card h3 i {
+      color: var(--color-accent);
+    }
+
+    .info-card ul {
+      list-style: none;
+    }
+
+    .info-card li {
+      padding: var(--space-2) 0;
+      font-size: var(--fs-sm);
+      border-bottom: 1px dashed var(--color-border-light);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .info-card li:last-child {
+      border-bottom: none;
+    }
+
+    .info-card li i {
+      color: var(--color-success);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .info-highlight {
+      background: var(--color-primary-bg);
+      padding: var(--space-3);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-3);
+      font-size: var(--fs-sm);
+      color: var(--color-primary-dark);
+    }
+
+    .info-highlight strong {
+      color: var(--color-accent-dark);
+    }
+
+    /* Checklist */
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--space-2);
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--fs-sm);
+      padding: var(--space-2);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+    }
+
+    .check-item i {
+      color: var(--color-success);
+    }
+
+    /* ============================================
+       REFERENCES
+       ============================================ */
+    .references {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: var(--space-3);
+    }
+
+    .ref-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: var(--color-bg-white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      font-size: var(--fs-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .ref-item:hover {
+      box-shadow: var(--shadow-sm);
+      border-color: var(--color-primary-light);
+    }
+
+    .ref-num {
+      background: var(--color-primary);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .ref-link {
+      word-break: break-all;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .page-footer {
+      background: var(--color-bg-dark);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: var(--space-6);
+      font-size: var(--fs-sm);
+    }
+
+    .page-footer a {
+      color: var(--color-accent-light);
+    }
+
+    /* ============================================
+       LEAFLET POPUP CUSTOM STYLES
+       ============================================ */
+    .leaflet-popup-content-wrapper {
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .leaflet-popup-content {
+      margin: var(--space-3);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+
+    .popup-title {
+      font-weight: 700;
+      font-size: var(--fs-base);
+      margin-bottom: var(--space-2);
+      color: var(--color-primary-dark);
+    }
+
+    .popup-desc {
+      font-size: var(--fs-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .popup-type {
+      display: inline-block;
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-full);
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      margin-top: var(--space-2);
+    }
+
+    .popup-type.transport { background: #FFEBEE; color: #C62828; }
+    .popup-type.hotel { background: #F3E5F5; color: #6A1B9A; }
+    .popup-type.restaurant { background: #FFF3E0; color: #E65100; }
+    .popup-type.attraction { background: #E3F2FD; color: #0D47A1; }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .main-container {
+        grid-template-columns: 1fr;
+        padding: var(--space-4);
+      }
+
+      .timeline-panel {
+        position: static;
+        max-height: none;
+      }
+
+      #map {
+        height: 450px;
+      }
+
+      .header-title {
+        font-size: 1.75rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --fs-xl: 1.5rem;
+        --fs-lg: 1.25rem;
+      }
+
+      .page-header {
+        padding: var(--space-5) var(--space-4);
+      }
+
+      .main-container {
+        padding: var(--space-3);
+        gap: var(--space-4);
+      }
+
+      .content-sections {
+        padding: 0 var(--space-3) var(--space-6);
+      }
+
+      .summary-cards {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+      }
+
+      #map {
+        height: 350px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .references {
+        grid-template-columns: 1fr;
+      }
+
+      .layer-options {
+        gap: var(--space-2);
+      }
+
+      .checklist {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ============================================
+       UTILITY
+       ============================================ */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- =========================================
+       HEADER
+       ========================================= -->
+  <header class="page-header">
+    <div class="header-content">
+      <h1 class="header-title"><i class="fas fa-mountain"></i>三清山端午之旅攻略</h1>
+      <p class="header-date"><i class="far fa-calendar-alt"></i> 2026年6月19日 - 6月21日（三天两晚）</p>
+
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="day">DAY 1 | 6月19日</div>
+          <div class="title">抵达与休整</div>
+          <div class="desc"><i class="fas fa-train"></i> 上饶 → 三清山 → 入住山下酒店</div>
+        </div>
+        <div class="summary-card">
+          <div class="day">DAY 2 | 6月20日</div>
+          <div class="title">全天核心游览</div>
+          <div class="desc"><i class="fas fa-hiking"></i> 南清园 → 阳光海岸 → 西海岸 → 三清宫</div>
+        </div>
+        <div class="summary-card">
+          <div class="day">DAY 3 | 6月21日</div>
+          <div class="title">日出与返程</div>
+          <div class="desc"><i class="fas fa-sun"></i> 玉台日出 → 下山 → 返回上饶</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================
+       MAIN LAYOUT: Timeline + Map
+       ========================================= -->
+  <main class="main-container">
+    <!-- LEFT: Timeline -->
+    <aside class="timeline-panel" id="timeline">
+      <!-- Day 1 -->
+      <div class="timeline-day day-1">
+        <div class="timeline-header active" onclick="toggleTimeline(this)">
+          <div class="day-icon">D1</div>
+          <div class="day-info">
+            <div class="day-name">6月19日（周三）</div>
+            <div class="day-theme">抵达与休整</div>
+          </div>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="timeline-body expanded">
+          <ul class="timeline-list">
+            <li class="timeline-item">
+              <div class="item-time">12:30</div>
+              <div class="item-title"><i class="fas fa-map-marker-alt"></i> 上饶火车站集合</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">13:00</div>
+              <div class="item-title"><i class="fas fa-utensils"></i> 午餐</div>
+              <div class="item-note">火车站附近餐厅，品尝上饶特色菜</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">14:00</div>
+              <div class="item-title"><i class="fas fa-bus"></i> 前往三清山</div>
+              <div class="item-note">旅游巴士或打车，约1.5小时车程</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">16:30</div>
+              <div class="item-title"><i class="fas fa-place-of-worship"></i> 抵达金沙/外双溪服务区</div>
+            </li>
+            <li class="timeline-item lodging">
+              <div class="item-time">17:00</div>
+              <div class="item-title"><i class="fas fa-bed"></i> 入住山下酒店/民宿</div>
+              <div class="item-note">建议提前预订，端午节为旺季</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">18:30</div>
+              <div class="item-title"><i class="fas fa-utensils"></i> 晚餐</div>
+              <div class="item-note">品尝当地特色：土鸡煲、藜蒿炒腊肉</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="timeline-day day-2">
+        <div class="timeline-header" onclick="toggleTimeline(this)">
+          <div class="day-icon">D2</div>
+          <div class="day-info">
+            <div class="day-name">6月20日（周四）</div>
+            <div class="day-theme">全天核心游览</div>
+          </div>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="timeline-body">
+          <ul class="timeline-list">
+            <li class="timeline-item meal">
+              <div class="item-time">07:00</div>
+              <div class="item-title"><i class="fas fa-coffee"></i> 早餐</div>
+              <div class="item-note">酒店内或附近早餐</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">08:00</div>
+              <div class="item-title"><i class="fas fa-cable-car"></i> 乘坐金沙索道上山</div>
+              <div class="item-note">建议早到避开人流高峰</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">09:00</div>
+              <div class="item-title"><i class="fas fa-mountain"></i> 游览南清园景区</div>
+              <div class="item-note">东方女神、巨蟒出山等标志性景观</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">12:00</div>
+              <div class="item-title"><i class="fas fa-utensils"></i> 山上午餐</div>
+              <div class="item-note">简餐、粉面，可自备干粮</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">13:30</div>
+              <div class="item-title"><i class="fas fa-route"></i> 游览阳光海岸栈道</div>
+              <div class="item-note">高空栈道，视野开阔，恐高者需谨慎</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">15:30</div>
+              <div class="item-title"><i class="fas fa-route"></i> 游览西海岸栈道</div>
+              <div class="item-note">全长约4km，沿途可观赏壮丽云海</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">17:00</div>
+              <div class="item-title"><i class="fas fa-torii-gate"></i> 游览三清宫</div>
+              <div class="item-note">道教圣地，海拔约1500米</div>
+            </li>
+            <li class="timeline-item lodging">
+              <div class="item-time">18:00</div>
+              <div class="item-title"><i class="fas fa-bed"></i> 入住山上酒店</div>
+              <div class="item-note">女神宾馆或日上山庄，提前预订</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">19:00</div>
+              <div class="item-title"><i class="fas fa-cloud-sun"></i> 晚餐与休息</div>
+              <div class="item-note">可在附近观赏日落</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="timeline-day day-3">
+        <div class="timeline-header" onclick="toggleTimeline(this)">
+          <div class="day-icon">D3</div>
+          <div class="day-info">
+            <div class="day-name">6月21日（周五）</div>
+            <div class="day-theme">日出与返程</div>
+          </div>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="timeline-body">
+          <ul class="timeline-list">
+            <li class="timeline-item sightseeing">
+              <div class="item-time">05:30</div>
+              <div class="item-title"><i class="fas fa-sun"></i> 早起看日出</div>
+              <div class="item-note">推荐地点：玉台或玉京峰</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">07:00</div>
+              <div class="item-title"><i class="fas fa-coffee"></i> 早餐</div>
+            </li>
+            <li class="timeline-item sightseeing">
+              <div class="item-time">08:00</div>
+              <div class="item-title"><i class="fas fa-camera"></i> 继续游览或准备下山</div>
+              <div class="item-note">可补拍晨景或回顾未看景点</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">10:00</div>
+              <div class="item-title"><i class="fas fa-cable-car"></i> 乘坐索道下山</div>
+            </li>
+            <li class="timeline-item meal">
+              <div class="item-time">11:00</div>
+              <div class="item-title"><i class="fas fa-utensils"></i> 山下午餐</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">12:30</div>
+              <div class="item-title"><i class="fas fa-bus"></i> 乘车返回上饶</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">14:30</div>
+              <div class="item-title"><i class="fas fa-map-marker-alt"></i> 抵达上饶</div>
+            </li>
+            <li class="timeline-item">
+              <div class="item-time">18:00</div>
+              <div class="item-title"><i class="fas fa-home"></i> 晚上返程</div>
+              <div class="item-note">结束愉快的三清山之旅</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: Map -->
+    <div class="map-panel">
+      <div class="layer-panel">
+        <h3><i class="fas fa-layer-group"></i> 图层控制</h3>
+        <div class="layer-options">
+          <label class="layer-toggle layer-day1-route">
+            <input type="checkbox" checked onchange="toggleLayer('routeDay1')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            19日交通
+          </label>
+          <label class="layer-toggle layer-day2-route">
+            <input type="checkbox" checked onchange="toggleLayer('routeDay2')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            20日路线
+          </label>
+          <label class="layer-toggle layer-day3-route">
+            <input type="checkbox" checked onchange="toggleLayer('routeDay3')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            21日路线
+          </label>
+          <label class="layer-toggle layer-hotels">
+            <input type="checkbox" checked onchange="toggleLayer('hotels')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            住宿
+          </label>
+          <label class="layer-toggle layer-restaurants">
+            <input type="checkbox" checked onchange="toggleLayer('restaurants')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            餐饮
+          </label>
+          <label class="layer-toggle layer-attractions">
+            <input type="checkbox" checked onchange="toggleLayer('attractions')">
+            <span class="check-mark"><i class="fas fa-check"></i></span>
+            景点
+          </label>
+        </div>
+      </div>
+
+      <div class="map-wrapper">
+        <div id="map"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================
+       ACCOMMODATION RECOMMENDATIONS
+       ========================================= -->
+  <section class="content-sections">
+    <div>
+      <h2 class="section-title"><i class="fas fa-bed"></i> 住宿推荐</h2>
+      <div class="card-grid">
+        <!-- Hotel 1 -->
+        <article class="hotel-card">
+          <div class="hotel-header">
+            <i class="fas fa-hotel"></i>
+            <div>
+              <div class="hotel-name">三清山希尔顿度假酒店</div>
+              <div class="hotel-location"><i class="fas fa-map-marker-alt"></i> 金沙服务区</div>
+            </div>
+          </div>
+          <div class="hotel-body">
+            <div class="hotel-meta">
+              <span class="hotel-meta-item"><i class="fas fa-star"></i> 高档型</span>
+              <span class="hotel-meta-item"><i class="fas fa-wifi"></i> 免费WiFi</span>
+              <span class="hotel-meta-item"><i class="fas fa-parking"></i> 停车场</span>
+            </div>
+            <div class="hotel-price">400-600 <span>元/晚</span></div>
+            <div class="hotel-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="https://gs.ctrip.com/html5/you/place/159.html" target="_blank" rel="noopener">携程攻略</a>
+              ·
+              <a href="https://my.trip.com/travel-guide/attraction/yushan/sanqingshan-mount-scenic-area-93499" target="_blank" rel="noopener">Trip.com</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Hotel 2 -->
+        <article class="hotel-card">
+          <div class="hotel-header" style="background: linear-gradient(135deg, #1B5E20, #388E3C);">
+            <i class="fas fa-home"></i>
+            <div>
+              <div class="hotel-name">三清山脚下民宿</div>
+              <div class="hotel-location"><i class="fas fa-map-marker-alt"></i> 外双溪服务区</div>
+            </div>
+          </div>
+          <div class="hotel-body">
+            <div class="hotel-meta">
+              <span class="hotel-meta-item"><i class="fas fa-mountain"></i> 山景房</span>
+              <span class="hotel-meta-item"><i class="fas fa-leaf"></i> 农家特色</span>
+              <span class="hotel-meta-item"><i class="fas fa-hands-helping"></i> 老板热情</span>
+            </div>
+            <div class="hotel-price">180-300 <span>元/晚</span></div>
+            <div class="hotel-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="https://m.sr.bendibao.com/jingdian/sanqingshan/" target="_blank" rel="noopener">上饶本地宝</a>
+              ·
+              <a href="https://m.cncn.net/blog/1017597" target="_blank" rel="noopener">CNCN攻略</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Hotel 3 -->
+        <article class="hotel-card">
+          <div class="hotel-header" style="background: linear-gradient(135deg, #E65100, #FF9800);">
+            <i class="fas fa-cloud"></i>
+            <div>
+              <div class="hotel-name">女神宾馆</div>
+              <div class="hotel-location"><i class="fas fa-map-marker-alt"></i> 山上 · 南清园附近</div>
+            </div>
+          </div>
+          <div class="hotel-body">
+            <div class="hotel-meta">
+              <span class="hotel-meta-item"><i class="fas fa-sun"></i> 日出观景</span>
+              <span class="hotel-meta-item"><i class="fas fa-hiking"></i> 步道起点</span>
+              <span class="hotel-meta-item"><i class="fas fa-concierge-bell"></i> 山上唯一宾馆</span>
+            </div>
+            <div class="hotel-price">600-1200 <span>元/晚</span></div>
+            <div class="hotel-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="http://www.sqsfjq.com/" target="_blank" rel="noopener">三清山官方网</a>
+              ·
+              <a href="https://gs.ctrip.com/html5/you/place/159.html" target="_blank" rel="noopener">携程攻略</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Hotel 4 -->
+        <article class="hotel-card">
+          <div class="hotel-header" style="background: linear-gradient(135deg, #4A148C, #9C27B0);">
+            <i class="fas fa-tree"></i>
+            <div>
+              <div class="hotel-name">日上山庄</div>
+              <div class="hotel-location"><i class="fas fa-map-marker-alt"></i> 山上 · 西海岸入口</div>
+            </div>
+          </div>
+          <div class="hotel-body">
+            <div class="hotel-meta">
+              <span class="hotel-meta-item"><i class="fas fa-cloud"></i> 云海观景</span>
+              <span class="hotel-meta-item"><i class="fas fa-utensils"></i> 餐饮服务</span>
+              <span class="hotel-meta-item"><i class="fas fa-route"></i> 路线便利</span>
+            </div>
+            <div class="hotel-price">500-1000 <span>元/晚</span></div>
+            <div class="hotel-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="http://www.sqsfjq.com/" target="_blank" rel="noopener">三清山官方网</a>
+              ·
+              <a href="https://touch.travel.qunar.com/bookElement/7005169/2767340-2" target="_blank" rel="noopener">去哪儿攻略</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- =========================================
+         RESTAURANT RECOMMENDATIONS
+         ========================================= -->
+    <div>
+      <h2 class="section-title"><i class="fas fa-utensils"></i> 餐饮推荐</h2>
+      <div class="card-grid">
+        <!-- Restaurant 1 -->
+        <article class="restaurant-card">
+          <div class="restaurant-header">
+            <i class="fas fa-drumstick-bite"></i>
+            <div>
+              <div class="restaurant-name">三清山土菜馆</div>
+              <div class="restaurant-location"><i class="fas fa-map-marker-alt"></i> 金沙服务区 / 外双溪</div>
+            </div>
+          </div>
+          <div class="restaurant-body">
+            <div class="restaurant-dishes">
+              <span class="dish-tag">土鸡煲</span>
+              <span class="dish-tag">藜蒿炒腊肉</span>
+              <span class="dish-tag">石耳炖鸡汤</span>
+              <span class="dish-tag">竹笋烧肉</span>
+            </div>
+            <div class="restaurant-per-head">
+              <i class="fas fa-yen-sign"></i> 50-80 <span>元/人</span>
+            </div>
+            <div class="restaurant-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="https://m.sr.bendibao.com/jingdian/sanqingshan/" target="_blank" rel="noopener">上饶本地宝</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Restaurant 2 -->
+        <article class="restaurant-card">
+          <div class="restaurant-header" style="background: linear-gradient(135deg, #E65100, #F57C00);">
+            <i class="fas fa-bowl-rice"></i>
+            <div>
+              <div class="restaurant-name">玉山炒粉店</div>
+              <div class="restaurant-location"><i class="fas fa-map-marker-alt"></i> 山下服务区附近</div>
+            </div>
+          </div>
+          <div class="restaurant-body">
+            <div class="restaurant-dishes">
+              <span class="dish-tag">玉山炒粉</span>
+              <span class="dish-tag">苦槠豆腐</span>
+              <span class="dish-tag">灯盏粿</span>
+              <span class="dish-tag">弋阳年糕</span>
+            </div>
+            <div class="restaurant-per-head">
+              <i class="fas fa-yen-sign"></i> 30-50 <span>元/人</span>
+            </div>
+            <div class="restaurant-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="https://m.cncn.net/blog/1017597" target="_blank" rel="noopener">CNCN攻略</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Restaurant 3 -->
+        <article class="restaurant-card">
+          <div class="restaurant-header" style="background: linear-gradient(135deg, #1565C0, #42A5F5);">
+            <i class="fas fa-bread-slice"></i>
+            <div>
+              <div class="restaurant-name">南清园餐厅</div>
+              <div class="restaurant-location"><i class="fas fa-map-marker-alt"></i> 山上 · 南清园景区</div>
+            </div>
+          </div>
+          <div class="restaurant-body">
+            <div class="restaurant-dishes">
+              <span class="dish-tag">山上简餐</span>
+              <span class="dish-tag">方便面</span>
+              <span class="dish-tag">炒粉</span>
+              <span class="dish-tag">矿泉水</span>
+            </div>
+            <div class="restaurant-per-head">
+              <i class="fas fa-yen-sign"></i> 30-50 <span>元/人</span>
+            </div>
+            <div class="restaurant-source">
+              <i class="fas fa-link"></i> 参考来源：
+              <a href="http://www.sqsfjq.com/" target="_blank" rel="noopener">三清山官方网</a>
+              ·
+              <a href="https://gs.ctrip.com/html5/you/place/159.html" target="_blank" rel="noopener">携程攻略</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- =========================================
+         PRACTICAL INFORMATION
+         ========================================= -->
+    <div>
+      <h2 class="section-title"><i class="fas fa-info-circle"></i> 实用信息</h2>
+      <div class="info-grid">
+        <!-- Transport -->
+        <div class="info-card">
+          <h3><i class="fas fa-bus-alt"></i> 交通指南</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> <div><strong>高铁/火车</strong>：到达上饶站，出站后可打车或乘坐景区直通车</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>自驾</strong>：上海/杭州方向经沪昆高速 → 德上高速 → 三清山出口</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>旅游巴士</strong>：上饶火车站有前往三清山的旅游专线车（约1.5小时）</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>打车</strong>：上饶到三清山约80公里，费用约200-300元</div></li>
+          </ul>
+        </div>
+
+        <!-- Tickets -->
+        <div class="info-card">
+          <h3><i class="fas fa-ticket-alt"></i> 门票信息</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> <div><strong>旺季门票</strong>：150元/人（3月1日-12月31日）</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>淡季门票</strong>：130元/人（1月1日-2月底）</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>金沙索道</strong>：往返125元/人（上行70元，下行55元）</div></li>
+            <li><i class="fas fa-check-circle"></i> <div><strong>外双溪索道</strong>：往返125元/人（上行70元，下行55元）</div></li>
+          </ul>
+          <div class="info-highlight">
+            <i class="fas fa-lightbulb"></i> <strong>提示</strong>：端午节属于旺季，建议提前在网上预约购票。学生/老人有优惠。
+          </div>
+        </div>
+
+        <!-- Packing Checklist -->
+        <div class="info-card" style="grid-column: span 2;">
+          <h3><i class="fas fa-suitcase-rolling"></i> 必备物品清单</h3>
+          <div class="checklist">
+            <div class="check-item"><i class="fas fa-check"></i> 身份证</div>
+            <div class="check-item"><i class="fas fa-check"></i> 防晒用品</div>
+            <div class="check-item"><i class="fas fa-check"></i> 驱蚊液</div>
+            <div class="check-item"><i class="fas fa-check"></i> 雨衣/雨具</div>
+            <div class="check-item"><i class="fas fa-check"></i> 登山鞋</div>
+            <div class="check-item"><i class="fas fa-check"></i> 轻便背包</div>
+            <div class="check-item"><i class="fas fa-check"></i> 水壶/保温杯</div>
+            <div class="check-item"><i class="fas fa-check"></i> 高热量零食</div>
+            <div class="check-item"><i class="fas fa-check"></i> 充电宝</div>
+            <div class="check-item"><i class="fas fa-check"></i> 薄外套</div>
+            <div class="check-item"><i class="fas fa-check"></i> 现金</div>
+            <div class="check-item"><i class="fas fa-check"></i> 常用药品</div>
+            <div class="check-item"><i class="fas fa-check"></i> 手套（栈道用）</div>
+            <div class="check-item"><i class="fas fa-check"></i> 手电筒/头灯</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================
+         REFERENCES
+         ========================================= -->
+    <div>
+      <h2 class="section-title"><i class="fas fa-book-open"></i> 参考来源</h2>
+      <div class="references">
+        <div class="ref-item">
+          <span class="ref-num">1</span>
+          <div>
+            <strong>三清山风景名胜区官方网</strong><br>
+            <a class="ref-link" href="http://www.sqsfjq.com/" target="_blank" rel="noopener">http://www.sqsfjq.com/</a>
+          </div>
+        </div>
+        <div class="ref-item">
+          <span class="ref-num">2</span>
+          <div>
+            <strong>携程攻略 - 三清山</strong><br>
+            <a class="ref-link" href="https://gs.ctrip.com/html5/you/place/159.html" target="_blank" rel="noopener">https://gs.ctrip.com/html5/you/place/159.html</a>
+          </div>
+        </div>
+        <div class="ref-item">
+          <span class="ref-num">3</span>
+          <div>
+            <strong>Trip.com - 三清山景区页</strong><br>
+            <a class="ref-link" href="https://my.trip.com/travel-guide/attraction/yushan/sanqingshan-mount-scenic-area-93499" target="_blank" rel="noopener">https://my.trip.com/travel-guide/attraction/yushan/sanqingshan-mount-scenic-area-93499</a>
+          </div>
+        </div>
+        <div class="ref-item">
+          <span class="ref-num">4</span>
+          <div>
+            <strong>去哪儿攻略 - 三清山</strong><br>
+            <a class="ref-link" href="https://touch.travel.qunar.com/bookElement/7005169/2767340-2" target="_blank" rel="noopener">https://touch.travel.qunar.com/bookElement/7005169/2767340-2</a>
+          </div>
+        </div>
+        <div class="ref-item">
+          <span class="ref-num">5</span>
+          <div>
+            <strong>上饶本地宝 - 三清山攻略</strong><br>
+            <a class="ref-link" href="https://m.sr.bendibao.com/jingdian/sanqingshan/" target="_blank" rel="noopener">https://m.sr.bendibao.com/jingdian/sanqingshan/</a>
+          </div>
+        </div>
+        <div class="ref-item">
+          <span class="ref-num">6</span>
+          <div>
+            <strong>CNCN旅游攻略 - 三清山</strong><br>
+            <a class="ref-link" href="https://m.cncn.net/blog/1017597" target="_blank" rel="noopener">https://m.cncn.net/blog/1017597</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+  <footer class="page-footer">
+    <p><i class="fas fa-mountain"></i> 三清山端午之旅攻略 &copy; 2026 | 信息仅供参考，出行前请核实最新信息</p>
+    <p style="margin-top: var(--space-2);">
+      <a href="http://www.sqsfjq.com/" target="_blank" rel="noopener">三清山景区官网</a> |
+      <a href="https://gs.ctrip.com/html5/you/place/159.html" target="_blank" rel="noopener">携程攻略</a> |
+      地图数据 &copy; <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a> contributors
+    </p>
+  </footer>
+
+  <!-- =========================================
+       JAVASCRIPT
+       ========================================= -->
+  <script>
+    // ==========================================
+    // Timeline Toggle
+    // ==========================================
+    function toggleTimeline(header) {
+      const body = header.nextElementSibling;
+      const isExpanded = body.classList.contains('expanded');
+
+      if (isExpanded) {
+        body.classList.remove('expanded');
+        header.classList.remove('active');
+      } else {
+        body.classList.add('expanded');
+        header.classList.add('active');
+      }
+    }
+
+    // ==========================================
+    // Leaflet Map Initialization
+    // ==========================================
+    // Coordinates
+    const COORDS = {
+      shangraoStation:  [28.4576, 117.9727],
+      sanqingshan:      [28.8986, 118.0661],
+      jinshaService:    [28.9160, 118.0700],
+      waishuangxi:      [28.8850, 118.0470],
+      nvshenHotel:      [28.9080, 118.0680],
+      rishanHotel:      [28.9000, 118.0600],
+      nanqingyuan:      [28.9050, 118.0750],
+      sunshineCoast:    [28.9100, 118.0630],
+      westCoast:        [28.9020, 118.0490],
+      sanqingPalace:    [28.9150, 118.0480],
+      yutai:            [28.9080, 118.0780],
+      restaurant1:      [28.9150, 118.0700],
+      restaurant2:      [28.8830, 118.0460],
+      restaurant3:      [28.9050, 118.0740],
+    };
+
+    // Initialize map
+    const map = L.map('map', {
+      zoomControl: true,
+      attributionControl: true
+    }).setView([28.78, 118.02], 11);
+
+    // Add OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+
+    // ==========================================
+    // Custom Icon Factory
+    // ==========================================
+    function createIcon(color, icon, iconColor) {
+      return L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: ${color};
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+          border: 3px solid white;
+        ">
+          <i class="fas fa-${icon}" style="color: ${iconColor || '#fff'}; font-size: 14px;"></i>
+        </div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -20]
+      });
+    }
+
+    // ==========================================
+    // Marker Groups
+    // ==========================================
+    const markerGroups = {
+      hotels:       L.layerGroup(),
+      restaurants:  L.layerGroup(),
+      attractions:  L.layerGroup(),
+      routeDay1:    L.layerGroup(),
+      routeDay2:    L.layerGroup(),
+      routeDay3:    L.layerGroup(),
+    };
+
+    // Helper to add popup
+    function addPopup(layer, title, desc, type) {
+      layer.bindPopup(`
+        <div class="popup-title">${title}</div>
+        <div class="popup-desc">${desc}</div>
+        <span class="popup-type ${type}">${type}</span>
+      `);
+    }
+
+    // --- Hotels ---
+    const hotels = [
+      { name: '三清山希尔顿度假酒店', latlng: COORDS.jinshaService, desc: '高档度假酒店，金沙服务区，400-600元/晚', type: 'hotel' },
+      { name: '三清山脚下民宿', latlng: COORDS.waishuangxi, desc: '外双溪服务区，经济型民宿，180-300元/晚', type: 'hotel' },
+      { name: '女神宾馆', latlng: COORDS.nvshenHotel, desc: '山上住宿，近南清园，600-1200元/晚', type: 'hotel' },
+      { name: '日上山庄', latlng: COORDS.rishanHotel, desc: '山上住宿，近西海岸，500-1000元/晚', type: 'hotel' },
+    ];
+
+    hotels.forEach(h => {
+      const marker = L.marker(h.latlng, {
+        icon: createIcon('#9C27B0', 'bed', '#fff')
+      });
+      addPopup(marker, h.name, h.desc, h.type);
+      markerGroups.hotels.addLayer(marker);
+    });
+
+    // --- Restaurants ---
+    const restaurants = [
+      { name: '三清山土菜馆', latlng: COORDS.restaurant1, desc: '土鸡煲、藜蒿炒腊肉，50-80元/人', type: 'restaurant' },
+      { name: '玉山炒粉店', latlng: COORDS.restaurant2, desc: '玉山炒粉、苦槠豆腐，30-50元/人', type: 'restaurant' },
+      { name: '南清园餐厅', latlng: COORDS.restaurant3, desc: '山上简餐，30-50元/人', type: 'restaurant' },
+    ];
+
+    restaurants.forEach(r => {
+      const marker = L.marker(r.latlng, {
+        icon: createIcon('#FF9800', 'utensils', '#fff')
+      });
+      addPopup(marker, r.name, r.desc, r.type);
+      markerGroups.restaurants.addLayer(marker);
+    });
+
+    // --- Attractions ---
+    const attractions = [
+      { name: '南清园', latlng: COORDS.nanqingyuan, desc: '核心景区，东方女神、巨蟒出山', type: 'attraction' },
+      { name: '阳光海岸栈道', latlng: COORDS.sunshineCoast, desc: '高空玻璃栈道，视野开阔', type: 'attraction' },
+      { name: '西海岸栈道', latlng: COORDS.westCoast, desc: '全长约4km，观赏云海绝佳位置', type: 'attraction' },
+      { name: '三清宫', latlng: COORDS.sanqingPalace, desc: '道教圣地，海拔约1500米', type: 'attraction' },
+      { name: '玉台（日出观景点）', latlng: COORDS.yutai, desc: '观赏日出最佳地点', type: 'attraction' },
+    ];
+
+    attractions.forEach(a => {
+      const marker = L.marker(a.latlng, {
+        icon: createIcon('#2196F3', 'camera', '#fff')
+      });
+      addPopup(marker, a.name, a.desc, a.type);
+      markerGroups.attractions.addLayer(marker);
+    });
+
+    // ==========================================
+    // Route Lines
+    // ==========================================
+    // Route Day 1: 上饶火车站 -> 三清山（金沙）
+    const routeDay1 = L.polyline([
+      COORDS.shangraoStation,
+      [28.6000, 117.9900],  // midpoint
+      COORDS.jinshaService,
+    ], {
+      color: '#F44336',
+      weight: 4,
+      opacity: 0.8,
+      dashArray: '10, 8',
+      lineCap: 'round',
+    });
+
+    addPopup(routeDay1, '6月19日交通路线', '上饶火车站 → 三清山金沙服务区<br>约80公里，车程1.5小时', 'transport');
+    markerGroups.routeDay1.addLayer(routeDay1);
+
+    // Add start/end markers for route 1
+    const startMarker = L.marker(COORDS.shangraoStation, {
+      icon: createIcon('#F44336', 'train', '#fff')
+    });
+    addPopup(startMarker, '上饶火车站（起点）', '6月19日 12:30集合出发', 'transport');
+    markerGroups.routeDay1.addLayer(startMarker);
+
+    // Route Day 2: 金沙索道 -> 南清园 -> 阳光海岸 -> 西海岸 -> 三清宫
+    const routeDay2 = L.polyline([
+      COORDS.jinshaService,
+      COORDS.nanqingyuan,
+      COORDS.sunshineCoast,
+      COORDS.westCoast,
+      COORDS.sanqingPalace,
+      COORDS.nvshenHotel,
+    ], {
+      color: '#1976D2',
+      weight: 4,
+      opacity: 0.8,
+      lineCap: 'round',
+    });
+
+    addPopup(routeDay2, '6月20日游览路线', '金沙索道 → 南清园 → 阳光海岸 → 西海岸 → 三清宫<br>约08:00-18:00', 'attraction');
+    markerGroups.routeDay2.addLayer(routeDay2);
+
+    // Route Day 3: 山上 -> 玉台(日出) -> 下山 -> 三清宫 -> 返回上饶
+    const routeDay3 = L.polyline([
+      COORDS.nvshenHotel,
+      COORDS.yutai,
+      COORDS.nanqingyuan,
+      COORDS.jinshaService,
+      COORDS.shangraoStation,
+    ], {
+      color: '#4CAF50',
+      weight: 4,
+      opacity: 0.8,
+      lineCap: 'round',
+    });
+
+    addPopup(routeDay3, '6月21日返程路线', '玉台日出 → 索道下山 → 返回上饶<br>约05:30-18:00', 'attraction');
+    markerGroups.routeDay3.addLayer(routeDay3);
+
+    // ==========================================
+    // Add all groups to map
+    // ==========================================
+    Object.values(markerGroups).forEach(group => group.addTo(map));
+
+    // Add starting point marker to main map
+    const mainStart = L.marker(COORDS.shangraoStation, {
+      icon: createIcon('#F44336', 'train', '#fff')
+    }).addTo(map);
+    addPopup(mainStart, '上饶火车站', '起点站 | 12:30集合', 'transport');
+
+    // Add main scenic area marker
+    const mainScenic = L.marker(COORDS.sanqingshan, {
+      icon: createIcon('#4CAF50', 'mountain', '#fff')
+    }).addTo(map);
+    addPopup(mainScenic, '三清山风景区', '主景区 | 5A级国家级风景区', 'attraction');
+
+    // ==========================================
+    // Layer Toggle
+    // ==========================================
+    function toggleLayer(layerName) {
+      if (map.hasLayer(markerGroups[layerName])) {
+        map.removeLayer(markerGroups[layerName]);
+      } else {
+        markerGroups[layerName].addTo(map);
+      }
+    }
+
+    // ==========================================
+    // Fit map bounds to show all markers
+    // ==========================================
+    const allBounds = L.latLngBounds([
+      COORDS.shangraoStation,
+      COORDS.jinshaService,
+      COORDS.nvshenHotel,
+      COORDS.nvshenHotel,
+    ]);
+    map.fitBounds(allBounds, { padding: [50, 50] });
+  </script>
+</body>
+</html>
