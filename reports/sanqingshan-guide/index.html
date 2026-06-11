@@ -417,6 +417,13 @@
       border-color: var(--color-success);
     }
 
+    .timeline-item.highlight {
+      background: var(--color-accent-bg);
+      box-shadow: 0 0 0 3px var(--color-accent);
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+    }
+
     .item-time {
       font-weight: 600;
       font-size: var(--fs-sm);
@@ -1209,7 +1216,7 @@
           <label class="layer-toggle layer-day1-route">
             <input type="checkbox" checked onchange="toggleLayer('routeDay1')">
             <span class="check-mark"><i class="fas fa-check"></i></span>
-            19日交通
+            19日路线
           </label>
           <label class="layer-toggle layer-day2-route">
             <input type="checkbox" checked onchange="toggleLayer('routeDay2')">
@@ -1508,20 +1515,32 @@
     // ==========================================
     // Coordinates
     const COORDS = {
-      shangraoStation:  [28.4576, 117.9727],
-      wangxiangu:       [28.4500, 117.9500],  // 忘仙谷景区
-      jinshaService:    [28.9160, 118.0700],  // 三清山金沙索道片区
-      sanqingshan:      [28.8986, 118.0661],  // 三清山风景区
-      nanqingyuan:      [28.9050, 118.0750],  // 南清园
-      sunshineCoast:    [28.9100, 118.0630],  // 阳光海岸
-      westCoast:        [28.9020, 118.0490],  // 西海岸
-      sanqingPalace:    [28.9150, 118.0480],  // 三清宫
-      guifeng:          [28.4000, 117.4300],  // 龟峰景区
-      yiyangStation:    [28.3800, 117.4200],  // 弋阳站（高铁站）
-      hotel:            [28.9160, 118.0700],  // 三清山金沙索道片区酒店
-      restaurant1:      [28.4500, 117.9480],  // 忘仙谷附近餐饮
-      restaurant2:      [28.9160, 118.0720],  // 三清山山下餐饮
-      restaurant3:      [28.4000, 117.4320],  // 龟峰附近餐饮
+      // 交通节点
+      shangraoStation:  [28.4944972, 118.0033222],  // 上饶站（更新）
+      yiyangStation:    [28.4147222, 117.4397222],  // 弋阳站（更新）
+
+      // 景区
+      wangxianValley:   [28.4453, 117.9372],        // 望仙谷景区入口（新增）
+      sanqingshanCenter:[28.895335, 118.066475],    // 三清山景区中心（新增）
+      jinshaService:    [28.87878, 118.06689],      // 金沙索道片区（更新）
+      westCoast:        [28.904393, 118.06025],     // 西海岸（更新）
+      guifengCenter:    [28.318453, 117.42638],     // 龟峰景区入口（新增）
+      guifengWestGate:  [28.318375, 117.399789],    // 龟峰西门（新增）
+
+      // 保留原有坐标
+      nanqingyuan:      [28.9050, 118.0750],        // 南清园（保留）
+      sunshineCoast:    [28.9100, 118.0630],        // 阳光海岸（保留）
+      sanqingPalace:    [28.9150, 118.0480],        // 三清宫（保留）
+
+      // 辅助坐标
+      hotel:            [28.87878, 118.06689],      // 三清山金沙索道片区酒店
+      restaurant1:      [28.4453, 117.9372],        // 忘仙谷附近餐饮
+      restaurant2:      [28.87878, 118.0680],       // 三清山山下餐饮
+      restaurant3:      [28.318453, 117.42638],     // 龟峰附近餐饮
+      // 兼容旧引用
+      wangxiangu:       [28.4453, 117.9372],        // 兼容旧代码
+      sanqingshan:      [28.895335, 118.066475],    // 兼容旧代码
+      guifeng:          [28.318453, 117.42638],     // 兼容旧代码
     };
 
     // Initialize map - center to show the whole trip area
@@ -1630,89 +1649,148 @@
     });
 
     // ==========================================
-    // Route Lines
+    // Route Lines (Segment-based)
     // ==========================================
-    // Route Day 1: 上饶火车站 -> 忘仙谷 -> 三清山金沙索道片区
-    const routeDay1 = L.polyline([
-      COORDS.shangraoStation,
-      COORDS.wangxiangu,
-      COORDS.jinshaService,
-    ], {
-      color: '#F44336',
-      weight: 4,
-      opacity: 0.8,
-        dashArray: '10, 8',
+
+    // Helper: create a clickable polyline segment
+    function createRouteSegment(coords, color, dayNumber, segmentIndex, label, desc) {
+      const polyline = L.polyline(coords, {
+        color: color,
+        weight: 4,
+        opacity: 0.8,
+        dashArray: color === '#F44336' || color === '#4CAF50' ? '10, 8' : null,
         lineCap: 'round',
         interactive: true,
-    });
+      });
 
-    addPopup(routeDay1, '6月19日交通路线', '上饶火车站 → 忘仙谷 → 三清山金沙索道片区<br>约12:30出发，总车程约2.5小时<br><em>点击可跳转到 Day 1 时间线</em>', 'transport');
-    markerGroups.routeDay1.addLayer(routeDay1);
+      addPopup(polyline, label, desc + '<br><em>点击跳转到对应时间节点</em>', 'transport');
 
-    // Add start marker
-    const startMarker = L.marker(COORDS.shangraoStation, {
+      polyline.on('click', function() {
+        focusOnSegment(dayNumber, segmentIndex);
+      });
+
+      // Hover effect
+      polyline.on('mouseover', function() {
+        polyline.setStyle({ weight: 6, opacity: 1 });
+      });
+      polyline.on('mouseout', function() {
+        polyline.setStyle({ weight: 4, opacity: 0.8 });
+      });
+
+      return polyline;
+    }
+
+    // --- Day 1 Segments ---
+    // Segment 0: 上饶站 → 望仙谷 (对应 14:00 前往忘仙谷)
+    const d1s0 = createRouteSegment(
+      [COORDS.shangraoStation, COORDS.wangxianValley],
+      '#F44336', 1, 0,
+      '路段：上饶站 → 望仙谷',
+      '14:00 前往望仙谷，车程约1小时'
+    );
+    markerGroups.routeDay1.addLayer(d1s0);
+
+    // Segment 1: 望仙谷 → 三清山酒店 (对应 18:30 前往酒店)
+    const d1s1 = createRouteSegment(
+      [COORDS.wangxianValley, COORDS.jinshaService],
+      '#F44336', 1, 1,
+      '路段：望仙谷 → 三清山酒店',
+      '18:30 前往酒店，约1.5小时车程'
+    );
+    markerGroups.routeDay1.addLayer(d1s1);
+
+    // Day 1 start marker
+    markerGroups.routeDay1.addLayer(L.marker(COORDS.shangraoStation, {
       icon: createIcon('#F44336', 'train', '#fff')
-    });
-    addPopup(startMarker, '上饶火车站（起点）', '6月19日 12:30集合出发', 'transport');
-    markerGroups.routeDay1.addLayer(startMarker);
+    }).bindPopup('<div class="popup-title">上饶火车站（起点）</div><div class="popup-desc">6月19日 12:30集合出发</div><span class="popup-type transport">transport</span>'));
 
-    // Add 忘仙谷 marker to route
-    const wangxianguMarker = L.marker(COORDS.wangxiangu, {
+    // Day 1 望仙谷 marker
+    markerGroups.routeDay1.addLayer(L.marker(COORDS.wangxianValley, {
       icon: createIcon('#2E7D32', 'water', '#fff')
-    });
-    addPopup(wangxianguMarker, '忘仙谷', '6月19日 15:00-18:00游览<br>悬崖栈道、瀑布灯光秀、夜景', 'attraction');
-    markerGroups.routeDay1.addLayer(wangxianguMarker);
+    }).bindPopup('<div class="popup-title">望仙谷</div><div class="popup-desc">6月19日 15:00-18:00游览<br>悬崖栈道、瀑布灯光秀、夜景</div><span class="popup-type attraction">attraction</span>'));
 
-    // Route Day 2: 金沙索道 -> 南清园 -> 阳光海岸 -> 西海岸 -> 三清宫 -> 返回酒店
-    const routeDay2 = L.polyline([
-      COORDS.jinshaService,
-      COORDS.nanqingyuan,
-      COORDS.sunshineCoast,
-      COORDS.westCoast,
-      COORDS.sanqingPalace,
-      COORDS.hotel,
-    ], {
-      color: '#1976D2',
-      weight: 4,
-      opacity: 0.8,
-      lineCap: 'round',
-      interactive: true,
-    });
+    // --- Day 2 Segments ---
+    // Segment 0: 酒店 → 金沙索道 (对应 08:00 前往索道)
+    const d2s0 = createRouteSegment(
+      [COORDS.hotel, COORDS.jinshaService],
+      '#1976D2', 2, 0,
+      '路段：酒店 → 金沙索道',
+      '08:00 前往金沙索道，步行约5分钟'
+    );
+    markerGroups.routeDay2.addLayer(d2s0);
 
-    addPopup(routeDay2, '6月20日游览路线', '金沙索道 → 南清园 → 阳光海岸 → 西海岸 → 三清宫 → 返回酒店<br>约08:30-17:00<br><em>点击可跳转到 Day 2 时间线</em>', 'attraction');
-    markerGroups.routeDay2.addLayer(routeDay2);
+    // Segment 1: 金沙索道 → 南清园 (对应 08:30 游览南清园)
+    const d2s1 = createRouteSegment(
+      [COORDS.jinshaService, COORDS.nanqingyuan],
+      '#1976D2', 2, 1,
+      '路段：金沙索道 → 南清园',
+      '08:30 游览南清园，核心景区'
+    );
+    markerGroups.routeDay2.addLayer(d2s1);
 
-    // Route Day 3: 酒店 -> 龟峰 -> 弋阳站 -> 上饶站
-    const routeDay3 = L.polyline([
-      COORDS.hotel,
-      COORDS.guifeng,
-      COORDS.yiyangStation,
-      COORDS.shangraoStation,
-    ], {
-      color: '#4CAF50',
-      weight: 4,
-      opacity: 0.8,
-      dashArray: '10, 8',
-      lineCap: 'round',
-      interactive: true,
-    });
+    // Segment 2: 南清园 → 阳光海岸 (对应 13:30 游览阳光海岸)
+    const d2s2 = createRouteSegment(
+      [COORDS.nanqingyuan, COORDS.sunshineCoast],
+      '#1976D2', 2, 2,
+      '路段：南清园 → 阳光海岸',
+      '13:30 游览阳光海岸栈道'
+    );
+    markerGroups.routeDay2.addLayer(d2s2);
 
-    addPopup(routeDay3, '6月21日返程路线', '酒店 → 龟峰 → 弋阳站 → 上饶站<br>G1362次高铁 15:55-16:12<br><em>点击可跳转到 Day 3 时间线</em>', 'transport');
-    markerGroups.routeDay3.addLayer(routeDay3);
+    // Segment 3: 阳光海岸 → 西海岸 (对应 15:30 游览西海岸)
+    const d2s3 = createRouteSegment(
+      [COORDS.sunshineCoast, COORDS.westCoast],
+      '#1976D2', 2, 3,
+      '路段：阳光海岸 → 西海岸',
+      '15:30 游览西海岸栈道'
+    );
+    markerGroups.routeDay2.addLayer(d2s3);
 
-    // Add 龟峰 marker
-    const guifengMarker = L.marker(COORDS.guifeng, {
+    // Segment 4: 西海岸 → 三清宫 (对应 17:00 游览三清宫)
+    const d2s4 = createRouteSegment(
+      [COORDS.westCoast, COORDS.sanqingPalace],
+      '#1976D2', 2, 4,
+      '路段：西海岸 → 三清宫',
+      '17:00 游览三清宫，道教圣地'
+    );
+    markerGroups.routeDay2.addLayer(d2s4);
+
+    // --- Day 3 Segments ---
+    // Segment 0: 酒店 → 龟峰 (对应 08:00 前往龟峰)
+    const d3s0 = createRouteSegment(
+      [COORDS.hotel, COORDS.guifengCenter],
+      '#4CAF50', 3, 0,
+      '路段：酒店 → 龟峰',
+      '08:00 前往龟峰，自驾约1.5小时'
+    );
+    markerGroups.routeDay3.addLayer(d3s0);
+
+    // Segment 1: 龟峰 → 弋阳站 (对应 15:00 前往弋阳站)
+    const d3s1 = createRouteSegment(
+      [COORDS.guifengCenter, COORDS.yiyangStation],
+      '#4CAF50', 3, 1,
+      '路段：龟峰 → 弋阳站',
+      '15:00 前往弋阳站，打车约20分钟'
+    );
+    markerGroups.routeDay3.addLayer(d3s1);
+
+    // Segment 2: 弋阳站 → 上饶站 (对应 15:55 乘坐高铁)
+    const d3s2 = createRouteSegment(
+      [COORDS.yiyangStation, COORDS.shangraoStation],
+      '#4CAF50', 3, 2,
+      '路段：弋阳站 → 上饶站',
+      '15:55 乘坐G1362次高铁，16:12到达'
+    );
+    markerGroups.routeDay3.addLayer(d3s2);
+
+    // Day 3 markers
+    markerGroups.routeDay3.addLayer(L.marker(COORDS.guifengCenter, {
       icon: createIcon('#4CAF50', 'dragon', '#fff')
-    });
-    addPopup(guifengMarker, '龟峰风景区', '6月21日 09:30-13:30游览<br>丹霞地貌，世界自然遗产', 'attraction');
-    markerGroups.routeDay3.addLayer(guifengMarker);
+    }).bindPopup('<div class="popup-title">龟峰风景区</div><div class="popup-desc">6月21日 09:30-13:30游览<br>丹霞地貌，世界自然遗产</div><span class="popup-type attraction">attraction</span>'));
 
-    // Add 弋阳站 marker
-    const yiyangMarker = L.marker(COORDS.yiyangStation, {
+    markerGroups.routeDay3.addLayer(L.marker(COORDS.yiyangStation, {
       icon: createIcon('#4CAF50', 'train', '#fff')
-    });
-    addPopup(yiyangMarker, '弋阳站', '6月21日 15:20抵达<br>15:55乘坐G1362次高铁返回上饶', 'transport');
-    markerGroups.routeDay3.addLayer(yiyangMarker);
+    }).bindPopup('<div class="popup-title">弋阳站</div><div class="popup-desc">6月21日 15:20抵达<br>15:55乘坐G1362次高铁返回上饶</div><span class="popup-type transport">transport</span>'));
 
     // ==========================================
     // Add all groups to map
@@ -1741,59 +1819,70 @@
     // ==========================================
     const allBounds = L.latLngBounds([
       COORDS.shangraoStation,
-      COORDS.wangxiangu,
+      COORDS.wangxianValley,
       COORDS.jinshaService,
-      COORDS.guifeng,
+      COORDS.guifengCenter,
       COORDS.yiyangStation,
     ]);
     map.fitBounds(allBounds, { padding: [50, 50] });
 
     // ==========================================
-    // Route Click → Focus on Timeline Day
+    // Route Click → Focus on Timeline Day (legacy, keep for compatibility)
     // ==========================================
     function focusOnDay(dayNumber) {
-      // 1. Find the day element
       const dayElement = document.querySelector(`.day-${dayNumber}`);
       if (!dayElement) return;
 
       const header = dayElement.querySelector('.timeline-header');
       const body = header.nextElementSibling;
 
-      // 2. Expand if collapsed
       if (!body.classList.contains('expanded')) {
         toggleTimeline(header);
       }
 
-      // 3. Smooth scroll to the day
       dayElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
 
-      // 4. Brief highlight effect
       header.classList.add('highlight');
       setTimeout(() => {
         header.classList.remove('highlight');
       }, 2000);
     }
 
-    routeDay1.on('click', function() { focusOnDay(1); });
-    routeDay2.on('click', function() { focusOnDay(2); });
-    routeDay3.on('click', function() { focusOnDay(3); });
+    // ==========================================
+    // Segment Click → Focus on Specific Timeline Item
+    // ==========================================
+    function focusOnSegment(dayNumber, segmentIndex) {
+      const dayElement = document.querySelector(`.day-${dayNumber}`);
+      if (!dayElement) return;
 
-    // Route hover: change color on mouseover
-    function setRouteHover(route, color) {
-      route.on('mouseover', function() {
-        route.setStyle({ weight: 6, opacity: 1 });
+      const header = dayElement.querySelector('.timeline-header');
+      const body = header.nextElementSibling;
+
+      // Expand if collapsed
+      if (!body.classList.contains('expanded')) {
+        toggleTimeline(header);
+      }
+
+      // Find the timeline items
+      const timelineItems = body.querySelectorAll('.timeline-item');
+      const targetItem = timelineItems[segmentIndex];
+      if (!targetItem) return;
+
+      // Smooth scroll to the target item
+      targetItem.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
       });
-      route.on('mouseout', function() {
-        route.setStyle({ weight: 4, opacity: 0.8 });
-      });
+
+      // Highlight effect
+      targetItem.classList.add('highlight');
+      setTimeout(() => {
+        targetItem.classList.remove('highlight');
+      }, 2000);
     }
-
-    setRouteHover(routeDay1, '#F44336');
-    setRouteHover(routeDay2, '#1976D2');
-    setRouteHover(routeDay3, '#4CAF50');
   </script>
 </body>
 </html>
