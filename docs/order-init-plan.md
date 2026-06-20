@@ -93,10 +93,10 @@ order/
 │   └── 000001_init_schema.down.sql
 │
 ├── deploy/                        # 部署配置
-│   ├── docker/
-│   │   ├── Dockerfile
-│   │   └── docker-compose.yml
-│   └── k8s/                       # Kubernetes (可选)
+│   ├── Containerfile              # All-in-one 容器
+│   ├── Containerfile.order        # 后端容器
+│   ├── Containerfile.order-web    # 前端容器
+│   └── compose.yml                # 容器编排
 │
 ├── docs/                          # 文档
 │   └── api/                       # API 文档
@@ -132,8 +132,8 @@ order/
 # ==================== 初始化 ====================
 init:                   # 初始化项目
   go mod init
-  pnpm install
-  docker-compose up -d postgres
+  cd web && pnpm install
+  podman-compose -f deploy/compose.yml up -d postgres
 
 # ==================== 代码生成 ====================
 proto:                  # 编译 protobuf
@@ -148,23 +148,36 @@ dev-server:             # 启动后端 (hot-reload)
   air -c .air.toml
 
 dev-web:                # 启动前端
-  cd app/web && pnpm dev
-
-dev-admin:              # 启动管理后台
-  cd app/admin && pnpm dev
+  cd web && pnpm dev
 
 # ==================== 构建 ====================
 build:                  # 构建全部
-  make build-server build-web build-admin
+  make build-server build-web
 
 build-server:           # 构建后端
   go build -o bin/server cmd/server/main.go
 
 build-web:              # 构建前端
-  cd app/web && pnpm build
+  cd web && pnpm build
 
-build-admin:            # 构建管理后台
-  cd app/admin && pnpm build
+# ==================== 容器化 ====================
+docker-build:           # 构建所有容器
+  make docker-build-server docker-build-web docker-build-allinone
+
+docker-build-server:    # 构建后端容器
+  buildah build -t order-server -f deploy/Containerfile.order .
+
+docker-build-web:       # 构建前端容器
+  buildah build -t order-web -f deploy/Containerfile.order-web .
+
+docker-build-allinone:  # 构建 all-in-one 容器
+  buildah build -t order -f deploy/Containerfile .
+
+docker-up:              # 启动容器
+  podman-compose -f deploy/compose.yml up -d
+
+docker-down:            # 停止容器
+  podman-compose -f deploy/compose.yml down
 
 # ==================== 数据库 ====================
 migrate-up:             # 运行迁移
@@ -179,13 +192,208 @@ migrate-create:         # 创建新迁移
 # ==================== 检查 ====================
 lint:                   # 代码检查
   golangci-lint run
-  cd app/web && pnpm lint
-  cd app/admin && pnpm lint
+  cd web && pnpm lint
 
 test:                   # 运行测试
   go test ./...
-  cd app/web && pnpm test
-  cd app/admin && pnpm test
+  cd web && pnpm test
+```
+
+---
+
+## 容器化配置
+
+### Containerfile.order (后端)
+
+```dockerfile
+# 构建阶段
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /build
+
+# 依赖缓存
+COPY go.mod go.sum ./
+RUN go mod download
+
+# 编译
+COPY . .
+RUN CGO_ENABLED=0 go build -o /order-server cmd/server/main.go
+
+# 运行阶段
+FROM alpine:3.19
+
+RUN apk add --no-cache ca-certificates tzdata
+ENV TZ=Asia/Shanghai
+
+COPY --from=builder /order-server /usr/local/bin/order-server
+COPY migrations /app/migrations
+
+WORKDIR /app
+EXPOSE 8080
+
+ENTRYPOINT ["order-server"]
+```
+
+### Containerfile.order-web (前端)
+
+```dockerfile
+# 构建阶段
+FROM node:20-alpine AS builder
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /build
+
+# 依赖缓存
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# 构建
+COPY web/ .
+RUN pnpm build
+
+# 运行阶段 (静态文件)
+FROM nginx:alpine
+
+COPY --from=builder /build/build /usr/share/nginx/html
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+```
+
+### Containerfile (All-in-One)
+
+```dockerfile
+# 构建阶段 - 后端
+FROM golang:1.22-alpine AS server-builder
+
+WORKDIR /build
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /order-server cmd/server/main.go
+
+# 构建阶段 - 前端
+FROM node:20-alpine AS web-builder
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /build
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY web/ .
+RUN pnpm build
+
+# 运行阶段
+FROM alpine:3.19
+
+RUN apk add --no-cache ca-certificates tzdata nginx supervisor
+ENV TZ=Asia/Shanghai
+
+# 后端
+COPY --from=server-builder /order-server /usr/local/bin/order-server
+COPY migrations /app/migrations
+
+# 前端
+COPY --from=web-builder /build/build /var/www/html
+
+# 配置
+COPY deploy/nginx.conf /etc/nginx/http.d/default.conf
+COPY deploy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+WORKDIR /app
+EXPOSE 80 8080
+
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+```
+
+### compose.yml
+
+```yaml
+version: '3.8'
+
+services:
+  # ==================== 基础设施 ====================
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-order}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-order123}
+      POSTGRES_DB: ${DB_NAME:-order}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-order}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==================== 应用服务 ====================
+  
+  # 分离部署模式
+  server:
+    build:
+      context: .
+      dockerfile: deploy/Containerfile.order
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-order}
+      DB_PASSWORD: ${DB_PASSWORD:-order123}
+      DB_NAME: ${DB_NAME:-order}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - split
+
+  web:
+    build:
+      context: .
+      dockerfile: deploy/Containerfile.order-web
+    ports:
+      - "3000:80"
+    profiles:
+      - split
+
+  # All-in-One 模式
+  order:
+    build:
+      context: .
+      dockerfile: deploy/Containerfile
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-order}
+      DB_PASSWORD: ${DB_PASSWORD:-order123}
+      DB_NAME: ${DB_NAME:-order}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+    ports:
+      - "80:80"
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - allinone
+
+volumes:
+  pgdata:
+```
+
+### 使用方式
+
+```bash
+# 分离部署 (开发/独立扩展)
+podman-compose -f deploy/compose.yml --profile split up -d
+
+# All-in-One 部署 (简单/单机)
+podman-compose -f deploy/compose.yml --profile allinone up -d
 ```
 
 ---
