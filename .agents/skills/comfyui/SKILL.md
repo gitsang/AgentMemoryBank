@@ -323,6 +323,37 @@ comfy run img2img_basic.json \
 
 ---
 
+## 模型与工作流说明
+
+### Flux 模型
+
+使用 Flux 工作流时需要准备以下模型：
+
+| 组件 | 节点 | 模型示例 | 存放路径 |
+|------|------|----------|----------|
+| UNET | `UnetLoaderGGUF` | `flux1-dev-Q4_K_S.gguf` | `models/unet/` 或 `models/diffusion_models/` |
+| CLIP-L | `DualCLIPLoader` | `clip_l.safetensors` | `models/text_encoders/` 或 `models/clip/` |
+| T5-XXL | `DualCLIPLoader` | `t5xxl_fp16.safetensors` | `models/text_encoders/` 或 `models/clip/` |
+| VAE | `VAELoader` | `ae.safetensors` | `models/vae/` |
+
+Flux 工作流要点：
+- 使用 `DualCLIPLoader`（type=`flux`）同时加载 CLIP-L + T5-XXL
+- 使用 `CLIPTextEncodeFlux` 编码提示词，`guidance` 默认 3.5
+- KSampler 的 `cfg` 必须固定为 1.0
+- negative 输入必须使用 `ConditioningZeroOut`，不能复用 positive
+
+### 中文提示词
+
+Flux 的 T5-XXL/CLIP-L 对中文理解较弱，中文提示词容易产生偏离主题的随机图像。**使用 Flux 工作流时，如果用户用中文描述，请先将提示词翻译成英文，再填入 `{{prompt}}`。**
+
+示例：
+- 用户：`/comfyui txt2img 一只猫坐在窗台上`
+- 实际填入：`a cute fluffy cat sitting on a sunny windowsill, photorealistic, high detail`
+
+SD 1.5 / SDXL 模型对中文支持相对较好，可保留中文或按需翻译。
+
+---
+
 ## 常见问题
 
 ### Q: 如何查看服务器有哪些模型？

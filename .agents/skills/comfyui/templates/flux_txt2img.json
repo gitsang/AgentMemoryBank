@@ -23,6 +23,12 @@
     }
   },
   "4": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": ["3", 0]
+    }
+  },
+  "5": {
     "class_type": "EmptyFlux2LatentImage",
     "inputs": {
       "width": "{{width}}",
@@ -30,13 +36,13 @@
       "batch_size": "{{batch_size}}"
     }
   },
-  "5": {
+  "6": {
     "class_type": "KSampler",
     "inputs": {
       "model": ["1", 0],
       "positive": ["3", 0],
-      "negative": ["3", 0],
-      "latent_image": ["4", 0],
+      "negative": ["4", 0],
+      "latent_image": ["5", 0],
       "seed": "{{seed}}",
       "steps": "{{steps}}",
       "cfg": 1.0,
@@ -45,24 +51,24 @@
       "denoise": 1.0
     }
   },
-  "8": {
+  "7": {
     "class_type": "VAELoader",
     "inputs": {
       "vae_name": "ae.safetensors"
     }
   },
-  "6": {
+  "8": {
     "class_type": "VAEDecode",
     "inputs": {
-      "samples": ["5", 0],
-      "vae": ["8", 0]
+      "samples": ["6", 0],
+      "vae": ["7", 0]
     }
   },
-  "7": {
+  "9": {
     "class_type": "SaveImage",
     "inputs": {
       "filename_prefix": "flux_output",
-      "images": ["6", 0]
+      "images": ["8", 0]
     }
   }
 }

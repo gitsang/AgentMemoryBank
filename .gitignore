@@ -10,6 +10,7 @@ __pycache__/
 # Assets
 yt-video
 comfyui-output
+plan
 
 # Agents
 .sisyphus

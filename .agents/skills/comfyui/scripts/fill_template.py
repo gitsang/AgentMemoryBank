@@ -7,14 +7,32 @@ import json
 from pathlib import Path
 
 
+def _coerce(value: str):
+    if value.lower() == "true":
+        return True
+    if value.lower() == "false":
+        return False
+    if value.lower() in ("none", "null"):
+        return None
+    try:
+        if "." in value or "e" in value.lower():
+            return float(value)
+        return int(value)
+    except ValueError:
+        return value
+
+
 def fill_template(template_path: str, variables: dict) -> dict:
-    """读取模板并替换占位符"""
     with open(template_path, "r") as f:
         content = f.read()
 
     for key, value in variables.items():
         placeholder = "{{" + key + "}}"
-        content = content.replace(placeholder, str(value))
+        coerced = _coerce(value)
+        if isinstance(coerced, str):
+            content = content.replace(placeholder, coerced)
+        else:
+            content = content.replace(f'"{placeholder}"', json.dumps(coerced))
 
     return json.loads(content)
 
