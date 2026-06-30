@@ -20,7 +20,7 @@ defaults:
 output:
   dir: "./comfyui-output"       # 输出目录
   auto_download: true           # 是否自动下载结果
-  preview: "auto"               # 预览方式：auto | xdg-open | open | none
+  preview: "feh"                # 预览方式：feh | xdg-open | open | auto | none
 
 # 工作流配置
 workflows:
