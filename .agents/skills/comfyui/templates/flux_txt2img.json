@@ -1,16 +1,15 @@
 {
   "1": {
-    "class_type": "UNETLoader",
+    "class_type": "UnetLoaderGGUF",
     "inputs": {
-      "unet_name": "FLUX1/flux1-dev-Q4_K_S.gguf",
-      "weight_dtype": "default"
+      "unet_name": "FLUX1/flux1-dev-Q4_K_S.gguf"
     }
   },
   "2": {
     "class_type": "DualCLIPLoader",
     "inputs": {
-      "clip_name1": "google-flan-t5-large/model.safetensors",
-      "clip_name2": "google-flan-t5-large/model.safetensors",
+      "clip_name1": "t5xxl_fp16.safetensors",
+      "clip_name2": "t5xxl_fp16.safetensors",
       "type": "flux"
     }
   },
@@ -46,11 +45,17 @@
       "denoise": 1.0
     }
   },
+  "8": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
   "6": {
     "class_type": "VAEDecode",
     "inputs": {
       "samples": ["5", 0],
-      "vae": ["1", 1]
+      "vae": ["8", 0]
     }
   },
   "7": {
