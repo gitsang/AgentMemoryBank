@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "title": "FLUX MrFlow - Multi-Resolution Flow Matching (Training-Free 8x Speedup)",
+    "description": "Stage 1: 12-step low-res (512) structure generation → Stage 2: RealESRGAN x2 pixel-space SR → Stage 3: noise injection (σ=0.12) → Stage 4: 1-step high-res (1024) refinement. No training required.",
+    "paper": "https://arxiv.org/abs/2607.01642",
+    "repo": "https://github.com/Xingyu-Zheng/MrFlow"
+  },
+  "1": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "FLUX1/flux1-dev-Q4_K_S.gguf"
+    }
+  },
+  "2": {
+    "class_type": "DualCLIPLoader",
+    "inputs": {
+      "clip_name1": "clip_l.safetensors",
+      "clip_name2": "t5xxl_fp16.safetensors",
+      "type": "flux"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncodeFlux",
+    "inputs": {
+      "clip": ["2", 0],
+      "clip_l": "{{prompt}}",
+      "t5xxl": "{{prompt}}",
+      "guidance": 3.5
+    }
+  },
+  "4": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": ["3", 0]
+    }
+  },
+  "5": {
+    "class_type": "EmptyFlux2LatentImage",
+    "inputs": {
+      "width": "{{width}}",
+      "height": "{{height}}",
+      "batch_size": "{{batch_size}}"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["3", 0],
+      "negative": ["4", 0],
+      "latent_image": ["5", 0],
+      "seed": "{{seed}}",
+      "steps": "{{steps}}",
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "7": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["6", 0],
+      "vae": ["7", 0]
+    }
+  },
+  "9": {
+    "class_type": "UpscaleModelLoader",
+    "inputs": {
+      "model_name": "RealESRGAN_x2plus.pth"
+    }
+  },
+  "10": {
+    "class_type": "ImageUpscaleWithModel",
+    "inputs": {
+      "upscale_model": ["9", 0],
+      "image": ["8", 0]
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mrflow_stage1_lowres",
+      "images": ["8", 0]
+    }
+  },
+  "12": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mrflow_stage2_upscaled",
+      "images": ["10", 0]
+    }
+  },
+  "13": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": ["10", 0],
+      "vae": ["7", 0]
+    }
+  },
+  "14": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["3", 0],
+      "negative": ["4", 0],
+      "latent_image": ["13", 0],
+      "seed": "{{seed}}",
+      "steps": 1,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.12
+    }
+  },
+  "15": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["14", 0],
+      "vae": ["7", 0]
+    }
+  },
+  "16": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mrflow_stage3_refined",
+      "images": ["15", 0]
+    }
+  }
+}
