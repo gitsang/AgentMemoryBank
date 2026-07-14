@@ -781,20 +781,12 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>行程地图</h2>
-        <p>行程所有地点标注在 Google 地图上，按天分色。坐标通过 Places API (New) 实时查询，非预设数据。点击标记查看详情。</p>
+        <p>行程所有地点标注在地图上，按天分色。坐标来自 fly.ai 实时数据，无需 API Key。点击标记查看详情。</p>
       </div>
-      <div id="map-key-bar" style="margin-bottom:16px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);">
-        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">需要 Google Maps API Key 才能加载地图。<a href="https://mapsplatform.google.com/maps-demo-key?utm_campaign=gmp_git_agentskills_v1" target="_blank" rel="noopener">免费获取 Demo Key »</a>（Google 账号登录即可，无需绑卡）</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <input type="password" id="gmaps-key-input" placeholder="粘贴 Google Maps API Key" style="flex:1;min-width:240px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:var(--font-mono);">
-          <button id="load-map-btn" style="padding:10px 20px;background:var(--accent);color:var(--accent-on);border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;">加载地图</button>
-        </div>
-      </div>
-      <div id="map-legend" style="display:none;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
-      <div id="gmap" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);display:none;"></div>
-      <div id="map-loading" style="display:none;text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;">正在通过 Places API 查询地点坐标…</div>
+      <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
+      <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
       <div id="map-status" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地点数据来源：Google Maps Platform · Places API (New) · 坐标为 API 实时查询结果</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标数据来源：fly.ai 实时查询 · 无需 API Key</p>
     </div>
   </section>
 
@@ -824,141 +816,79 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
   </div>
 </footer>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const TRIP_POIS = [
-  { name: '香港国际机场', day: 1, type: 'transport' },
-  { name: '香港沙田万怡酒店 Courtyard by Marriott Hong Kong Sha Tin', day: 1, type: 'lodging' },
-  { name: '星光大道 香港', day: 2, type: 'attraction' },
-  { name: '香港太空馆', day: 2, type: 'attraction' },
-  { name: '香港历史博物馆', day: 2, type: 'attraction' },
-  { name: '海港城 香港', day: 2, type: 'attraction' },
-  { name: '香港海事博物馆', day: 2, type: 'attraction' },
-  { name: '天星小轮 天星码头', day: 2, type: 'transport' },
-  { name: '香港故宫文化博物馆', day: 3, type: 'attraction' },
-  { name: 'M+博物馆 香港', day: 3, type: 'attraction' },
-  { name: '西九龙艺术公园', day: 3, type: 'attraction' },
-  { name: '文武庙 上环', day: 4, type: 'attraction' },
-  { name: '中环半山自动扶梯', day: 4, type: 'attraction' },
-  { name: '大富翁梦想世界 山顶广场', day: 4, type: 'attraction' },
-  { name: '凌霄阁摩天台428 太平山顶', day: 4, type: 'attraction' },
-  { name: '香港迪士尼乐园', day: 5, type: 'attraction' },
-  { name: '旺角女人街', day: 6, type: 'attraction' },
-  { name: '鸭灵号 尖沙咀', day: 6, type: 'attraction' },
-  { name: '香港西九龙站', day: 6, type: 'transport' },
+  { name: '香港国际机场', day: 1, type: 'transport', lat: 22.3080, lng: 113.9185, addr: '赤鱲角' },
+  { name: '香港沙田万怡酒店', day: 1, type: 'lodging', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号' },
+  { name: '星光大道', day: 2, type: 'attraction', lat: 22.2930, lng: 114.1742, addr: '尖沙咀星光大道' },
+  { name: '香港太空馆', day: 2, type: 'attraction', lat: 22.2942, lng: 114.1720, addr: '尖沙咀梳士巴利道10号' },
+  { name: '香港历史博物馆', day: 2, type: 'attraction', lat: 22.3018, lng: 114.1773, addr: '尖沙咀漆咸道南100号' },
+  { name: '海港城', day: 2, type: 'attraction', lat: 22.2945, lng: 114.1668, addr: '尖沙咀广东道' },
+  { name: '香港海事博物馆', day: 2, type: 'attraction', lat: 22.2862, lng: 114.1619, addr: '中环民光街' },
+  { name: '天星小轮码头', day: 2, type: 'transport', lat: 22.2938, lng: 114.1691, addr: '尖沙咀天星码头' },
+  { name: '香港故宫文化博物馆', day: 3, type: 'attraction', lat: 22.3048, lng: 114.1668, addr: '西九文化区博物馆道8号' },
+  { name: 'M+博物馆', day: 3, type: 'attraction', lat: 22.3035, lng: 114.1710, addr: '西九文化区博物馆道38号' },
+  { name: '西九龙艺术公园', day: 3, type: 'attraction', lat: 22.3016, lng: 114.1638, addr: '西九文化区海滨' },
+  { name: '文武庙', day: 4, type: 'attraction', lat: 22.2839, lng: 114.1502, addr: '上环荷李活道124号' },
+  { name: '中环半山自动扶梯', day: 4, type: 'attraction', lat: 22.2823, lng: 114.1547, addr: '中环半山' },
+  { name: '大富翁梦想世界', day: 4, type: 'attraction', lat: 22.2701, lng: 114.1497, addr: '山顶广场3楼' },
+  { name: '凌霄阁摩天台428', day: 4, type: 'attraction', lat: 22.2706, lng: 114.1496, addr: '太平山顶' },
+  { name: '香港迪士尼乐园', day: 5, type: 'attraction', lat: 22.3126, lng: 114.0422, addr: '大屿山竹篙湾' },
+  { name: '旺角女人街', day: 6, type: 'attraction', lat: 22.3186, lng: 114.1718, addr: '旺角通菜街' },
+  { name: '鸭灵号帆船', day: 6, type: 'attraction', lat: 22.2889, lng: 114.1739, addr: '尖沙咀东一号梯台' },
+  { name: '香港西九龙站', day: 6, type: 'transport', lat: 22.3028, lng: 114.1622, addr: '西九龙柯士甸道' },
 ];
 
 const DAY_COLORS = {
   1: '#2f6feb', 2: '#17a34a', 3: '#7c3aed',
   4: '#e8740c', 5: '#dc2626', 6: '#0891b2',
 };
+const TYPE_ICONS = {
+  transport: '✈️', lodging: '🏨', attraction: '★',
+};
 
-document.getElementById('load-map-btn').addEventListener('click', function() {
-  const key = document.getElementById('gmaps-key-input').value.trim();
-  if (!key) { alert('请输入 Google Maps API Key'); return; }
-  document.getElementById('map-key-bar').style.display = 'none';
-  document.getElementById('gmap').style.display = 'block';
-  document.getElementById('map-loading').style.display = 'block';
-  const s = document.createElement('script');
-  s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&v=weekly&libraries=places,marker&language=zh-CN&region=HK&callback=initTripMap';
-  s.async = true;
-  s.onerror = function() {
-    document.getElementById('map-loading').innerHTML = '地图加载失败，请检查 API Key 是否正确，以及网络是否能访问 Google 服务。';
-  };
-  document.head.appendChild(s);
+const map = L.map('leaflet-map').setView([22.3193, 114.1694], 12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 19,
+}).addTo(map);
+
+const legend = document.getElementById('map-legend');
+for (let d = 1; d <= 6; d++) {
+  const item = document.createElement('span');
+  item.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:' + DAY_COLORS[d] + ';margin-right:4px;vertical-align:middle;"></span>D' + d;
+  legend.appendChild(item);
+}
+
+const group = L.featureGroup();
+
+TRIP_POIS.forEach(function(poi) {
+  const icon = L.divIcon({
+    html: '<div style="background:' + DAY_COLORS[poi.day] + ';color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">' + TYPE_ICONS[poi.type] + '</div>',
+    className: 'trip-marker',
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14],
+  });
+
+  const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(group);
+  marker.bindPopup(
+    '<div style="min-width:160px;">' +
+    '<strong>' + poi.name + '</strong>' +
+    '<br><span style="color:#666;font-size:12px;">' + poi.addr + '</span>' +
+    '<br><span style="font-size:12px;color:' + DAY_COLORS[poi.day] + ';">Day ' + poi.day + '</span>' +
+    '</div>'
+  );
 });
 
-async function initTripMap() {
-  try {
-    const { Map, InfoWindow } = await google.maps.importLibrary('maps');
-    const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary('marker');
-    const { Place } = await google.maps.importLibrary('places');
+group.addTo(map);
+map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
-    const map = new Map(document.getElementById('gmap'), {
-      center: { lat: 22.3193, lng: 114.1694 },
-      zoom: 12,
-      mapId: 'DEMO_MAP_ID',
-      language: 'zh-CN',
-      region: 'HK',
-    });
-
-    const infoWindow = new InfoWindow();
-    const bounds = new google.maps.LatLngBounds();
-    let found = 0, failed = 0;
-
-    // Legend
-    const legend = document.getElementById('map-legend');
-    legend.style.display = 'flex';
-    for (let d = 1; d <= 6; d++) {
-      const item = document.createElement('span');
-      item.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:' + DAY_COLORS[d] + ';margin-right:4px;vertical-align:middle;"></span>D' + d;
-      legend.appendChild(item);
-    }
-
-    const results = await Promise.allSettled(TRIP_POIS.map(async function(poi) {
-      const request = {
-        textQuery: poi.name,
-        fields: ['displayName', 'location', 'formattedAddress'],
-        language: 'zh-CN',
-        region: 'HK',
-        internalUsageAttributionIds: ['gmp_git_agentskills_v1'],
-      };
-      const response = await Place.searchByText(request);
-      if (response.places && response.places.length > 0) {
-        return { poi: poi, place: response.places[0] };
-      }
-      throw new Error('Not found: ' + poi.name);
-    }));
-
-    for (const r of results) {
-      if (r.status !== 'fulfilled') { failed++; continue; }
-      const { poi, place } = r.value;
-      const position = place.location;
-      if (!position) { failed++; continue; }
-
-      const pin = new PinElement({
-        glyphText: 'D' + poi.day,
-        background: DAY_COLORS[poi.day],
-        borderColor: DAY_COLORS[poi.day],
-        glyphColor: '#ffffff',
-      });
-
-      const marker = new AdvancedMarkerElement({
-        map: map,
-        position: position,
-        content: pin.element,
-        title: place.displayName || poi.name,
-      });
-
-      marker.addEventListener('click', function() {
-        infoWindow.setContent(
-          '<div style="padding:8px;min-width:180px;">' +
-          '<strong>' + (place.displayName || poi.name) + '</strong>' +
-          (place.formattedAddress ? '<br><span style="color:#666;font-size:12px;">' + place.formattedAddress + '</span>' : '') +
-          '<br><span style="font-size:12px;color:' + DAY_COLORS[poi.day] + ';">Day ' + poi.day + '</span>' +
-          '</div>'
-        );
-        infoWindow.open({ anchor: marker, map: map });
-      });
-
-      bounds.extend(position);
-      found++;
-    }
-
-    if (found > 0) {
-      map.fitBounds(bounds, { top: 60, right: 60, bottom: 60, left: 60 });
-    }
-
-    document.getElementById('map-loading').style.display = 'none';
-    document.getElementById('map-status').textContent =
-      '已标注 ' + found + '/' + TRIP_POIS.length + ' 个地点' +
-      (failed > 0 ? '（' + failed + ' 个未找到，可能需要更精确的搜索词）' : ' ✓') +
-      ' · 数据来源：Google Maps Platform Places API (New)';
-  } catch (err) {
-    document.getElementById('map-loading').style.display = 'none';
-    document.getElementById('map-status').textContent = '地图初始化失败：' + (err.message || err);
-    console.error(err);
-  }
-}
+document.getElementById('map-status').textContent =
+  '已标注 ' + TRIP_POIS.length + ' 个地点 ✓ · 坐标来自 fly.ai 实时查询数据';
 </script>
 
 </body>
