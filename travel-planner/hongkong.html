@@ -148,6 +148,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#checklist">清单</a>
     </nav>
   </div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);"></div>
 </header>
 
 <main>
@@ -576,7 +577,10 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <p>行程所有地点标注在地图上，按天分色。坐标来自 fly.ai 实时数据，无需 API Key。点击标记查看详情。</p>
       </div>
       <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
-      <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
+      <div style="position:relative;">
+        <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
+        <button id="map-fullscreen-btn" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
+      </div>
       <div id="map-status" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
       <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标数据来源：fly.ai 实时查询 · 无需 API Key</p>
     </div>
@@ -1085,6 +1089,49 @@ map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
 document.getElementById('map-status').textContent =
   '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家酒店 ✓ · 点击图例可隐藏/显示 · 坐标来自 fly.ai 实时查询数据';
+</script>
+
+<script>
+fetch('https://api.github.com/repos/gitsang/AgentMemoryBank/commits?path=travel-planner/hongkong.html&per_page=1')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data && data[0] && data[0].commit && data[0].commit.committer) {
+      var d = new Date(data[0].commit.committer.date);
+      var el = document.getElementById('last-updated');
+      if (el) el.textContent = '最后更新：' + d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) + ' · via GitHub';
+    }
+  })
+  .catch(function() {});
+
+document.getElementById('map-fullscreen-btn').addEventListener('click', function() {
+  var mapEl = document.getElementById('leaflet-map');
+  var wrapper = mapEl.parentElement;
+  if (!document.fullscreenElement) {
+    if (wrapper.requestFullscreen) {
+      wrapper.requestFullscreen();
+    } else if (wrapper.webkitRequestFullscreen) {
+      wrapper.webkitRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+});
+
+document.addEventListener('fullscreenchange', function() {
+  var btn = document.getElementById('map-fullscreen-btn');
+  var mapEl = document.getElementById('leaflet-map');
+  if (document.fullscreenElement) {
+    mapEl.style.height = '100vh';
+    mapEl.style.borderRadius = '0';
+    btn.textContent = '✕ 退出全屏';
+  } else {
+    mapEl.style.height = '600px';
+    mapEl.style.borderRadius = 'var(--radius-md)';
+    btn.textContent = '⛶ 全屏';
+  }
+  setTimeout(function() { if (typeof map !== 'undefined') map.invalidateSize(); }, 200);
+});
 </script>
 
 </body>
