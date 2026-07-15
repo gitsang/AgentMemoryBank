@@ -923,10 +923,55 @@ HOTELS.forEach(function(hotel) {
 });
 
 group.addTo(map);
+
+const routeLayer = L.layerGroup();
+let routesVisible = true;
+
+function drawRoutes() {
+  routeLayer.clearLayers();
+  for (let d = 1; d <= 6; d++) {
+    const dayPois = TRIP_POIS.filter(p => p.day === d);
+    if (dayPois.length < 2) continue;
+    for (let i = 0; i < dayPois.length - 1; i++) {
+      const a = dayPois[i], b = dayPois[i + 1];
+      const isTransport = a.type === 'transport' || b.type === 'transport';
+      L.polyline([[a.lat, a.lng], [b.lat, b.lng]], {
+        color: DAY_COLORS[d],
+        weight: 3,
+        opacity: 0.7,
+        dashArray: isTransport ? '8 6' : null,
+        lineCap: 'round',
+      }).addTo(routeLayer);
+    }
+  }
+  if (routesVisible) routeLayer.addTo(map);
+}
+
+drawRoutes();
+
 map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
+const routeLegend = document.createElement('span');
+routeLegend.innerHTML = '<span style="display:inline-block;width:16px;height:3px;background:#2f6feb;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>乘车路线<span style="display:inline-block;width:16px;height:3px;background:#999;margin-left:8px;margin-right:4px;vertical-align:middle;border-radius:2px;border-top:2px dashed #999;"></span>虚线=交通换乘';
+legend.appendChild(routeLegend);
+
+const toggleBtn = document.createElement('button');
+toggleBtn.textContent = '隐藏路线';
+toggleBtn.style.cssText = 'margin-left:auto;padding:4px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--fg);font-size:12px;cursor:pointer;';
+toggleBtn.onclick = function() {
+  routesVisible = !routesVisible;
+  if (routesVisible) {
+    routeLayer.addTo(map);
+    toggleBtn.textContent = '隐藏路线';
+  } else {
+    map.removeLayer(routeLayer);
+    toggleBtn.textContent = '显示路线';
+  }
+};
+legend.appendChild(toggleBtn);
+
 document.getElementById('map-status').textContent =
-  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + HOTELS.length + ' 家万豪酒店 ✓ · 坐标来自 fly.ai 实时查询数据';
+  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + HOTELS.length + ' 家万豪酒店 + ' + TRIP_POIS.filter(p=>p.day).length + ' 段乘车路线 ✓ · 坐标来自 fly.ai 实时查询数据';
 </script>
 
 </body>
