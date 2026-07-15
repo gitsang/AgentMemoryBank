@@ -880,17 +880,38 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 const legend = document.getElementById('map-legend');
-for (let d = 1; d <= 6; d++) {
+const layerGroups = {};
+const legendItems = {};
+
+function makeLegendItem(key, color, label, shape) {
   const item = document.createElement('span');
-  item.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:' + DAY_COLORS[d] + ';margin-right:4px;vertical-align:middle;"></span>D' + d;
+  item.style.cssText = 'cursor:pointer;padding:4px 8px;border-radius:6px;user-select:none;transition:opacity 0.15s;';
+  const dotStyle = shape === 'square'
+    ? 'display:inline-block;width:12px;height:12px;border-radius:3px;background:' + color + ';margin-right:4px;vertical-align:middle;'
+    : 'display:inline-block;width:12px;height:12px;border-radius:50%;background:' + color + ';margin-right:4px;vertical-align:middle;' + (shape === 'dashed' ? 'border:2px dashed #fff;' : '');
+  item.innerHTML = '<span style="' + dotStyle + '"></span>' + label;
+  item.dataset.active = '1';
+  item.onclick = function() {
+    const active = item.dataset.active === '1';
+    if (active) {
+      item.style.opacity = '0.35';
+      item.dataset.active = '0';
+      if (layerGroups[key]) group.removeLayer(layerGroups[key]);
+    } else {
+      item.style.opacity = '1';
+      item.dataset.active = '1';
+      if (layerGroups[key]) group.addLayer(layerGroups[key]);
+    }
+  };
   legend.appendChild(item);
+  legendItems[key] = item;
 }
-const greyLegend = document.createElement('span');
-greyLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#999;margin-right:4px;vertical-align:middle;border:2px dashed #fff;"></span>备用景点';
-legend.appendChild(greyLegend);
-const hotelLegend = document.createElement('span');
-hotelLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#666;margin-right:4px;vertical-align:middle;"></span>酒店';
-legend.appendChild(hotelLegend);
+
+for (let d = 1; d <= 6; d++) {
+  makeLegendItem('day' + d, DAY_COLORS[d], 'D' + d, 'circle');
+}
+makeLegendItem('unscheduled', '#999', '备用景点', 'dashed');
+makeLegendItem('hotel', '#666', '酒店', 'square');
 
 const group = L.markerClusterGroup({ maxClusterRadius: 40, spiderfyOnMaxZoom: true, showCoverageOnHover: false });
 
@@ -923,6 +944,10 @@ function buildPopup(d) {
   return h;
 }
 
+for (let d = 1; d <= 6; d++) {
+  layerGroups['day' + d] = L.layerGroup();
+}
+
 TRIP_POIS.forEach(function(poi) {
   const icon = L.divIcon({
     html: '<div style="background:' + DAY_COLORS[poi.day] + ';color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">' + TYPE_ICONS[poi.type] + '</div>',
@@ -932,7 +957,7 @@ TRIP_POIS.forEach(function(poi) {
     popupAnchor: [0, -14],
   });
 
-  const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(group);
+  const marker = L.marker([poi.lat, poi.lng], { icon: icon });
   marker.bindPopup(buildPopup({
     img: poi.img,
     icon: TYPE_ICONS[poi.type],
@@ -943,7 +968,10 @@ TRIP_POIS.forEach(function(poi) {
     hours: poi.hours,
     link: poi.link,
   }));
+  layerGroups['day' + poi.day].addLayer(marker);
 });
+
+layerGroups['unscheduled'] = L.layerGroup();
 
 UNSCHEDULED.forEach(function(poi) {
   const icon = L.divIcon({
@@ -954,7 +982,7 @@ UNSCHEDULED.forEach(function(poi) {
     popupAnchor: [0, -12],
   });
 
-  const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(group);
+  const marker = L.marker([poi.lat, poi.lng], { icon: icon });
   marker.bindPopup(buildPopup({
     img: poi.img,
     icon: '○',
@@ -965,7 +993,10 @@ UNSCHEDULED.forEach(function(poi) {
     hours: poi.hours,
     link: poi.link,
   }));
+  layerGroups['unscheduled'].addLayer(marker);
 });
+
+layerGroups['hotel'] = L.layerGroup();
 
 HOTELS.forEach(function(hotel) {
   const p9 = Math.round(parseInt(hotel.price.replace('¥','').replace(',','')) * 0.9);
@@ -988,7 +1019,7 @@ HOTELS.forEach(function(hotel) {
     tags.push({ label: '距景区 ' + hotel.dist, bg: '#99999922', color: '#999' });
   }
 
-  const marker = L.marker([hotel.lat, hotel.lng], { icon: icon }).addTo(group);
+  const marker = L.marker([hotel.lat, hotel.lng], { icon: icon });
   marker.bindPopup(buildPopup({
     img: hotel.img,
     icon: '🏨',
@@ -999,14 +1030,19 @@ HOTELS.forEach(function(hotel) {
     hours: hotel.hours,
     link: hotel.url,
   }));
+  layerGroups['hotel'].addLayer(marker);
 });
+
+for (var key in layerGroups) {
+  layerGroups[key].eachLayer(function(m) { group.addLayer(m); });
+}
 
 group.addTo(map);
 
 map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
 document.getElementById('map-status').textContent =
-  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家酒店 ✓ · 坐标来自 fly.ai 实时查询数据';
+  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家酒店 ✓ · 点击图例可隐藏/显示 · 坐标来自 fly.ai 实时查询数据';
 </script>
 
 </body>
