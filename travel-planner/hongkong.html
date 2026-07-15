@@ -1014,7 +1014,7 @@ HOTELS.forEach(function(hotel) {
     '<div style="min-width:200px;">' +
     '<strong>' + hotel.name + '</strong>' +
     '<br><span style="color:#666;font-size:12px;">' + hotel.addr + '</span>' +
-    '<br><span style="font-size:13px;color:#dc2626;font-weight:bold;">飞猪 ' + hotel.price + '/晚 → 白金9折 ¥' + p9 + '/晚</span>' +
+    '<br><span style="font-size:13px;color:#dc2626;font-weight:bold;">飞猪 ' + hotel.price + '/晚' + (hotel.brand ? ' → 白金9折 ¥' + p9 + '/晚' : '') + '</span>' +
     '<br><span style="font-size:12px;color:#999;">距景区中心 ' + hotel.dist + '</span>' +
     (hotel.brand ? '<br><span style="font-size:11px;color:#2f6feb;font-weight:bold;">' + hotel.brand + '旅享家</span>' : '<br><span style="font-size:11px;color:#999;">非万豪品牌</span>') +
     '<br><a href="' + hotel.url + '" target="_blank" rel="noopener" style="font-size:12px;">查看 / 预订 »</a>' +
