@@ -772,10 +772,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
 </footer>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script>
 const TRIP_POIS = [
   { name: '香港国际机场 · 抵达', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/HK_%E8%B5%A4%E9%B1%B2%E8%A7%92_Chek_Lap_Kok_%E9%A6%99%E6%B8%AF%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4_Hong_Kong_International_Airport_March_2024_R12S_311.jpg/960px-HK_%E8%B5%A4%E9%B1%B2%E8%A7%92_Chek_Lap_Kok_%E9%A6%99%E6%B8%AF%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4_Hong_Kong_International_Airport_March_2024_R12S_311.jpg', hours: '全天24小时', day: 1, type: 'transport', lat: 22.3080, lng: 113.9185, addr: '人1 CX979 22:20 / 人2 MU723 21:05' },
@@ -913,7 +910,46 @@ for (let d = 1; d <= 6; d++) {
 makeLegendItem('unscheduled', '#999', '备用景点', 'dashed');
 makeLegendItem('hotel', '#666', '酒店', 'square');
 
-const group = L.markerClusterGroup({ maxClusterRadius: 1, spiderfyOnMaxZoom: true, showCoverageOnHover: false, disableClusteringAtZoom: 14 });
+const allMarkers = [];
+const group = L.featureGroup();
+
+map.on('popupclose', function() {
+  allMarkers.forEach(function(m) {
+    if (m._origLatLng) {
+      m.setLatLng(m._origLatLng);
+      m._offset = false;
+    }
+  });
+});
+
+function spiderfyClick(marker) {
+  marker.on('click', function() {
+    var latlng = marker.getLatLng();
+    var overlapping = allMarkers.filter(function(m) {
+      var ml = m.getLatLng();
+      return Math.abs(ml.lat - latlng.lat) < 0.0002 && Math.abs(ml.lng - latlng.lng) < 0.0002;
+    });
+    if (overlapping.length <= 1) return;
+
+    var active = marker._offset;
+    allMarkers.forEach(function(m) {
+      if (m._origLatLng) {
+        m.setLatLng(m._origLatLng);
+        m._offset = false;
+      }
+    });
+    if (active) return;
+
+    var n = overlapping.length;
+    var radius = 0.0012;
+    overlapping.forEach(function(m, i) {
+      m._origLatLng = m._origLatLng || L.latLng(m.getLatLng().lat, m.getLatLng().lng);
+      var angle = (2 * Math.PI * i) / n - Math.PI / 2;
+      m.setLatLng([m._origLatLng.lat + radius * Math.sin(angle), m._origLatLng.lng + radius * Math.cos(angle)]);
+      m._offset = true;
+    });
+  });
+}
 
 function buildPopup(d) {
   var h = '<div style="min-width:220px;font-family:var(--font-body);">';
@@ -968,6 +1004,8 @@ TRIP_POIS.forEach(function(poi) {
     hours: poi.hours,
     link: poi.link,
   }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
   layerGroups['day' + poi.day].addLayer(marker);
 });
 
@@ -993,6 +1031,8 @@ UNSCHEDULED.forEach(function(poi) {
     hours: poi.hours,
     link: poi.link,
   }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
   layerGroups['unscheduled'].addLayer(marker);
 });
 
@@ -1030,6 +1070,8 @@ HOTELS.forEach(function(hotel) {
     hours: hotel.hours,
     link: hotel.url,
   }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
   layerGroups['hotel'].addLayer(marker);
 });
 
