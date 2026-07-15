@@ -820,8 +820,8 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const TRIP_POIS = [
-  { name: '香港国际机场', day: 1, type: 'transport', lat: 22.3080, lng: 113.9185, addr: '赤鱲角' },
-  { name: '香港沙田万怡酒店', day: 1, type: 'lodging', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号' },
+  { name: '香港国际机场 · 抵达', day: 1, type: 'transport', lat: 22.3080, lng: 113.9185, addr: '赤鱲角 · 人1 CX979 22:20抵 / 人2 MU723 21:05抵' },
+  { name: '香港沙田万怡酒店 · 当前选择', day: 1, type: 'lodging', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号 · ¥699/晚 白金9折¥629' },
   { name: '星光大道', day: 2, type: 'attraction', lat: 22.2930, lng: 114.1742, addr: '尖沙咀星光大道' },
   { name: '香港太空馆', day: 2, type: 'attraction', lat: 22.2942, lng: 114.1720, addr: '尖沙咀梳士巴利道10号' },
   { name: '香港历史博物馆', day: 2, type: 'attraction', lat: 22.3018, lng: 114.1773, addr: '尖沙咀漆咸道南100号' },
@@ -838,7 +838,20 @@ const TRIP_POIS = [
   { name: '香港迪士尼乐园', day: 5, type: 'attraction', lat: 22.3126, lng: 114.0422, addr: '大屿山竹篙湾' },
   { name: '旺角女人街', day: 6, type: 'attraction', lat: 22.3186, lng: 114.1718, addr: '旺角通菜街' },
   { name: '鸭灵号帆船', day: 6, type: 'attraction', lat: 22.2889, lng: 114.1739, addr: '尖沙咀东一号梯台' },
-  { name: '香港西九龙站', day: 6, type: 'transport', lat: 22.3028, lng: 114.1622, addr: '西九龙柯士甸道' },
+  { name: '香港西九龙站 · 返程出发', day: 6, type: 'transport', lat: 22.3028, lng: 114.1622, addr: '西九龙柯士甸道 · 人1 G926 18:37发往厦门' },
+];
+
+const HOTELS = [
+  { name: '香港喜来登酒店', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C' },
+  { name: '香港万丽海景酒店', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK' },
+  { name: '香港柏宁酒店·傲途格精选', price: '¥1753', lat: 22.2801, lng: 114.1851, addr: '湾仔铜锣湾告士打道310号', dist: '2.4km', url: 'https://a.feizhu.com/3hcwJ6' },
+  { name: '香港万怡酒店', price: '¥1170', lat: 22.2866, lng: 114.1390, addr: '中西区西环干诺道西167号', dist: '3.6km', url: 'https://a.feizhu.com/40JCBF' },
+  { name: '香港数码港艾美酒店', price: '¥1376', lat: 22.2699, lng: 114.1415, addr: '数码港道100号', dist: '4.2km', url: 'https://a.feizhu.com/3ZpKp8' },
+  { name: '香港海洋公园万豪酒店', price: '¥2199', lat: 22.2469, lng: 114.1605, addr: '港岛南区黄竹坑道180号', dist: '5.4km', url: 'https://a.feizhu.com/3jBt7J' },
+  { name: '香港沙田万怡酒店', price: '¥699', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号', dist: '10.0km', url: 'https://a.feizhu.com/0Zw9KW' },
+  { name: '香港天际万豪酒店', price: '¥1056', lat: 22.3079, lng: 114.0267, addr: '离岛区天城东路1号', dist: '16.0km', url: 'https://a.feizhu.com/4VWyG0' },
+  { name: '香港东涌世茂喜来登酒店', price: '¥978', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/46VlwC' },
+  { name: '香港东涌福朋喜来登酒店', price: '¥810', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/2hY7r5' },
 ];
 
 const DAY_COLORS = {
@@ -862,6 +875,9 @@ for (let d = 1; d <= 6; d++) {
   item.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:' + DAY_COLORS[d] + ';margin-right:4px;vertical-align:middle;"></span>D' + d;
   legend.appendChild(item);
 }
+const hotelLegend = document.createElement('span');
+hotelLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#999;margin-right:4px;vertical-align:middle;"></span>万豪酒店';
+legend.appendChild(hotelLegend);
 
 const group = L.featureGroup();
 
@@ -884,11 +900,33 @@ TRIP_POIS.forEach(function(poi) {
   );
 });
 
+HOTELS.forEach(function(hotel) {
+  const p9 = Math.round(parseInt(hotel.price.replace('¥','').replace(',','')) * 0.9);
+  const icon = L.divIcon({
+    html: '<div style="background:#666;color:#fff;width:32px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;border:1px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.4);">' + hotel.price.replace('¥','') + '</div>',
+    className: 'hotel-marker',
+    iconSize: [32, 20],
+    iconAnchor: [16, 10],
+    popupAnchor: [0, -10],
+  });
+
+  const marker = L.marker([hotel.lat, hotel.lng], { icon: icon }).addTo(group);
+  marker.bindPopup(
+    '<div style="min-width:200px;">' +
+    '<strong>' + hotel.name + '</strong>' +
+    '<br><span style="color:#666;font-size:12px;">' + hotel.addr + '</span>' +
+    '<br><span style="font-size:13px;color:#dc2626;font-weight:bold;">飞猪 ' + hotel.price + '/晚 → 白金9折 ¥' + p9 + '/晚</span>' +
+    '<br><span style="font-size:12px;color:#999;">距景区中心 ' + hotel.dist + '</span>' +
+    '<br><a href="' + hotel.url + '" target="_blank" rel="noopener" style="font-size:12px;">查看 / 预订 »</a>' +
+    '</div>'
+  );
+});
+
 group.addTo(map);
 map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
 document.getElementById('map-status').textContent =
-  '已标注 ' + TRIP_POIS.length + ' 个地点 ✓ · 坐标来自 fly.ai 实时查询数据';
+  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + HOTELS.length + ' 家万豪酒店 ✓ · 坐标来自 fly.ai 实时查询数据';
 </script>
 
 </body>
