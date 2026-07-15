@@ -908,6 +908,20 @@ const UNSCHEDULED = [
   { name: '跑马地马场', lat: 22.2708, lng: 114.1830, addr: '跑马地 · 赛马体验' },
   { name: '半岛酒店下午茶', lat: 22.2948, lng: 114.1700, addr: '尖沙咀梳士巴利道 · 经典英式下午茶' },
   { name: '锦绣唐朝·冰箱贴', lat: 22.2960, lng: 114.1722, addr: '尖沙咀重庆大厦对面 · 冰箱贴专门店' },
+  { name: '香港海洋公园', lat: 22.2469, lng: 114.1605, addr: '港岛南区黄竹坑 · 企鹅馆+过山车' },
+  { name: '昂坪360缆车', lat: 22.2556, lng: 113.9074, addr: '大屿山昂坪 · 水晶缆车+天坛大佛' },
+  { name: '杜莎夫人蜡像馆', lat: 22.2706, lng: 114.1496, addr: '太平山顶凌霄阁 · 明星蜡像' },
+  { name: '铜锣湾天后庙', lat: 22.2840, lng: 114.1850, addr: '铜锣湾天后庙道 · 古庙' },
+  { name: '金鱼街', lat: 22.3198, lng: 114.1708, addr: '旺角太子道西 · 金鱼市场' },
+  { name: '波鞋街', lat: 22.3185, lng: 114.1720, addr: '旺角洗衣街 · 运动鞋一条街' },
+  { name: '鸭寮街', lat: 22.3305, lng: 114.1595, addr: '深水埗南昌街 · 电子跳蚤市场' },
+  { name: '香港艺术馆', lat: 22.2935, lng: 114.1720, addr: '尖沙咀梳士巴利道10号 · 免费展厅' },
+  { name: '油麻地戏院', lat: 22.3076, lng: 114.1714, addr: '油麻地窝打老道 · 二级历史建筑' },
+  { name: '1881 Heritage', lat: 22.2950, lng: 114.1715, addr: '尖沙咀广东道2号 · 前水警总部' },
+  { name: '大澳渔村', lat: 22.2535, lng: 113.8580, addr: '大屿山西北 · 棚屋水上人家' },
+  { name: '长洲岛', lat: 22.2083, lng: 114.0283, addr: '长洲 · 渡轮可达·芒果糯米糍' },
+  { name: '都爹利街', lat: 22.2839, lng: 114.1547, addr: '中环都爹利街 · 煤气灯石阶·TVB取景' },
+  { name: '幻彩咏香江', lat: 22.2930, lng: 114.1742, addr: '尖沙咀星光大道 · 每晚8点灯光秀' },
 ];
 
 const HOTELS = [
@@ -956,7 +970,7 @@ const greyLegend = document.createElement('span');
 greyLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#999;margin-right:4px;vertical-align:middle;border:2px dashed #fff;"></span>备用景点';
 legend.appendChild(greyLegend);
 const hotelLegend = document.createElement('span');
-hotelLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#666;margin-right:4px;vertical-align:middle;"></span>万豪酒店';
+hotelLegend.innerHTML = '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#666;margin-right:4px;vertical-align:middle;"></span>酒店';
 legend.appendChild(hotelLegend);
 
 const group = L.featureGroup();
@@ -1071,7 +1085,7 @@ toggleBtn.onclick = function() {
 legend.appendChild(toggleBtn);
 
 document.getElementById('map-status').textContent =
-  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家万豪酒店 ✓ · 坐标来自 fly.ai 实时查询数据';
+  '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家酒店 ✓ · 坐标来自 fly.ai 实时查询数据';
 </script>
 
 </body>
