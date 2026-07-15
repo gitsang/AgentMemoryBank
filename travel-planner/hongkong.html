@@ -142,12 +142,12 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#platinum">白金福利</a>
       <a href="#route">路线</a>
       <a href="#itinerary">行程</a>
+      <a href="#map">地图</a>
       <a href="#lodging">住宿</a>
       <a href="#food">美食</a>
       <a href="#attractions">景点</a>
       <a href="#budget">预算</a>
       <a href="#checklist">清单</a>
-      <a href="#map">地图</a>
     </nav>
   </div>
 </header>
@@ -222,7 +222,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <h2>路线总览</h2>
         <p>区域集中原则：D2 九龙南 → D3 中环上环山顶 → D4 铜锣湾湾仔 → D5 迪士尼 → D6 西九文化区。西环万怡为基地，港岛线串联各站。</p>
       </div>
-      <div class="route-strip"><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">香港会师</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">尖沙咀→旺角</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">中环·山顶</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">铜锣湾</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">迪士尼</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">西九龙</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div></div><span class="route-label">厦门/上海</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">香港会师</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">沙田</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">尖沙咀</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">西九文化区</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">太平山</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">迪士尼</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">西九龙/机场</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div></div>
+      <div class="route-strip"><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">香港会师</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">尖沙咀→旺角</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">中环·山顶</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">铜锣湾</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">迪士尼</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">西九龙</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div></div>
     </div>
   </section>
 
@@ -571,6 +571,20 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     </div>
   </section>
 
+  <section class="section" id="map">
+    <div class="container">
+      <div class="section-header">
+        <h2>行程地图</h2>
+        <p>行程所有地点标注在地图上，按天分色。坐标来自 fly.ai 实时数据，无需 API Key。点击标记查看详情。</p>
+      </div>
+      <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
+      <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
+      <div id="map-status" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标数据来源：fly.ai 实时查询 · 无需 API Key</p>
+    </div>
+  </section>
+
+
   <section class="section" id="lodging">
     <div class="container">
       <div class="section-header">
@@ -814,18 +828,6 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     </div>
   </section>
 
-  <section class="section" id="map">
-    <div class="container">
-      <div class="section-header">
-        <h2>行程地图</h2>
-        <p>行程所有地点标注在地图上，按天分色。坐标来自 fly.ai 实时数据，无需 API Key。点击标记查看详情。</p>
-      </div>
-      <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
-      <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
-      <div id="map-status" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标数据来源：fly.ai 实时查询 · 无需 API Key</p>
-    </div>
-  </section>
 
   <section class="section" id="references">
     <div class="container">
@@ -909,16 +911,24 @@ const UNSCHEDULED = [
 ];
 
 const HOTELS = [
-  { name: '香港喜来登酒店', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C' },
-  { name: '香港万丽海景酒店', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK' },
-  { name: '香港柏宁酒店·傲途格精选', price: '¥1753', lat: 22.2801, lng: 114.1851, addr: '湾仔铜锣湾告士打道310号', dist: '2.4km', url: 'https://a.feizhu.com/3hcwJ6' },
-  { name: '香港万怡酒店', price: '¥1170', lat: 22.2866, lng: 114.1390, addr: '中西区西环干诺道西167号', dist: '3.6km', url: 'https://a.feizhu.com/40JCBF' },
-  { name: '香港数码港艾美酒店', price: '¥1376', lat: 22.2699, lng: 114.1415, addr: '数码港道100号', dist: '4.2km', url: 'https://a.feizhu.com/3ZpKp8' },
-  { name: '香港海洋公园万豪酒店', price: '¥2199', lat: 22.2469, lng: 114.1605, addr: '港岛南区黄竹坑道180号', dist: '5.4km', url: 'https://a.feizhu.com/3jBt7J' },
-  { name: '香港沙田万怡酒店', price: '¥699', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号', dist: '10.0km', url: 'https://a.feizhu.com/0Zw9KW' },
-  { name: '香港天际万豪酒店', price: '¥1056', lat: 22.3079, lng: 114.0267, addr: '离岛区天城东路1号', dist: '16.0km', url: 'https://a.feizhu.com/4VWyG0' },
-  { name: '香港东涌世茂喜来登酒店', price: '¥978', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/46VlwC' },
-  { name: '香港东涌福朋喜来登酒店', price: '¥810', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/2hY7r5' },
+  { name: '香港喜来登酒店', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C', brand: '万豪' },
+  { name: '香港万丽海景酒店', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK', brand: '万豪' },
+  { name: '香港柏宁酒店·傲途格精选', price: '¥1753', lat: 22.2801, lng: 114.1851, addr: '湾仔铜锣湾告士打道310号', dist: '2.4km', url: 'https://a.feizhu.com/3hcwJ6', brand: '万豪' },
+  { name: '香港万怡酒店', price: '¥1170', lat: 22.2866, lng: 114.1390, addr: '中西区西环干诺道西167号', dist: '3.6km', url: 'https://a.feizhu.com/40JCBF', brand: '万豪' },
+  { name: '香港数码港艾美酒店', price: '¥1376', lat: 22.2699, lng: 114.1415, addr: '数码港道100号', dist: '4.2km', url: 'https://a.feizhu.com/3ZpKp8', brand: '万豪' },
+  { name: '香港海洋公园万豪酒店', price: '¥2199', lat: 22.2469, lng: 114.1605, addr: '港岛南区黄竹坑道180号', dist: '5.4km', url: 'https://a.feizhu.com/3jBt7J', brand: '万豪' },
+  { name: '香港沙田万怡酒店', price: '¥699', lat: 22.3834, lng: 114.1886, addr: '沙田安平街1号', dist: '10.0km', url: 'https://a.feizhu.com/0Zw9KW', brand: '万豪' },
+  { name: '香港天际万豪酒店', price: '¥1056', lat: 22.3079, lng: 114.0267, addr: '离岛区天城东路1号', dist: '16.0km', url: 'https://a.feizhu.com/4VWyG0', brand: '万豪' },
+  { name: '香港东涌世茂喜来登酒店', price: '¥978', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/46VlwC', brand: '万豪' },
+  { name: '香港东涌福朋喜来登酒店', price: '¥810', lat: 22.2883, lng: 113.9418, addr: '大屿山东涌怡东路9号', dist: '25.3km', url: 'https://a.feizhu.com/2hY7r5', brand: '万豪' },
+  { name: '唯港荟酒店', price: '¥1947', lat: 22.2977, lng: 114.1797, addr: '尖沙咀科学馆道17号', dist: '0.8km', url: 'https://a.feizhu.com/3Xi0DQ', brand: '' },
+  { name: '香港四季酒店', price: '¥9541', lat: 22.2864, lng: 114.1570, addr: '中环金融街8号', dist: '1.5km', url: 'https://a.feizhu.com/00amLq', brand: '' },
+  { name: '香港仕德福酒店', price: '¥626', lat: 22.3196, lng: 114.1710, addr: '旺角豉油街118号', dist: '2.5km', url: 'https://a.feizhu.com/3wcLvG', brand: '' },
+  { name: '香港港威酒店-马哥孛罗', price: '¥1336', lat: 22.2943, lng: 114.1665, addr: '尖沙咀广东道13号海港城', dist: '0.6km', url: 'https://a.feizhu.com/2Vzj7w', brand: '' },
+  { name: '香港丽晶酒店', price: '¥2437', lat: 22.2940, lng: 114.1715, addr: '尖沙咀梳士巴利道18号', dist: '0.3km', url: 'https://a.feizhu.com/2posFW', brand: '' },
+  { name: '香港W酒店', price: '¥2756', lat: 22.3028, lng: 114.1615, addr: '九龙柯士甸道西一号', dist: '1.0km', url: 'https://a.feizhu.com/2kw16J', brand: '' },
+  { name: '迪士尼好莱坞酒店', price: '¥1583', lat: 22.3092, lng: 114.0373, addr: '大屿山迪士尼乐园度假区', dist: '14km', url: 'https://a.feizhu.com/3u0R0b', brand: '' },
+  { name: '大坑小筑服务式公寓', price: '¥786', lat: 22.2801, lng: 114.1950, addr: '铜锣湾铜锣湾道98号', dist: '2.4km', url: 'https://a.feizhu.com/0KDgKc', brand: '' },
 ];
 
 const DAY_COLORS = {
@@ -1006,6 +1016,7 @@ HOTELS.forEach(function(hotel) {
     '<br><span style="color:#666;font-size:12px;">' + hotel.addr + '</span>' +
     '<br><span style="font-size:13px;color:#dc2626;font-weight:bold;">飞猪 ' + hotel.price + '/晚 → 白金9折 ¥' + p9 + '/晚</span>' +
     '<br><span style="font-size:12px;color:#999;">距景区中心 ' + hotel.dist + '</span>' +
+    (hotel.brand ? '<br><span style="font-size:11px;color:#2f6feb;font-weight:bold;">' + hotel.brand + '旅享家</span>' : '<br><span style="font-size:11px;color:#999;">非万豪品牌</span>') +
     '<br><a href="' + hotel.url + '" target="_blank" rel="noopener" style="font-size:12px;">查看 / 预订 »</a>' +
     '</div>'
   );
