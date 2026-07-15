@@ -913,7 +913,7 @@ for (let d = 1; d <= 6; d++) {
 makeLegendItem('unscheduled', '#999', '备用景点', 'dashed');
 makeLegendItem('hotel', '#666', '酒店', 'square');
 
-const group = L.markerClusterGroup({ maxClusterRadius: 40, spiderfyOnMaxZoom: true, showCoverageOnHover: false });
+const group = L.markerClusterGroup({ maxClusterRadius: 10, spiderfyOnMaxZoom: true, showCoverageOnHover: false, disableClusteringAtZoom: 16 });
 
 function buildPopup(d) {
   var h = '<div style="min-width:220px;font-family:var(--font-body);">';
