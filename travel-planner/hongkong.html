@@ -975,6 +975,32 @@ legend.appendChild(hotelLegend);
 
 const group = L.featureGroup();
 
+function buildPopup(d) {
+  var h = '<div style="min-width:220px;font-family:var(--font-body);">';
+  if (d.img) {
+    h += '<img src="' + d.img + '" referrerpolicy="no-referrer" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onerror="this.style.display=\'none\'">';
+  }
+  h += '<div style="font-weight:600;font-size:15px;line-height:1.3;">' + (d.icon || '') + ' ' + d.name + '</div>';
+  if (d.addr) {
+    h += '<div style="color:#666;font-size:12px;margin-top:2px;">📍 ' + d.addr + '</div>';
+  }
+  if (d.tags && d.tags.length) {
+    h += '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;">';
+    d.tags.forEach(function(t) {
+      h += '<span style="display:inline-block;padding:2px 8px;border-radius:9999px;font-size:11px;font-weight:500;background:' + (t.bg || '#f0f0f0') + ';color:' + (t.color || '#666') + ';">' + t.label + '</span>';
+    });
+    h += '</div>';
+  }
+  if (d.note) {
+    h += '<div style="margin-top:6px;padding-top:6px;border-top:1px solid #eee;font-size:12px;color:#888;font-style:italic;">💡 ' + d.note + '</div>';
+  }
+  if (d.link) {
+    h += '<a href="' + d.link + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:12px;color:#2f6feb;text-decoration:none;">查看 / 预订 »</a>';
+  }
+  h += '</div>';
+  return h;
+}
+
 TRIP_POIS.forEach(function(poi) {
   const icon = L.divIcon({
     html: '<div style="background:' + DAY_COLORS[poi.day] + ';color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">' + TYPE_ICONS[poi.type] + '</div>',
@@ -985,14 +1011,15 @@ TRIP_POIS.forEach(function(poi) {
   });
 
   const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(group);
-  marker.bindPopup(
-    '<div style="min-width:200px;">' +
-    (poi.img ? '<img src="' + poi.img + '" referrerpolicy="no-referrer" style="width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px;" onerror="this.style.display=\'none\'">' : '') +
-    '<strong>' + poi.name + '</strong>' +
-    '<br><span style="color:#666;font-size:12px;">' + poi.addr + '</span>' +
-    '<br><span style="font-size:12px;color:' + DAY_COLORS[poi.day] + ';">Day ' + poi.day + '</span>' +
-    '</div>'
-  );
+  marker.bindPopup(buildPopup({
+    img: poi.img,
+    icon: TYPE_ICONS[poi.type],
+    name: poi.name,
+    addr: poi.addr,
+    tags: [{ label: 'Day ' + poi.day, bg: DAY_COLORS[poi.day] + '22', color: DAY_COLORS[poi.day] }],
+    note: poi.note,
+    link: poi.link,
+  }));
 });
 
 UNSCHEDULED.forEach(function(poi) {
@@ -1005,14 +1032,15 @@ UNSCHEDULED.forEach(function(poi) {
   });
 
   const marker = L.marker([poi.lat, poi.lng], { icon: icon }).addTo(group);
-  marker.bindPopup(
-    '<div style="min-width:200px;">' +
-    (poi.img ? '<img src="' + poi.img + '" referrerpolicy="no-referrer" style="width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px;" onerror="this.style.display=\'none\'">' : '') +
-    '<strong>' + poi.name + '</strong>' +
-    '<br><span style="color:#666;font-size:12px;">' + poi.addr + '</span>' +
-    '<br><span style="font-size:12px;color:#999;">备用 · 可临时穿插</span>' +
-    '</div>'
-  );
+  marker.bindPopup(buildPopup({
+    img: poi.img,
+    icon: '○',
+    name: poi.name,
+    addr: poi.addr,
+    tags: [{ label: '备用景点', bg: '#99999922', color: '#999' }],
+    note: poi.note,
+    link: poi.link,
+  }));
 });
 
 HOTELS.forEach(function(hotel) {
@@ -1025,18 +1053,27 @@ HOTELS.forEach(function(hotel) {
     popupAnchor: [0, -10],
   });
 
+  var tags = [{ label: hotel.price + '/晚', bg: '#dc262622', color: '#dc2626' }];
+  if (hotel.brand) {
+    tags.push({ label: '白金9折 ¥' + p9, bg: '#2f6feb22', color: '#2f6feb' });
+    tags.push({ label: hotel.brand + '旅享家', bg: '#2f6feb22', color: '#2f6feb' });
+  } else {
+    tags.push({ label: '非万豪', bg: '#99999922', color: '#999' });
+  }
+  if (hotel.dist) {
+    tags.push({ label: '距景区 ' + hotel.dist, bg: '#99999922', color: '#999' });
+  }
+
   const marker = L.marker([hotel.lat, hotel.lng], { icon: icon }).addTo(group);
-  marker.bindPopup(
-    '<div style="min-width:220px;">' +
-    (hotel.img ? '<img src="' + hotel.img + '" referrerpolicy="no-referrer" style="width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px;" onerror="this.style.display=\'none\'">' : '') +
-    '<strong>' + hotel.name + '</strong>' +
-    '<br><span style="color:#666;font-size:12px;">' + hotel.addr + '</span>' +
-    '<br><span style="font-size:13px;color:#dc2626;font-weight:bold;">飞猪 ' + hotel.price + '/晚' + (hotel.brand ? ' → 白金9折 ¥' + p9 + '/晚' : '') + '</span>' +
-    '<br><span style="font-size:12px;color:#999;">距景区中心 ' + hotel.dist + '</span>' +
-    (hotel.brand ? '<br><span style="font-size:11px;color:#2f6feb;font-weight:bold;">' + hotel.brand + '旅享家</span>' : '<br><span style="font-size:11px;color:#999;">非万豪品牌</span>') +
-    '<br><a href="' + hotel.url + '" target="_blank" rel="noopener" style="font-size:12px;">查看 / 预订 »</a>' +
-    '</div>'
-  );
+  marker.bindPopup(buildPopup({
+    img: hotel.img,
+    icon: '🏨',
+    name: hotel.name,
+    addr: hotel.addr,
+    tags: tags,
+    note: hotel.note,
+    link: hotel.url,
+  }));
 });
 
 group.addTo(map);
