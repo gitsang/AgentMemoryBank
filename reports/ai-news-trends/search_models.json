@@ -1,0 +1,90 @@
+{
+  "query": "OpenAI Anthropic Google Gemini 2026 July model release",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://techcrunch.com/2026/07/21/google-releases-three-new-gemini-models-but-no-3-5-pro/",
+      "title": "Google releases three new Gemini models — but no 3.5 Pro - TechCrunch",
+      "score": 0.7178241,
+      "published_date": "Tue, 21 Jul 2026 17:11:50 GMT",
+      "content": "# Google releases three new Gemini models — but no 3.5 Pro. On Tuesday, Google DeepMind released Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber. Gemini 3.6 Flash is Google’s “workhorse model” that promises improved capabilities in coding, knowledge work, and multimodal performance while reducing token usage by up to 17%, making it cheaper than its predecessor 3.5 Flash. Gemini 3.5 Flash-Lite is the most cost-effective model in the class, and 3.5 Flash Cyber is a specialized model that was fine-tuned for finding and fixing cybersecurity vulnerabilities at a decent price point. Google teased the release of Pro as part of the 3.5 Flash release in May, saying the Pro version was “already being used internally, and we look forward to rolling it out next month.” Last week, Bloomberg reported that Google was facing internal delays in launching the 3.5 Pro as it struggled to meet internal performance goals.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.latimes.com/business/story/2026-07-17/inside-googles-gemini-delay-coding-stumbles-clashing-teams-frustrated-engineers",
+      "title": "Inside Google’s Gemini delay: coding stumbles, clashing teams and frustrated engineers - Los Angeles Times",
+      "score": 0.7152057,
+      "published_date": "Fri, 17 Jul 2026 15:51:17 GMT",
+      "content": "Alphabet Inc.’s Google is months behind schedule on delivering Gemini 3.5 Pro, its most powerful flagship AI model, because the company has been taking time to try to improve its capabilities, particularly in coding, according to people familiar with the matter. The delay has been a source of frustration for Google engineers, AI researchers and managers, many of whom are concerned the company risks losing an edge in the market as rivals Anthropic and OpenAI produce models that exceed Gemini’s capabilities, according to 10 current and former employees. Google has multiple layers of stakeholders involved in preparing models for release, working to weave AI across a vast product portfolio, including search, maps and YouTube, which can cause delays, said the people, who declined to be named discussing internal concerns. Google has also been in talks with the US government, which has been increasingly monitoring AI companies’ most advanced models, about its capabilities, as well as the standards that should be applied to the industry for safety.",
+      "raw_content": null
+    },
+    {
+      "url": "https://9to5google.com/2026/07/21/gemini-3-6-flash-launch/",
+      "title": "Google launches Gemini 3.6 Flash and 3.5 Flash-Lite, teases Gemini 4 - 9to5Google",
+      "score": 0.6932451,
+      "published_date": "Tue, 21 Jul 2026 15:00:01 GMT",
+      "content": "# Google launches Gemini 3.6 Flash and 3.5 Flash-Lite, teases Gemini 4. As we wait for 3.5 Pro, Google today announced Gemini 3.6 Flash and 3.5 Flash-Lite, while providing updates on what comes next. ### Gemini 3.6 Flash. Gemini 3.6 Flash follows the last release at I/O 2026. Compared to 3.5 Flash, it consumes 17% fewer output tokens (per the Artificial Analysis Index), while taking “fewer reasoning steps and tool calls to accomplish multi-step workflows.” At the same time, it’s priced lower at $1.50/1M input tokens and $7.50/1M output tokens (versus $9/1M output). In terms of coding performance, Gemini 3.6 Flash “delivers higher precision with fewer unwanted code edits and reduced execution loops” than its predecessor. ### Gemini 3.5 Flash-Lite. Google notes that 3.5 Flash-Lite outperforms 3 Flash: SWE-Bench Pro (54.2% vs. ### Gemini 3.5 Flash Cyber. The final announcement today is Gemini 3.5 Flash Cyber for finding and fixing security vulnerabilities. Gemini 3.6 Flash and 3.5 Flash-Lite are available today in the Gemini app, with the latter model also coming to Search.",
+      "raw_content": null
+    },
+    {
+      "url": "https://gigazine.net/gsc_news/en/20260721-google-new-ai-chip-designed-gemini/",
+      "title": "Google is working on developing a new AI chip to improve the efficiency of Gemini. - GIGAZINE",
+      "score": 0.6721816,
+      "published_date": "Tue, 21 Jul 2026 01:59:00 GMT",
+      "content": "# Google is working on developing a new AI chip to improve the efficiency of Gemini. Google's AI assistant, Gemini, runs on its own proprietary Gemini servers. It has now been revealed that Google is designing a new server chip to improve the operational efficiency of these Gemini servers. **Google is working on a new AI chip designed to make Gemini more efficient | TechCrunch**. AI companies are actively developing their own AI chips to improve the efficiency of their in-house AI models and address the global shortage of AI computing power. In fact, OpenAI, which is competing fiercely with Google in the AI market, announced 'Jalapeño,' an inference chip optimized for large-scale language models (LLMs) developed in collaboration with Broadcom, at the end of June 2026. **Reports indicate Anthropic is in discussions with Samsung to develop its own custom AI chip - GIGAZINE**. * Reports indicate Anthropic is in discussions with Samsung to develop its own custom AI chip.",
+      "raw_content": null
+    },
+    {
+      "url": "https://arstechnica.com/google/2026/07/google-reveals-faster-and-cheaper-gemini-3-6-flash-says-3-5-pro-is-still-in-testing/",
+      "title": "Google reveals faster and cheaper Gemini 3.6 Flash, says 3.5 Pro is still in testing - Ars Technica",
+      "score": 0.66777676,
+      "published_date": "Tue, 21 Jul 2026 16:58:25 GMT",
+      "content": "# Google announces Gemini 3.6 Flash and cybersecurity AI, teases 3.5 Pro and Gemini 4. There are new 3.6 and 3.5 models today, but Google is already training Gemini 4. Google announced a significant evolution of its AI models at I/O in May with the release of Gemini 3.5 Flash, and it’s not slowing down. However, none of the new models is the delayed Gemini 3.5 Pro, which was supposed to launch in June. Gemini 3.5 Flash, which was the star of the show at I/O, has already been deprecated. Efficiency was a big focus for Gemini 3.5 Flash, and Google says that effort has been amped up with 3.6. It has also released Gemini 3.5 Flash Lite and 3.5 Flash Cyber. Gemini 3.6 Flash will begin rolling out in the API today, and it will take over from 3.5 Flash in the Gemini app. Likewise, Gemini 3.5 Flash Lite is available to developers and in the Gemini app.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.reuters.com/business/google-quarterly-cloud-revenue-growth-beats-expectations-2026-07-22/",
+      "title": "Google increases capex forecast again after cloud-driven quarterly beat - Reuters",
+      "score": 0.6279746,
+      "published_date": "Wed, 22 Jul 2026 20:05:29 GMT",
+      "content": "Exclusive news, data and analytics for financial market professionals Learn more about Refinitiv. ## Browse World. ## Browse Business. Image 1: Google logo is displayed at Google's headquarters in New York City. Google logo is displayed at Google's headquarters in New York City, U.S., July 1, 2026. July 22 (Reuters) - Alphabet (GOOGL.O), opens new tab on Wednesday reported its best-ever quarter of growth for its cloud ​computing division, but faced investor scrutiny after concerns about continued delays to its flagship AI model were aggravated by a $15 billion increase in capital spending ‌plans for 2026. While Google Cloud has made Alphabet a big beneficiary of the AI boom, the company's own AI efforts have lost some steam this year after ​it delayed the June launch of its next flagship model, Gemini 3.5 Pro. That has left Google trailing in the AI coding tools market and fueled concerns on Wall Street, especially as Anthropic and OpenAI have ‌consistently rolled ⁠out enterprise-focused upgrades, and Chinese open-source models have also gained strong traction. *   Reuters and AI, opens new tab.",
+      "raw_content": null
+    },
+    {
+      "url": "https://techcrunch.com/2026/07/23/anthropic-updates-claude-voice-mode-with-more-capable-models/",
+      "title": "Anthropic updates Claude voice mode with more capable models - TechCrunch",
+      "score": 0.5501488,
+      "published_date": "Thu, 23 Jul 2026 19:00:00 GMT",
+      "content": "# Anthropic updates Claude voice mode with more capable models. Weeks after OpenAI rolled out a new family of conversational models and updated ChatGPT’s voice mode, rival Anthropic is making its move to make Claude more voice-friendly with a new update. The company said that with the new update, voice mode picks the last model people used in the text chat and uses its fastest version by default. Anthropic said that the new voice mode can help users with longer conversations, including providing feedback on their communication style, talking through a pitch to a client, and brainstorming product market research. Notably, this is a big difference from OpenAI’s voice mode, which updated its conversational style but still isn’t able to use different tools to get work done. Anthropic didn’t make any changes to the voice model with this release, and it hasn’t detailed what kind of voice stack it uses.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.reuters.com/business/pichai-pushes-back-claims-google-is-losing-ground-ai-race-2026-07-23/",
+      "title": "Pichai pushes back on claims Google is losing ground in AI race - Reuters",
+      "score": 0.49143207,
+      "published_date": "Thu, 23 Jul 2026 01:17:52 GMT",
+      "content": "Exclusive news, data and analytics for financial market professionals Learn more about Refinitiv. ## Browse World. ## Browse Business. Item 1 of 2 Google's CEO Sundar Pichai speaks at Google's I/O 2026 developer conference in Mountain View, California, U.S. May 19, 2026. **[1/2]**Google's CEO Sundar Pichai speaks at Google's I/O 2026 developer conference in Mountain View, California, U.S. May 19, 2026. July 22 (Reuters) - Alphabet (GOOGL.O), opens new tab CEO Sundar Pichai used Wednesday's earnings call to mount a robust defence ‌of Google's AI strategy, pushing back on concerns that the company has fallen behind rivals after delaying a flagship model and ceding ground in AI coding. Investors have become increasingly uneasy over Google delaying the release of Gemini 3.5 Pro, a model originally slated for June that was expected to bolster the company's standing in AI ​coding and autonomous \"agent\" tasks, two of the industry's most fiercely contested areas. *   Reuters and AI, opens new tab.",
+      "raw_content": null
+    },
+    {
+      "url": "https://nypost.com/2026/07/17/business/chinese-ai-firm-moonshot-unveils-powerful-model-with-capabilities-close-to-anthropic-openai/",
+      "title": "Chinese AI firm Moonshot unveils powerful model with capabilities close to Anthropic, OpenAI - New York Post",
+      "score": 0.4654124,
+      "published_date": "Fri, 17 Jul 2026 14:59:25 GMT",
+      "content": "# Chinese AI firm Moonshot unveils powerful model with capabilities close to Anthropic, OpenAI. Chinese firm Moonshot has unveiled a new open-source AI model with capabilities similar to those of Anthropic and OpenAI – the latest sign that China is catching up to the US in the race to build advanced AI. Moonshot, founded by Yang Zhilin, said its tests show the Kimi K3 was outperforming Anthropic’s Opus 4.8 model and OpenAI’s ChatGPT 5.5 when it comes to most coding tasks, the Financial Times reported. As an open-source model, Kimi K3 will be available for anyone to download and is expected to be far cheaper to use than the closed-source models offered by CEO Dario Amodei’s Anthropic and Sam Altman’s OpenAI. If Kimi K3 proves as useful in real-world environments as it did in benchmark testing, it could raise questions about the widely held belief that America has a six to 12 month lead on China for the development of “frontier” AI models. Moonshot said its latest Kimi AI model outperforms Anthropic and OpenAI models in coding.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.businessinsider.com/google-q2-2026-earnings-gemini-closing-in-chatgpt-1-billion-2026-7",
+      "title": "Google's Gemini nips at ChatGPT's heels as it nears 1 billion users - Business Insider",
+      "score": 0.39194164,
+      "published_date": "Wed, 22 Jul 2026 20:45:16 GMT",
+      "content": "Google's Gemini is nearing the big One Billion. The company said on Wednesday that the Gemini AI app now has 950 million monthly active users. We can keep sources anonymous.Some of Hugh's scoops and features:– Google told staff worried about Pentagon AI deals that it's 'leaning more' into national security contracts– Google is building its answer to OpenClaw– Google to let software engineers use AI assistants in job interviews– Larry Page is moving business out of California ahead of wealth tax– Internal document reveals Meta's AI targets– Google pushes more employees to use AI, and not just engineers– Big Tech's AI love fest is getting messy– The secrets of Larry Page's money man– The Goldman prodigy behind Silicon Valley's city of the future– Alphabet's Verily plans to to restructure ahead of fresh investment– How Google found its AI hype guy– 'Godfather of AGI' Ben Goertzel courted Epstein for funding, emails reveal– Inside the family offices of Larry Page and Sergey Brin. Look out for an alert in your inbox the next time publishes a story! Look out for an alert in your inbox the next time a new story is published!",
+      "raw_content": null
+    }
+  ],
+  "response_time": 0.34,
+  "request_id": "2752576b-628c-4916-a5e5-2a7082477ac3"
+}

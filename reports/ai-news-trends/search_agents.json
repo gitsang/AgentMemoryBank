@@ -1,0 +1,90 @@
+{
+  "query": "AI agents coding agent 2026 trends enterprise adoption",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://www.itnews.com.au/state-of-data-ai-2026/state-of-data-ai-2026-agentic-ai-627435",
+      "title": "State of Data & AI 2026: Agentic AI - iTnews",
+      "score": 0.8624794,
+      "published_date": "Tue, 21 Jul 2026 04:36:28 GMT",
+      "content": "Agentic AI has become the next major focus of enterprise AI adoption in Australia, but while early deployments remain relatively modest, the greater challenge may be ensuring governance keeps pace with rapid growth. *Forrester's The State of Agentic AI in 2026* report found that agentic AI had become technically viable, but most organisations remained far from operational maturity. Consequently, as organisations move from isolated pilots to fleets of AI agents, governance is emerging as the principal constraint on enterprise adoption. These findings echo those reported by McKinsey & Company in its November 2025 report *The state of AI in 2025: Agents, innovation, and transformation*, which found that 23 percent of organisations were scaling agentic AI in at least one business function. “In any large organisation, it is a board mandate to look for efficiencies and use cases, and it is democratised to business users as well,” she said. “Each and every function is looking at how they can use AI and optimise their respective functions, and that is what is escalating this.”.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.infosecurity-magazine.com/news/ai-agents-attack-surface/",
+      "title": "AI Agents Now the Enterprises Fastest Growing Exposed Attack Surface - Infosecurity Magazine",
+      "score": 0.8127637,
+      "published_date": "Thu, 23 Jul 2026 11:30:00 GMT",
+      "content": "Infosecurity Magazine Home » News » AI Agents Now the Enterprises Fastest Growing Exposed Attack Surface. The rapid adoption of enterprise AI tools is the fastest-growing source of new exposure for businesses, and it puts them at risk to additional cyber threats, a new report has warned. Published on July 22, *the Sophos AI Security 2026 Report*, warned that AI identities have become a new attack surface as AI agents and assistants are adopted in the workplace. Knowing this, cyber-attacks are targeting the trust, credentials and access permissions surrounding these systems, which has resulted in AI identities and AI agents becoming a high-value attack surface for malicious threat actors. To address the threat of cybersecurity incidents as result of compromised AI identities, the report recommended that AI agents should be treated like human users, with access restricted to just the applications and services they absolutely need to use.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.manilatimes.net/2026/07/21/tmt-newswire/pr-newswire/tencent-cloud-unveils-a-major-upgrade-to-its-agent-development-platform-launching-an-enterprise-grade-agentops-platform-to-bring-ai-agents-into-production-at-scale/2388097",
+      "title": "Tencent Cloud Unveils a Major Upgrade to Its Agent Development Platform, Launching an Enterprise-Grade AgentOps Platform to Bring AI Agents into Production at Scale - The Manila Times",
+      "score": 0.7876867,
+      "published_date": "Tue, 21 Jul 2026 05:54:01 GMT",
+      "content": "Tencent Cloud Unveils a Major Upgrade to Its Agent Development Platform, Launching an Enterprise-Grade AgentOps Platform to Bring AI Agents into Production at Scale. SHANGHAI, July 21, 2026 /PRNewswire/ -- Tencent Cloud, the cloud business of global technology company Tencent, today announced a major enhancement to its Agent Development Platform (ADP) International Edition, evolving it into a comprehensive, enterprise-grade AgentOps platform designed to help enterprises move AI agents from experimentation into production at scale. Together with Connector, Skills, Knowledge Base, MCP and Agent Portal, ADP 4.0 now connects the entire enterprise agent lifecycle - from building and connecting, to distribution and governance - giving enterprises a single foundation to develop, deploy and manage AI agents reliably and at scale. The newly launched Smart Desk serves as the unified, user-facing entry point of Tencent Cloud ADP 4.0, addressing two needs at once: enterprises can build Agents at scale, while employees can complete everyday tasks with a single sentence.",
+      "raw_content": null
+    },
+    {
+      "url": "https://marketscale.com/industries/software-and-technology/enterprise-ai-adoption-is-surging-but-workforce-readiness-is-sliding-backward",
+      "title": "Enterprise AI adoption is surging, but workforce readiness is sliding backward - MarketScale",
+      "score": 0.74961954,
+      "published_date": "Fri, 17 Jul 2026 14:17:00 GMT",
+      "content": "# Enterprise AI adoption is surging, but workforce readiness is sliding backward. AI integration is widespread in enterprises, with 57% reporting its use in operations. However, there is a decline in both workforce confidence and the achievement of business goals. See how Software & Technology teams put it to work with Executive Thought Leadership. The problem is what sits on the other side of the ledger. Deployment is outrunning outcomes, and two major research reports published in mid-2026 converge on the same explanation: the workforce side of the equation is being neglected. That means more than 80% of the workforce in a typical enterprise has neither the confidence nor the clarity to integrate AI into daily work, even as leadership pushes for broader deployment. Kyndryl's data shows a direct link between governance maturity and workforce trust: organizations with stronger governance frameworks report higher employee confidence in AI and are significantly more likely to achieve transformative business outcomes.",
+      "raw_content": null
+    },
+    {
+      "url": "https://techcrunch.com/2026/07/21/jack-dorsey-is-taking-on-slack-with-buzz-a-group-chat-platform-for-teams-and-their-ai-agents/",
+      "title": "Jack Dorsey is taking on Slack with Buzz, a group chat platform for teams and their AI agents - TechCrunch",
+      "score": 0.7101667,
+      "published_date": "Tue, 21 Jul 2026 19:43:41 GMT",
+      "content": "# Jack Dorsey is taking on Slack with Buzz, a group chat platform for teams and their AI agents. Positioned as a challenger to Slack and GitHub, Buzz is a group chat platform for the workplace that puts humans and their AI agents in the same conversations. Dorsey wrote on X that Buzz is “model-agnostic, decentralized, self-sovereign, and open source.” This product seems to be more than just a Dorsey passion project. It looks a lot like Slack, but with native AI agents and the ability to manage GitHub projects all from the same window. Since the platform is open source, developers can make their own Buzz instance feel more customized to the needs and workflows of their specific team. “There’s a lot of room for improvement for agents that live in Slack and can do more work than just coding for teams. In the enterprise setting, this means that you’ll want to self-host for security and control, and you want people to use it in Slack,” Konstantopoulos wrote on X.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.forbes.com/sites/johnsviokla/2026/07/20/the-self-driving-company-is-ais-next-business-model/",
+      "title": "The Self-Driving Company Is AI’s Next Business Model. - Forbes",
+      "score": 0.69199765,
+      "published_date": "Mon, 20 Jul 2026 00:00:00 GMT",
+      "content": "# The Self-Driving Company Is AI’s Next Business Model. The future of AI-native firms is evident in companies like Replit, which has deeply integrated AI agents into its operations. Replit's \"Self-Driving Company\" model demonstrates significant gains: a 5.8x increase in code contributions, nearly tripled output per engineer, and 30% faster code reviews. This exemplifies \"Emergent Intelligence,\" where AI is embedded in the firm's core. ## If You Want To See AI's Next Business Model, Study The Self-Driving Company. To see the leading edge of drone warfare, you go to Ukraine. To see the leading edge of the AI-native firm, you go to the companies that are AI Native and growing. The future of the firm is not in a vendor’s roadmap or an analyst's forecast. It is visible today, in a handful of companies operating at the far edge of adoption. Replit, the AI coding platform, released a post called \"The Self-Driving Company\" describing what happened when it wove agents into the fabric of the business rather than leaving them inside chat windows.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.automationworld.com/sponsored/whitepaper/55389416/beyond-the-hype-strategies-to-capitalize-on-agentic-ai-in-modern-manufacturing",
+      "title": "Beyond the Hype: Strategies to Capitalize on Agentic AI in Modern Manufacturing - Automation World",
+      "score": 0.67885995,
+      "published_date": "Thu, 23 Jul 2026 15:05:14 GMT",
+      "content": "Drawing on the State of Enterprise Agentic AI in 2026 — a study of 740 AI and business leaders across $5B+ enterprises in North America and Europe — this webinar delivers an unfiltered look at where manufacturing stands in the agentic AI race and what it takes to pull ahead. Join Jeff Evernham as he unpacks why most manufacturers are stalling, what the 28% are doing differently, and the concrete steps your organization can take to move from AI experimentation to measurable operational impact. * The real state of agentic AI in manufacturing: how manufacturers stack up against cross-industry benchmarks and what agent washing is costing organizations that fall for it. * The use cases generating real ROI: what manufacturers capturing the most value out of AI are using it for. As the Head of Innovation, Jeff Evernham sets the strategy for Agentic AI powered by RAG, so that companies can make the most of their content with generative AI.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.forbes.com/sites/nishatalagala/2026/07/20/five-ai-terms-your-board-will-ask-about-this-quarter/",
+      "title": "Five AI Terms Your Board Will Ask About This Quarter - Forbes",
+      "score": 0.6780931,
+      "published_date": "Mon, 20 Jul 2026 00:00:00 GMT",
+      "content": "# Five AI Terms Your Board Will Ask About This Quarter. Digital Labor involves AI taking on job roles, impacting operational costs and workforce planning, while the Agentic Lifecycle concerns managing decision-making AI agents that transform workflows and require new competencies. Understanding these early trends is essential for strategic planning, risk mitigation, and ensuring business ROI in the AI era. As businesses prepare for their next board meeting, here are five terms that the C-Suite should be aware of. The fact that they are in the news is not the key. The key is, for each of them, why they are in the news and why businesses should care about each specifically. **What is it?** AI agents are the new model of AI-driven software. The Agentic Lifecycle is to agents what the software lifecycle is to software - the complete management of an AI Agent from its entry into your organization to its exit.",
+      "raw_content": null
+    },
+    {
+      "url": "https://itbusinessnet.com/2026/07/carly-ai-launches-carly-workforce-self-serve-ai-agents-with-their-own-company-email-addresses/amp/",
+      "title": "Carly AI Launches Carly Workforce: Self-Serve AI Agents With Their Own Company Email Addresses - IT Business Net",
+      "score": 0.58465123,
+      "published_date": "Fri, 24 Jul 2026 03:04:09 GMT",
+      "content": "* Carly AI Launches Carly Workforce: Self-Serve AI Agents With Their Own Company Email Addresses. Self-serve setup lets teams of up to 50,000 employees share AI agents, workflows, and knowledge under centralized access, auditing, and billing controls. – July 23, 2026) – Carly AI (https://www.usecarly.com) today announced Carly Workforce, a self-serve platform that lets businesses deploy AI agents with email addresses on the company’s own domain – AI teammates that employees, customers, and vendors can reach the same way they reach anyone else at the company. Setup is self-serve: a business can create an organization, invite employees, configure permissions, and put agents to work without sales calls or an enterprise implementation cycle. Carly AI is an AI assistant and automation platform that helps businesses handle email, scheduling, CRM, and recurring workflows through custom AI agents that connect with more than 200 business tools.",
+      "raw_content": null
+    },
+    {
+      "url": "https://www.newsweek.com/empty-office-what-happens-when-ai-runs-company-12223177",
+      "title": "The Empty Office: What Happens When AI Runs the Company - Newsweek",
+      "score": 0.5689194,
+      "published_date": "Wed, 22 Jul 2026 09:00:00 GMT",
+      "content": "AI is changing what an organization is, not just what it does. Beyond the Experiment For over a century, every shift in how companies worked left one assumption intact. That is the Zero Human Enterprise, or ZHE: not literally a company with no humans anywhere, but a business in which important work is delegated to networks of AI agents rather than traditional teams of employees. Google’s Sundar Pichai captured the shift at the Cloud Next 2026 conference: “The conversation has gone from ‘Can we build an agent?’ to ‘How do we manage thousands of them?’” That second question is really a management question: If thousands of agents are making decisions, who supervises them, who sets their boundaries and who is accountable when they go wrong? They are managing the rules that manage the agents that do the work. Leading the Way Many assume this new organization will be flatter, with fewer people.",
+      "raw_content": null
+    }
+  ],
+  "response_time": 0.39,
+  "request_id": "f7c482bd-170d-464d-ba8e-d69b0f592371"
+}
