@@ -3,6 +3,7 @@ bin
 
 # Python bytecode
 __pycache__/
+.venv*
 
 # Local model caches
 .hf/
