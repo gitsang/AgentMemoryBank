@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280,height=720">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0f172a; font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; width:1280px; height:720px; overflow:hidden; position:relative; color:#e2e8f0; }
+
+.slide { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transform:translateY(30px); transition:opacity 0.6s,transform 0.6s; padding:40px 60px; }
+.slide.active { opacity:1; transform:translateY(0); }
+.slide.exit { opacity:0; transform:translateY(-30px); }
+
+/* Title Slide */
+.slide-0 h1 { font-size:48px; font-weight:900; background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; }
+.slide-0 .subtitle { font-size:22px; color:#94a3b8; }
+
+/* Section Title */
+.section-title { font-size:38px; font-weight:800; color:#60a5fa; margin-bottom:30px; text-align:center; }
+.section-desc { font-size:20px; color:#94a3b8; text-align:center; margin-bottom:20px; }
+
+/* Table */
+.table-wrap { width:100%; max-height:520px; overflow:hidden; border-radius:12px; border:1px solid #334155; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead th { background:#1e293b; color:#60a5fa; font-weight:700; padding:10px 6px; text-align:center; border-bottom:2px solid #334155; white-space:nowrap; position:sticky; top:0; }
+tbody td { padding:8px 6px; text-align:center; border-bottom:1px solid #1e293b; }
+tbody tr { background:#0f172a; transition:background 0.3s; }
+tbody tr:nth-child(even) { background:#1a2332; }
+tbody tr:hover { background:#1e3a5f; }
+.highlight-row { background:#1a3a2a !important; }
+.highlight-row td:first-child { color:#4ade80; font-weight:700; }
+
+td:first-child { text-align:left; white-space:nowrap; font-weight:600; }
+td:nth-child(5) { color:#fbbf24; font-weight:700; }
+td:nth-child(6) { font-size:16px; }
+td:nth-child(11) { font-size:11px; color:#cbd5e1; text-align:left; max-width:180px; }
+td:nth-child(12) { font-size:13px; }
+td:nth-child(13) { font-size:11px; color:#94a3b8; text-align:left; max-width:200px; }
+
+/* Comparison cards */
+.cards { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; }
+.card { background:#1e293b; border-radius:16px; padding:28px 24px; width:260px; text-align:center; border:1px solid #334155; transition:transform 0.3s,box-shadow 0.3s; }
+.card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(96,165,250,0.15); }
+.card .rank { font-size:40px; margin-bottom:8px; }
+.card h3 { font-size:22px; color:#f1f5f9; margin-bottom:8px; }
+.card .price { font-size:28px; font-weight:900; color:#4ade80; margin-bottom:4px; }
+.card .period { font-size:14px; color:#94a3b8; margin-bottom:12px; }
+.card .tag { display:inline-block; background:#334155; color:#60a5fa; padding:4px 12px; border-radius:20px; font-size:13px; margin:3px; }
+
+/* Process steps */
+.steps { display:flex; gap:30px; }
+.step { flex:1; background:#1e293b; border-radius:16px; padding:30px 24px; text-align:center; border:1px solid #334155; position:relative; }
+.step .num { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#60a5fa,#a78bfa); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:900; margin:0 auto 16px; }
+.step h3 { font-size:20px; color:#f1f5f9; margin-bottom:10px; }
+.step p { font-size:14px; color:#94a3b8; line-height:1.6; }
+
+/* Tips */
+.tips { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:1000px; }
+.tip { background:#1e293b; border-radius:12px; padding:20px; border-left:4px solid #f59e0b; }
+.tip .icon { font-size:24px; margin-bottom:6px; }
+.tip h3 { font-size:16px; color:#fbbf24; margin-bottom:4px; }
+.tip p { font-size:14px; color:#cbd5e1; }
+
+/* Progress bar */
+.progress { position:absolute; bottom:0; left:0; height:3px; background:linear-gradient(90deg,#60a5fa,#a78bfa); transition:width 0.3s; }
+.counter { position:absolute; bottom:16px; right:40px; font-size:14px; color:#64748b; }
+
+/* Network badges */
+.badge-cm { background:#1a3a2a; color:#4ade80; border:1px solid #166534; padding:2px 8px; border-radius:10px; font-size:11px; }
+.badge-cu { background:#1a2a3a; color:#60a5fa; border:1px solid #1e40af; padding:2px 8px; border-radius:10px; font-size:11px; }
+.badge-ct { background:#2a1a3a; color:#a78bfa; border:1px solid #5b21b6; padding:2px 8px; border-radius:10px; font-size:11px; }
+
+.fade-up { animation:fadeUp 0.6s ease both; }
+.fade-up:nth-child(2) { animation-delay:0.15s; }
+.fade-up:nth-child(3) { animation-delay:0.3s; }
+.fade-up:nth-child(4) { animation-delay:0.45s; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+.pulse { animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+</style>
+</head>
+<body>
+
+<!-- Slide 0: Title -->
+<div class="slide slide-0 active" id="s0">
+  <h1>香港便宜保号手机卡</h1>
+  <div class="subtitle">2025年7月 · 最新保号套餐与办理流程全解析</div>
+  <div style="margin-top:30px;color:#64748b;font-size:16px;">只收短信验证码 · 不打电话 · 不用流量</div>
+</div>
+
+<!-- Slide 1: Overview Table -->
+<div class="slide" id="s1">
+  <div class="section-title">📊 九大方案总览</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>方案</th><th>运营商</th><th>内地网络</th><th>年成本</th><th>eSIM</th><th>收短信</th><th>内地IP</th><th>保号附带</th><th>开通要求</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row"><td>⭐ Club Sim</td><td>CSL</td><td><span class="badge-cu">联通</span></td><td>6 HKD</td><td>✅</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">无流量/通话</td><td style="font-size:11px;text-align:left">护照/通行证</td></tr>
+        <tr class="highlight-row"><td>⭐ Haha SIM</td><td>3HK</td><td><span class="badge-cu">联通</span></td><td>10 HKD</td><td>❌</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">无附带</td><td style="font-size:11px;text-align:left">港外用无需实名</td></tr>
+        <tr class="highlight-row"><td>⭐ 游惠宝</td><td>3HK网络</td><td><span class="badge-cu">联通</span></td><td>36 HKD</td><td>✅</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">无附带</td><td style="font-size:11px;text-align:left">护照/通行证</td></tr>
+        <tr class="highlight-row"><td>⭐ Lucky SIM</td><td>CSL网络</td><td><span class="badge-cu">联通</span></td><td>~46 HKD</td><td>✅</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">30GB+2000分钟</td><td style="font-size:11px;text-align:left">通行证实名</td></tr>
+        <tr><td>MySim</td><td>CMHK</td><td><span class="badge-cm">移动</span></td><td>~100 HKD</td><td>❌</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">无限数据+5000分</td><td style="font-size:11px;text-align:left">身份证/通行证</td></tr>
+        <tr><td>SoSIM</td><td>3HK</td><td><span class="badge-cu">联通</span></td><td>90-160</td><td>✅</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">50GB+1500分</td><td style="font-size:11px;text-align:left">护照/通行证</td></tr>
+        <tr><td>电信蓝卡</td><td>中国电信香港</td><td><span class="badge-ct">电信</span></td><td>~100 HKD</td><td>❌</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">10GB+100分</td><td style="font-size:11px;text-align:left">需到香港买卡</td></tr>
+        <tr><td>LuckySIM年卡</td><td>CSL网络</td><td><span class="badge-cu">联通</span></td><td>~35 HKD</td><td>❌</td><td>免费</td><td>🇭🇰</td><td style="font-size:11px">10GB+2000分</td><td style="font-size:11px;text-align:left">需到香港买卡</td></tr>
+        <tr><td>RedteaGO ⚠️</td><td>红茶移动</td><td>移动/联通</td><td>~24 HKD</td><td>✅</td><td>免费</td><td>🇬🇧</td><td style="font-size:11px">100MB流量</td><td style="font-size:11px;text-align:left">无需实名！App即买</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:12px;font-size:13px;color:#64748b;">⚠️ RedteaGO 为奥地利号码（+43），非香港号码</div>
+</div>
+
+<!-- Slide 2: Top 4 Picks Cards -->
+<div class="slide" id="s2">
+  <div class="section-title">🏆 四大推荐方案</div>
+  <div class="cards fade-up" style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
+    <div class="card"><div class="rank">🥇</div><h3>Club Sim</h3><div class="price">6 HKD</div><div class="period">/ 年（可0元）</div><div class="tag">CSL大品牌</div><div class="tag">eSIM ✅</div><div class="tag">最便宜</div></div>
+    <div class="card"><div class="rank">🥈</div><h3>Haha SIM</h3><div class="price">10 HKD</div><div class="period">/ 年</div><div class="tag">港外无需实名</div><div class="tag">通话短信全</div><div class="tag">综合最强</div></div>
+    <div class="card"><div class="rank">🥉</div><h3>游惠宝</h3><div class="price">36 HKD</div><div class="period">/ 年</div><div class="tag">小程序收短信</div><div class="tag">不插卡</div><div class="tag">最便捷</div></div>
+    <div class="card"><div class="rank">🏅</div><h3>Lucky SIM</h3><div class="price">138 HKD</div><div class="period">/ 3年</div><div class="tag">一次买管3年</div><div class="tag">30GB数据</div><div class="tag">最省心</div></div>
+  </div>
+</div>
+
+<!-- Slide 3: Best for different needs -->
+<div class="slide" id="s3">
+  <div class="section-title">🎯 按需求选卡</div>
+  <div class="cards" style="flex-wrap:wrap;">
+    <div class="card" style="border-color:#4ade80;"><div class="rank">💰</div><h3>极致低价</h3><div style="font-size:26px;font-weight:900;color:#4ade80;">Club Sim</div><div style="font-size:18px;color:#fbbf24;">6 HKD/年</div><div style="font-size:13px;color:#94a3b8;margin-top:8px;">买6HKD短信套餐<br>有效期延长13个月<br>甚至可以运动积分换</div></div>
+    <div class="card" style="border-color:#60a5fa;"><div class="rank">📱</div><h3>最便捷</h3><div style="font-size:26px;font-weight:900;color:#60a5fa;">游惠宝</div><div style="font-size:18px;color:#fbbf24;">36 HKD/年</div><div style="font-size:13px;color:#94a3b8;margin-top:8px;">微信小程序收短信<br>SIM卡放抽屉就行<br>双卡手机无需换卡</div></div>
+    <div class="card" style="border-color:#a78bfa;"><div class="rank">😌</div><h3>最省心</h3><div style="font-size:26px;font-weight:900;color:#a78bfa;">Lucky SIM</div><div style="font-size:18px;color:#fbbf24;">138 HKD/3年</div><div style="font-size:13px;color:#94a3b8;margin-top:8px;">一次付费管3年<br>不用每年折腾续费<br>还送30GB+2000分钟</div></div>
+    <div class="card" style="border-color:#f472b6;"><div class="rank">🌍</div><h3>无需实名</h3><div style="font-size:26px;font-weight:900;color:#f472b6;">RedteaGO</div><div style="font-size:18px;color:#fbbf24;">$3.3 USD/年</div><div style="font-size:13px;color:#94a3b8;margin-top:8px;">奥地利号码<br>App直接买<br>支付宝付款</div></div>
+  </div>
+</div>
+
+<!-- Slide 4: Application Process -->
+<div class="slide" id="s4">
+  <div class="section-title">📋 办理流程（通用）</div>
+  <div class="steps">
+    <div class="step fade-up"><div class="num">1</div><h3>获取SIM卡</h3><p>香港便利店(711/丰泽)<br>深水埗鸭寮街<br>淘宝/闲鱼代购<br>官网/小程序买eSIM</p></div>
+    <div class="step fade-up"><div class="num">2</div><h3>实名登记</h3><p>香港法律必须实名<br>护照或港澳通行证<br>一般不支持大陆身份证<br>插卡后点链接完成</p></div>
+    <div class="step fade-up"><div class="num">3</div><h3>激活使用</h3><p>中国大陆直接插卡<br>需开启数据漫游<br>手动选择运营商<br>（联通/移动/电信）</p></div>
+    <div class="step fade-up"><div class="num">4</div><h3>保号续期</h3><p>记下激活日期<br>到期前买套餐或充值<br>部分卡可设自动续期<br>充值即延长有效期</p></div>
+  </div>
+</div>
+
+<!-- Slide 5: Key Points -->
+<div class="slide" id="s5">
+  <div class="section-title">⚠️ 重要注意事项</div>
+  <div class="tips">
+    <div class="tip"><div class="icon">🪪</div><h3>实名是强制的</h3><p>香港《电讯条例》要求所有SIM卡实名登记，需护照或港澳通行证。一般不支持大陆身份证。</p></div>
+    <div class="tip"><div class="icon">📅</div><h3>记下激活日期</h3><p>大多数香港卡无法在线查询到期时间，一定要自己记好，否则号码可能被回收。</p></div>
+    <div class="tip"><div class="icon">🗺️</div><h3>地区限制</h3><p>云南、新疆、西藏等地区可能无法正常漫游使用香港手机卡。</p></div>
+    <div class="tip"><div class="icon">📡</div><h3>开启VoLTE</h3><p>内地收短信需要手机支持VoLTE功能，部分手机需手动开启或拨号盘输入代码。</p></div>
+    <div class="tip"><div class="icon">🏦</div><h3>银行预留号码</h3><p>低成本储值卡可能不被香港银行接受作为预留号码，建议核实后再办理。</p></div>
+    <div class="tip"><div class="icon">🇭🇰</div><h3>内地流量IP</h3><p>所有香港卡在内地漫游上网均走归属地接入，IP显示为香港，可直接访问外网。</p></div>
+  </div>
+</div>
+
+<!-- Slide 6: Ending -->
+<div class="slide" id="s6">
+  <h1 style="font-size:44px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">总结</h1>
+  <div style="font-size:22px;color:#e2e8f0;margin-top:30px;text-align:center;line-height:2;">
+    🥇 最低成本 → <span style="color:#4ade80;font-weight:700;">Club Sim</span> 6 HKD/年<br>
+    🥈 最便捷 → <span style="color:#60a5fa;font-weight:700;">游惠宝</span> 小程序收短信<br>
+    🥉 最省心 → <span style="color:#a78bfa;font-weight:700;">Lucky SIM</span> 138 HKD管3年<br>
+    🏅 综合最强 → <span style="color:#fbbf24;font-weight:700;">Haha SIM</span> 10 HKD/年 功能全面
+  </div>
+  <div style="margin-top:40px;font-size:16px;color:#64748b;">详细报告见 GitHub: gitsang/AgentMemoryBank</div>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter">1 / 7</div>
+
+<script>
+const SLIDE_DURATION = 27000; // ms per slide (~190s total for 7 slides)
+const FADE_TIME = 600;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function showSlide(i) {
+  slides.forEach((s,idx) => {
+    s.classList.remove('active','exit');
+    if (idx === i) s.classList.add('active');
+    else if (idx < i) s.classList.add('exit');
+  });
+  document.getElementById('progress').style.width = ((i+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (i+1) + ' / ' + total;
+}
+
+// Auto advance
+let timer;
+function startAuto() {
+  timer = setInterval(() => {
+    current = (current + 1) % total;
+    showSlide(current);
+  }, SLIDE_DURATION);
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    clearInterval(timer);
+    current = Math.min(current + 1, total - 1);
+    showSlide(current);
+    timer = setInterval(() => { current = (current + 1) % total; showSlide(current); }, SLIDE_DURATION);
+  } else if (e.key === 'ArrowLeft') {
+    clearInterval(timer);
+    current = Math.max(current - 1, 0);
+    showSlide(current);
+    timer = setInterval(() => { current = (current + 1) % total; showSlide(current); }, SLIDE_DURATION);
+  }
+});
+
+startAuto();
+</script>
+</body>
+</html>

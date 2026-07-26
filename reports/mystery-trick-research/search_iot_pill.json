@@ -1,0 +1,66 @@
+{
+  "query": "smart pill dispenser IoT hack overdose insulin fatal real case",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://news.sky.com/story/diabetic-patients-warned-of-fatal-hacking-risk-in-insulin-pumps-10605429",
+      "title": "Diabetic patients warned of fatal hacking risk in insulin pumps",
+      "content": "A security researcher discovered Johnson & Johnson's Animas OneTouch ping unit is vulnerable to being hacked from 25ft away.",
+      "score": 0.47051823,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.researchgate.net/publication/386352545_Smart_Pill_Dispenser_An_Arduino-Based_Device_To_Prevent_Drug_Overdose",
+      "title": "(PDF) Smart Pill Dispenser An Arduino-Based Device To Prevent Drug ...",
+      "content": "PDF | According to the CDC, there were 91799 drug overdose deaths in 2020 in the United States [2]. Since the COVID-19 pandemic, many people have had.",
+      "score": 0.4549328,
+      "raw_content": null
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7576952",
+      "title": "Suicide via Intentional Insulin Overdose Through First ... - PMC",
+      "content": "by VN Shah · 2020 · Cited by 5 — We report a first case of suicide by taking repeated high doses of insulin through the Medtronic 670G.",
+      "score": 0.43438992,
+      "raw_content": null
+    },
+    {
+      "url": "https://engrxiv.org/preprint/view/4185",
+      "title": "Smart Pill Dispenser An Arduino-Based Device To Prevent Drug ...",
+      "content": "by K Hariprasad · Cited by 1 — Abstract. According to the CDC, there were 91,799 drug overdose deaths in 2020 in the United States [2]. Since the COVID-19 pandemic,",
+      "score": 0.37093207,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.wired.com/story/medtronic-insulin-pump-hack-app",
+      "title": "Hackers Made an App That Kills to Prove a Point | WIRED",
+      "content": "Medtronic and the FDA left an insulin pump with a potentially deadly vulnerability on the market—until researchers who found the flaw showed how bad it could be. Medtronic and the FDA left an insulin pump with a potentially deadly vulnerability on the market—until the researchers who found the flaw showed how bad it could be.Casey Chin; Tony Rusecki/Alamy. Two years ago, researchers Billy Rios and Jonathan Butts discovered disturbing vulnerabilities in Medtronic's popular MiniMed and MiniMed Paradigm insulin pump lines. They built an Android app that could use the flaws to kill people. \"We’ve essentially just created a universal remote for every one of these insulin pumps in the world,\" Rios says. But as Rios and Butts discovered, it's relatively easy to determine the radio frequencies on which the remote and pump talk to each other.",
+      "score": 0.36161602,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=mVafyuobMJY",
+      "title": "Insulin Mystery Murder Trial — UT v. Meggan Sundwall",
+      "content": "Meggan Sundwall is facing charges in the death of her friend, Kacee Terry, and is accused of giving her a fatal dose of insulin.",
+      "score": 0.31973758,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.fullerton.edu/ecs/faculty/apanangadan/publications/SmartMedicationManagement_AIMHC-2024.pdf",
+      "title": "Enhancing Medication Adherence with an IoT-based Pill Dispenser and ...",
+      "content": "This paper endeavors to offer a comprehensive solution to medication adherence by introducing an IoT-based Smart Pill Dispenser and Smart Cup, coupled with seamless integration with an Android application. Our proposed solution builds upon these works by introducing a comprehensive IoT-based approach, encompassing a Smart Pill Dispenser, Smart Cup, and an Android application for real-time monitoring, notifications, and adherence alerts. SYSTEM DESIGN The system described in this paper encompasses three primary components, as shown in Fig.1: the Pill Dispenser, the Smart Cup, and the Android Application, which collectively form a comprehensive solution for medication management. Additionally, the Pill Dispenser is pivotal in notifying the user by signaling the associated Android application during scheduled medication times. The Android Application receives a notification from the Pill Dispenser, providing a 5-minute advance alert to the user, thereby ensuring timely medication adherence. This test ensured that the Android Application accurately received and synchronized medication schedules and adherence data, reflecting real-time changes made through the Pill Dispenser's user interface.",
+      "score": 0.27156657,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.facebook.com/MajorLeagueHacking/videos/smart-tech-meets-safer-healthcare-medication-management-is-a-high-stakes-balanci/4322374564743760",
+      "title": "Smart tech meets safer healthcare. 💊✨ Medication management is a high ...",
+      "content": "Major League Hacking . May 29, 2026· . . Smart tech meets safer ... smart medicine dispenser designed to automate safety and accountability.",
+      "score": 0.24738279,
+      "raw_content": null
+    }
+  ],
+  "response_time": 1.08,
+  "request_id": "85179ca1-9f24-44d7-8928-4c50bfff434e"
+}

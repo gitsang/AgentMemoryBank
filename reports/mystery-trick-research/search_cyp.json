@@ -1,0 +1,66 @@
+{
+  "query": "safe drug combination becomes toxic interaction CYP450 enzyme inhibition fatal",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://scindeks-clanci.ceon.rs/data/pdf/0042-8450/2021/0042-84502105563K.pdf",
+      "title": "Fatal poisoning case involving drug interaction due to the ...",
+      "content": "E-mail: kinochin@med.kagawa-u.ac.jp C A S E R E P O R T S UDC: 340.6:615.099 DOI: https://doi.org/10.2298/VSP170508090K Fatal poisoning case involving drug interaction due to the inhibition of cytochrome P450 Slučaj trovanja sa fatalnim ishodom koji uključuje interakciju lekova zbog inhibicije citohroma P450 Hiroshi Kinoshita, Naoko Tanaka, Mitsuru Kumihashi, Mostofa Jamal, Asuka Ito, Tadayoshi Yamashita, Kiyoshi Ameno Kagawa University, Faculty of Medicine, Department of Forensic Medicine, Kagawa, Japan Abstract Introduction. Table 2 Enzymes involved in the metabolism of each drug and enzyme inhibition by each drug Drug Metabolic enzyme Enzyme inhibition Levomepromazine CYP3A4 12 CYP1A2, CYP2D6, CYP3A4 5, 12 Promethazine CYP2D6 5 CYP2D6 5, 13 Dextromethorphan CYP2D6, CYP3A4 4, 15 Estazolam CYP3A4 16 Clomipramine CYP1A2, CYP2C19, CYP2D6 4, 5, 13 CYP2D6 4, 5, 13 Risperidone CYP2D6, CYP3A4 2, 5 Flunitrazepam CYP2C19, CYP3A4 17 Acetaminophen CYP1A2, CYP2E1 5 Vol. 78, No 5 VOJNOSANITETSKI PREGLED Page 565 Kinoshita H, et al.",
+      "score": 0.6554468,
+      "raw_content": null
+    },
+    {
+      "url": "https://research.amanote.com/publication/u6aoAXQBKQvf0BhiTldl/fatal-poisoning-case-involving-drug-interaction-due-to-the-inhibition-of-cytochrome-p450",
+      "title": "(PDF) Fatal Poisoning Case Involving Drug Interaction Due",
+      "content": "Fatal Poisoning Case Involving Drug Interaction Due to the Inhibition of Cytochrome P450 · Fatal Paraphenylenediamine Poisoning Due to Black Henna · Congenital",
+      "score": 0.57293844,
+      "raw_content": null
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42394195",
+      "title": "Implications for Drug Interaction Prediction and Herbal Safety",
+      "content": "When CYP450 activity is inhibited, it is easy to cause the accumulation of substrate drugs and cause toxic side effects, or the formation of",
+      "score": 0.5683445,
+      "raw_content": null
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7431904",
+      "title": "A history of the roles of cytochrome P450 enzymes in the toxicity of drugs",
+      "content": "# A history of the roles of cytochrome P450 enzymes in the toxicity of drugs. A **.gov** website belongs to an official government organization in the United States. In this review I will deal with one aspect of P450, drug toxicity, and the history of how this developed. In part because of this, the number of drugs recalled by the Food and Drug Administration (FDA) in the United States has not been high, and apparently none have been approved that have proven to cause cancer or birth defects. Over the top of these two over-arching themes will be effects of enzyme inhibition, induction, and other matters related to drug-drug interactions (Table 2).Fig. 1General paradigm of drug metabolism and bioactivation by P450 enzymesTable 1Drugs with black box warnings for hepatotoxicity [1]DrugDose (mg/day)Reactive productsAcitretin25–50NoBosentau125–250NoDacarbazine140–315YesDantrolene300–400YesFelbamate1200YesFlutamide750YesGemtuzumab(9 mg m−3)YesIsoniazid300YesKetoconazole200YesNaltrexone50NoNevirapine200YesTolcapone300YesTrovafloxacin100–500NoValproic acid1000–2400Yes10/14 = 71%Table 2Mechanisms of P450-related drug-drug interactionsPerpetrator drugEffect on victim drugInducerIncreased metabolism, lack of efficacyInducerIncreased bioactivation via a minor pathwayCompetitive inhibitorDecreased metabolism, toxicity due to elevated level of drugIrreversible inhibitorDecreased metabolism, toxicity due to elevated level of drugAllosteric activatorSame as inducer.",
+      "score": 0.54492307,
+      "raw_content": null
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7557591",
+      "title": "Mechanisms of CYP450 Inhibition: Understanding Drug-Drug Interactions Due to Mechanism-Based Inhibition in Clinical Practice",
+      "content": "A **.gov** website belongs to an official government organization in the United States. Image 5: PMC search open iconSearch. Image 9: Close Search  Image 10: Search. Image 11: PMC search open iconImage 12: PMC search close ison. Inclusion in an NLM database does not imply endorsement of, or agreement with, the contents by NLM or the National Institutes of Health. # Mechanisms of CYP450 Inhibition: Understanding Drug-Drug Interactions Due to Mechanism-Based Inhibition in Clinical Practice. Find articles by Meghan J. The magnitude of these interactions depends on several factors, including varying affinity and concentration of substrates, time delay between the administration of the drugs, and mechanisms of CYP450 inhibition. **Keywords:**drug–drug interactions, mechanism-based inhibition, competitive inhibition, non-competitive inhibition, substrate, inhibitor, cytochromes P450. Inhibition of cytochrome P450 (CYP450) enzymes is the most common mechanism leading to drug–drug interactions [4]. CYP450 inhibition can be categorized as reversible (including competitive and non-competitive inhibition) or irreversible (or quasi-irreversible), such as mechanism-based inhibition.",
+      "score": 0.43856934,
+      "raw_content": null
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8724836",
+      "title": "Inhibition of Cytochrome P450 Enzymes by Drugs—Molecular Basis and Practical Applications",
+      "content": "A **.gov** website belongs to an official government organization in the United States. A large fraction of these is due to inhibition of enzymes involved in drug metabolism and transport, particularly cytochrome P450 (P450) enzymes. In addition to drug-drug interactions, issues have involved interactions of drugs with foods and natural products related to P450 enzymes. A general overview of the interactions of a chemical with an enzyme is shown in Fig. 1A, where an enzyme involved in the metabolism of a drug is considered. Accordingly, this review will focus on issues of inhibition of P450 3A4 (In general P450 3A4 and 3A5 have similar substrate specificity and are sensitive to the same inhibitors, with some important exceptions (Hardy _et al_., 2014; Zhu _et al_., 2014; Kramlinger _et al_., 2015), but many experiments with drugs were done only with P450 3A4—or 3A4 and 3A5 were not discriminated— and will be referred to as 3A4 in that context).",
+      "score": 0.43467787,
+      "raw_content": null
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1312247",
+      "title": "Drug interactions due to cytochrome P450",
+      "content": "An official website of the United States government. A **.gov** website belongs to an official government organization in the United States. A **lock** ( ) or **https://** means you've safely connected to the .gov website. Image 5: PMC search open icon Search. Image 9: Close icon Search  Image 10: Search. Image 11: PMC search open iconImage 12: Close icon. Search in PMCImage 13: Search. *   Search in PMC%22[jour]). *   Add to search%22[jour]). # Drug interactions due to cytochrome P450. Cytochrome P450 is a family of isozymes responsible for the biotransformation of several drugs. Drug metabolism via the cytochrome P450 system has emerged as an important determinant in the occurrence of several drug interactions that can result in drug toxicities, reduced pharmacological effect, and adverse drug reactions. Drug metabolism via the cytochrome P450 system has emerged as an important determinant in the occurrence of several drug-drug interactions. Of these 6 isozymes, shared metabolism by the CYP3A4 isozyme has resulted in several clinically significant drug-drug interactions.",
+      "score": 0.4187688,
+      "raw_content": null
+    },
+    {
+      "url": "https://www.fda.gov/drugs/drug-interactions-labeling/healthcare-professionals-fdas-examples-drugs-interact-cyp-enzymes-and-transporter-systems",
+      "title": "For Healthcare Professionals | FDA’s Examples of Drugs that Interact with CYP Enzymes and Transporter Systems | FDA",
+      "content": "# For Healthcare Professionals | FDA’s Examples of Drugs that Interact with CYP Enzymes and Transporter Systems. Table 1 provides examples of drugs that interact with CYP enzymes and transporter systems. Table 2 provides definitions of substrates, inhibitors, and inducers for CYP-based metabolism and Table 3 provides definitions of inhibitors and substrates for drug transporter systems. To refine your search for interacting examples of drugs\\* in CYP-based metabolic- and transporter system-based drug interaction classes, use the filters (in the box below) and/or the search box (located below the filters and above the table of examples). | amiodarone |  | 2C9  moderate  inhibitor | 2D6; 3A  weak  inhibitor |  |  |  |  |  | P-gp  inhibitor |  |. | cobicistat | 3A  strong  inhibitor |  | 2D6  weak  inhibitor |  |  |  |  |  | P-gp inhibitor |  |. | dronedarone |  | 3A  moderate  inhibitor |  |  |  |  | 3A  sensitive  substrate |  | P-gp  inhibitor |  |.",
+      "score": 0.37621105,
+      "raw_content": null
+    }
+  ],
+  "response_time": 0.69,
+  "request_id": "991e6f14-2b25-4d69-89b0-f58ffd5eb0a8"
+}

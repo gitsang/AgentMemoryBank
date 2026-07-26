@@ -17,3 +17,16 @@ plan
 .sisyphus
 browser-data/
 .playwright-mcp/
+
+# Video projects (generated artifacts)
+reports/**/giffgaff-tutorial-video/narration.mp3
+reports/**/giffgaff-tutorial-video/*.webm
+reports/**/giffgaff-tutorial-video/giffgaff-tutorial.mp4
+reports/**/giffgaff-tutorial-video/.narration-tmp.txt
+
+# Video output
+reports/hk-cheap-sim-keep-number-2025/video/output.mp4
+reports/hk-cheap-sim-keep-number-2025/video/voice.mp3
+reports/hk-cheap-sim-keep-number-2025/video/frames/
+reports/hk-cheap-sim-keep-number-2025/video/silent.mp4
+reports/hk-cheap-sim-keep-number-2025/video/recorded.webm
