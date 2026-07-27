@@ -1,0 +1,19 @@
+{
+  "query": {
+    "origin": "厦门",
+    "destination": "香港西九龙",
+    "departureDate": "2026-09-24",
+    "journeyType": 2,
+    "transportNo": ["D2293", "G6587"],
+    "transferCity": "深圳",
+    "seatClass": "second class"
+  },
+  "result": {
+    "data": null,
+    "message": "智慧交通结果为空",
+    "status": 1,
+    "systemMessage": null
+  },
+  "checkedAt": "2026-07-27",
+  "note": "查询日期尚未进入 12306 预售期，因此改用当前公开运行图核对车次、时刻和公布票价。"
+}
