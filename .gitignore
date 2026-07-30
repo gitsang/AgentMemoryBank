@@ -15,6 +15,7 @@ __pycache__/
 yt-video
 comfyui-output
 plan
+.tasks
 
 # Agents
 .sisyphus
