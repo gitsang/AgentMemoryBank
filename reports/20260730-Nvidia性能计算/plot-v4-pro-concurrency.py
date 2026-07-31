@@ -35,6 +35,9 @@ OUTPUT_TOKENS = 1000
 FIXED_CONCURRENCY = 100
 CONTEXT_MIN_K = 8
 CONTEXT_MAX_K = 372
+CACHE_CONTEXT_TOKENS = 372000
+CACHE_HIT_MIN_PERCENT = 0
+CACHE_HIT_MAX_PERCENT = 100
 ACTIVE_KV_POOL_GB = {
     cluster: ACTIVE_BATCH_LIMIT[cluster] * KV_GB_PER_REQUEST for cluster in COLORS
 }
@@ -158,6 +161,47 @@ def context_hicache_metrics(cluster: str, context_tokens: float) -> tuple[float,
 
 def context_hicache_series(cluster: str, context_tokens: np.ndarray) -> tuple[np.ndarray, ...]:
     rows = [context_hicache_metrics(cluster, float(value)) for value in context_tokens]
+    return tuple(np.array(column) for column in zip(*rows))
+
+
+def cache_prefill_seconds(cluster: str, hit_rates: np.ndarray) -> np.ndarray:
+    new_tokens = CACHE_CONTEXT_TOKENS * (1 - hit_rates)
+    average_keys = CACHE_CONTEXT_TOKENS * (1 + hit_rates) / 2
+    linear_flops = 2 * ACTIVE_PARAMETERS * new_tokens
+    attention_flops = 4 * new_tokens * average_keys * ATTENTION_WIDTH * ATTENTION_LAYERS
+    effective_flops = EFFECTIVE_COMPUTE_TFLOPS[cluster] * 1e12
+    return FIXED_CONCURRENCY * (linear_flops + attention_flops) / effective_flops
+
+
+def cache_hicache_metrics(cluster: str, hit_rate: float) -> tuple[float, float, float, float]:
+    remaining = FIXED_CONCURRENCY
+    elapsed = 0.0
+    weighted_queue = 0.0
+    weighted_ready = 0.0
+    weighted_service = 0.0
+    max_batch = context_active_batch(cluster, CACHE_CONTEXT_TOKENS)
+    restore_gb = float(context_kv_gb(CACHE_CONTEXT_TOKENS)) * hit_rate
+
+    while remaining:
+        batch = min(max_batch, remaining)
+        restore = batch * restore_gb / L2_RESTORE_BW_GBPS[cluster]
+        service = OUTPUT_TOKENS * context_decode_step_seconds(
+            cluster, batch, CACHE_CONTEXT_TOKENS
+        )
+        weighted_queue += batch * elapsed
+        weighted_ready += batch * (elapsed + restore)
+        weighted_service += batch * service
+        elapsed += restore + service
+        remaining -= batch
+
+    average_queue = weighted_queue / FIXED_CONCURRENCY
+    average_ready = weighted_ready / FIXED_CONCURRENCY
+    average_service = weighted_service / FIXED_CONCURRENCY
+    return average_queue, average_ready, average_service, average_ready + average_service
+
+
+def cache_hicache_series(cluster: str, hit_rates: np.ndarray) -> tuple[np.ndarray, ...]:
+    rows = [cache_hicache_metrics(cluster, float(value)) for value in hit_rates]
     return tuple(np.array(column) for column in zip(*rows))
 
 
@@ -317,6 +361,76 @@ def plot_context_total(ax, context_k: np.ndarray) -> None:
     add_legend(ax)
 
 
+def style_cache_axis(ax, title: str, ylabel: str) -> None:
+    ax.set_title(title, loc="left", fontsize=14, pad=12)
+    ax.set_xlabel("Cache hit rate / %")
+    ax.set_ylabel(ylabel)
+    ax.set_xlim(CACHE_HIT_MIN_PERCENT, CACHE_HIT_MAX_PERCENT)
+    ax.grid(True, linewidth=0.8)
+    ax.spines[["top", "right"]].set_visible(False)
+
+
+def plot_cache_prefill(ax, hit_percent: np.ndarray) -> None:
+    hit_rates = hit_percent / 100
+    for cluster, color in COLORS.items():
+        ax.plot(
+            hit_percent,
+            cache_prefill_seconds(cluster, hit_rates),
+            color=color,
+            linewidth=2.4,
+            label=cluster,
+        )
+    ax.axhline(PREFILL_SLO_SECONDS, color="#B91C1C", linestyle="--", linewidth=1.5, label="5 分钟门槛")
+    style_cache_axis(ax, "固定并发 100、Context 372k：Cache hit rate 与 Prefill 时间", "Prefill 时间 / 秒")
+    add_legend(ax)
+
+
+def plot_cache_decode(ax, hit_percent: np.ndarray) -> None:
+    for cluster, color in COLORS.items():
+        batch = context_active_batch(cluster, CACHE_CONTEXT_TOKENS)
+        tps = 1 / context_decode_step_seconds(cluster, batch, CACHE_CONTEXT_TOKENS)
+        ax.plot(hit_percent, np.full_like(hit_percent, tps, dtype=float), color=color, linewidth=2.4, label=cluster)
+        ax.text(98, tps + 3, f"活跃批 {batch}", color=color, fontsize=9, ha="right")
+    ax.axhline(DECODE_SLO_TPS, color="#B91C1C", linestyle="--", linewidth=1.5, label="25 tok/s 门槛")
+    style_cache_axis(ax, "固定并发 100、Context 372k：Cache hit rate 与活跃 Decode 速度", "活跃请求单请求速度 / tok/s")
+    ax.set_ylim(0, 125)
+    add_legend(ax)
+
+
+def plot_cache_recovery_queue(ax, hit_percent: np.ndarray) -> None:
+    hit_rates = hit_percent / 100
+    for cluster, color in COLORS.items():
+        queue, ready, _, _ = cache_hicache_series(cluster, hit_rates)
+        ax.plot(hit_percent, ready, color=color, linewidth=2.4, label=f"{cluster} 恢复+排队")
+        ax.plot(hit_percent, queue, color=color, linewidth=1.5, linestyle="--", alpha=0.65, label=f"{cluster} 仅排队")
+    style_cache_axis(ax, "固定并发 100、Context 372k：Cache hit rate 与平均 Decode 恢复/排队", "请求开始 Decode 前的平均时间 / 秒")
+    add_legend(ax)
+
+
+def plot_cache_total(ax, hit_percent: np.ndarray) -> None:
+    hit_rates = hit_percent / 100
+    for cluster, color in COLORS.items():
+        prefill = cache_prefill_seconds(cluster, hit_rates)
+        _, _, _, decode_completion = cache_hicache_series(cluster, hit_rates)
+        total = prefill + decode_completion
+        ax.plot(hit_percent, total, color=color, linewidth=2.4, label=cluster)
+        for index in (0, -1):
+            ax.scatter(hit_percent[index], total[index], color=color, s=34, zorder=4)
+        annotation_offset = (-8, 24) if cluster == "H200" else (-8, -20)
+        ax.annotate(
+            f"100%：约 {total[-1]:.0f} 秒",
+            xy=(hit_percent[-1], total[-1]),
+            xytext=annotation_offset,
+            textcoords="offset points",
+            color=color,
+            fontsize=9,
+            ha="right",
+        )
+    ax.axhline(PREFILL_SLO_SECONDS, color="#64748B", linestyle="--", linewidth=1.3, label="300 秒参考线")
+    style_cache_axis(ax, "固定并发 100、Context 372k：Prefill + HiCache 恢复/排队 + 输出 1,000 token", "平均总时长 / 秒")
+    add_legend(ax)
+
+
 def save_single(filename: str, plotter, concurrency: np.ndarray, footer: str | None = None) -> None:
     fig, ax = plt.subplots(figsize=(9.6, 5.8), constrained_layout=True)
     plotter(ax, concurrency)
@@ -363,6 +477,26 @@ def main() -> None:
     )
     context_fig.savefig(OUT_DIR / "v4-pro-ctx-overview-c100.png", bbox_inches="tight", facecolor="white")
     plt.close(context_fig)
+
+    hit_percent = np.arange(CACHE_HIT_MIN_PERCENT, CACHE_HIT_MAX_PERCENT + 1)
+    cache_footer = "固定逻辑并发 100；Context 372k；独立 BF16 KV；HiCache L2 带宽 H200/H20=600/1200 GB/s；输出 1k token"
+    save_single("v4-pro-cache-prefill-c100-ctx372k.png", plot_cache_prefill, hit_percent, cache_footer)
+    save_single("v4-pro-cache-decode-c100-ctx372k.png", plot_cache_decode, hit_percent, cache_footer)
+    save_single("v4-pro-cache-decode-recovery-queue-c100-ctx372k.png", plot_cache_recovery_queue, hit_percent, cache_footer)
+    save_single("v4-pro-cache-1k-total-c100-ctx372k.png", plot_cache_total, hit_percent, cache_footer)
+
+    cache_fig, cache_axes = plt.subplots(4, 1, figsize=(10.5, 21), constrained_layout=True)
+    plot_cache_prefill(cache_axes[0], hit_percent)
+    plot_cache_decode(cache_axes[1], hit_percent)
+    plot_cache_recovery_queue(cache_axes[2], hit_percent)
+    plot_cache_total(cache_axes[3], hit_percent)
+    cache_fig.suptitle("DeepSeek-V4-Pro：固定并发 100、Context 372k 的 Cache hit rate 关系", fontsize=18, fontweight="bold")
+    cache_axes[-1].text(
+        1.0, -0.15, cache_footer, transform=cache_axes[-1].transAxes,
+        ha="right", va="top", fontsize=8, color="#64748B", clip_on=False,
+    )
+    cache_fig.savefig(OUT_DIR / "v4-pro-cache-overview-c100-ctx372k.png", bbox_inches="tight", facecolor="white")
+    plt.close(cache_fig)
 
     fig, axes = plt.subplots(4, 1, figsize=(10.5, 21), constrained_layout=True)
     plot_prefill(axes[0], concurrency)
