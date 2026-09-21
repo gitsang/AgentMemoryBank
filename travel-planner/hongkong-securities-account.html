@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>香港银行开户 + 证券账户开户攻略（5 万人民币本金版）</title>
+<style>
+:root{
+  --bg:#fafafa;--surface:#fff;--fg:#111;--muted:#6b6b6b;--border:#e5e5e5;
+  --accent:#2f6feb;--accent-on:#fff;--transport:#2f6feb;--food:#e8740c;
+  --lodging:#17a34a;--attraction:#7c3aed;--success:#17a34a;--warn:#eab308;--warn-fg:#92400e;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-pill:9999px;
+  --font-display:"Inter",-apple-system,system-ui,sans-serif;
+  --font-body:"Inter",-apple-system,system-ui,sans-serif;
+  --font-mono:ui-monospace,"JetBrains Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+p{margin:0;text-wrap:pretty}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+.muted{color:var(--muted)}
+.note{color:var(--accent);font-size:13px;margin-top:4px}
+.container{max-width:1120px;margin-inline:auto;padding-inline:24px}
+.section{padding-block:clamp(40px,7vw,72px)}
+.section+.section{border-top:1px solid var(--border)}
+.row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:920px){.grid-2,.grid-3{grid-template-columns:1fr}}
+h1{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-0.02em;font-weight:600}
+h2{font-family:var(--font-display);font-size:clamp(24px,3vw,32px);line-height:1.2;letter-spacing:-0.015em;font-weight:600}
+h3{font-size:18px;font-weight:600;line-height:1.3}
+.lead{font-size:18px;line-height:1.6;color:var(--muted);max-width:62ch}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+.meta{font-family:var(--font-mono);font-size:13px;color:var(--muted)}
+.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.topnav{position:sticky;top:0;z-index:10;background:color-mix(in oklch,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topnav-inner{display:flex;align-items:center;justify-content:space-between;padding-block:14px}
+.topnav .logo{font-family:var(--font-display);font-size:18px;font-weight:600}
+.topnav nav{display:flex;gap:24px;flex-wrap:wrap}
+.topnav nav a{font-size:14px;color:var(--muted)}
+.topnav nav a:hover{color:var(--fg)}
+@media(max-width:640px){.topnav nav{display:none}}
+.pagefoot{padding-block:48px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--radius-sm);border:1px solid transparent;font-size:14px;font-weight:500;transition:transform .05s,background .15s,border-color .15s;margin-top:12px}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:var(--accent-on);border-color:var(--accent)}
+.btn-primary:hover{background:color-mix(in oklab,var(--accent),black 8%);text-decoration:none}
+.btn-secondary{background:transparent;color:var(--fg);border-color:var(--border)}
+.btn-secondary:hover{border-color:var(--fg);text-decoration:none}
+.rec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px;display:flex;flex-direction:column}
+.card-img{width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm);margin-bottom:12px;background:#f0f0f0}
+.rec-card h3{margin-bottom:6px}
+.rec-card p{color:var(--muted);font-size:13px}
+.rec-meta{margin-top:8px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--radius-pill);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.pill-transport{background:color-mix(in oklch,var(--transport) 14%,transparent);color:var(--transport)}
+.pill-food{background:color-mix(in oklch,var(--food) 14%,transparent);color:var(--food)}
+.pill-lodging{background:color-mix(in oklch,var(--lodging) 14%,transparent);color:var(--lodging)}
+.pill-attraction{background:color-mix(in oklch,var(--attraction) 14%,transparent);color:var(--attraction)}
+.pill-success{background:color-mix(in oklch,var(--success) 14%,transparent);color:var(--success)}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-pill);font-size:12px}
+.hero{padding-block:clamp(56px,9vw,104px)}
+.hero-center{text-align:center;max-width:960px;margin-inline:auto}
+.hero h1{margin-bottom:20px}
+.hero .lead{margin-inline:auto;margin-bottom:32px}
+.meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;max-width:820px;margin-inline:auto}
+@media(max-width:640px){.meta-grid{grid-template-columns:repeat(2,1fr)}}
+.meta-item{text-align:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md)}
+.meta-item .meta-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.meta-item .meta-value{font-family:var(--font-display);font-size:22px;font-weight:600}
+.route-strip{display:flex;align-items:center;gap:8px;padding:20px 0;overflow-x:auto}
+.route-node{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;text-align:center}
+.route-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.route-label{font-size:12px;font-weight:500;white-space:nowrap}
+.route-line{flex:1;min-width:40px;height:2px;background:var(--border);position:relative}
+.route-line::after{content:'';position:absolute;right:0;top:-3px;border:4px solid transparent;border-left:6px solid var(--border)}
+.day-section{margin-bottom:24px}
+details.day-section>summary{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;user-select:none;padding:16px 0}
+details.day-section>summary::-webkit-details-marker{display:none}
+details.day-section>summary::after{content:'';width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);margin-left:auto;flex-shrink:0}
+details.day-section[open]>summary::after{transform:rotate(45deg)}
+.day-badge{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--accent);color:var(--accent-on);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:14px;font-weight:600}
+.day-title{font-size:18px;font-weight:600}
+.timeline{position:relative;padding-left:44px;margin-top:8px}
+.timeline::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-node{position:relative;padding-bottom:20px}
+.tl-node:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-44px;top:4px;width:32px;height:32px;display:grid;place-items:center;border-radius:var(--radius-sm);z-index:1;font-size:14px}
+.tl-dot-transport{background:color-mix(in oklch,var(--transport) 12%,transparent);color:var(--transport)}
+.tl-dot-food{background:color-mix(in oklch,var(--food) 12%,transparent);color:var(--food)}
+.tl-dot-lodging{background:color-mix(in oklch,var(--lodging) 12%,transparent);color:var(--lodging)}
+.tl-dot-attraction{background:color-mix(in oklch,var(--attraction) 12%,transparent);color:var(--attraction)}
+.tl-header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.tl-time{font-family:var(--font-mono);font-size:12px;color:var(--muted);min-width:48px}
+.tl-title{font-weight:500}
+.tl-duration{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.tl-body{margin-bottom:8px}
+.tl-body p{color:var(--muted);font-size:13px;margin-bottom:8px}
+.tl-tags{display:flex;gap:8px;flex-wrap:wrap}
+.tl-move{position:relative;display:flex;align-items:center;gap:12px;padding:8px 0;color:var(--muted);font-size:12px}
+.tl-move::before{content:'';position:absolute;left:-44px;top:50%;width:32px;height:2px;background:color-mix(in oklch,var(--transport) 30%,transparent);transform:translateY(-50%)}
+.tl-move-icon{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);color:var(--transport)}
+.tl-move-time{font-family:var(--font-mono);color:var(--muted)}
+.ds-table{width:100%;border-collapse:collapse;font-size:14px}
+.ds-table th,.ds-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.ds-table th{color:var(--muted);font-weight:500;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.ds-table tbody tr:hover{background:color-mix(in oklch,var(--fg) 4%,transparent)}
+.ds-table .num-col{font-family:var(--font-mono);font-variant-numeric:tabular-nums;text-align:right}
+.ds-table tfoot td{font-weight:600;border-top:2px solid var(--fg)}
+.checklist-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+@media(max-width:768px){.checklist-grid{grid-template-columns:1fr}}
+.checklist-group h3{font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.checklist-item{display:flex;align-items:flex-start;gap:12px;padding:6px 0}
+.checklist-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin-top:2px;flex-shrink:0}
+.checklist-item label{font-size:14px;cursor:pointer}
+.checklist-item label span{color:var(--muted);font-size:12px}
+.ref-list{list-style:none;padding:0;margin:0}
+.ref-list li{padding:16px 0;border-bottom:1px solid var(--border)}
+.ref-list li:last-child{border-bottom:none}
+.ref-list a{font-size:14px;word-break:break-all}
+.ref-list .ref-desc{color:var(--muted);font-size:12px;margin-top:4px}
+.section-header{margin-bottom:40px}
+.section-header h2{margin-bottom:8px}
+.section-header p{color:var(--muted);font-size:14px}
+.warn-box{display:flex;gap:12px;padding:16px;background:color-mix(in oklch,var(--warn) 10%,transparent);border:1px solid color-mix(in oklch,var(--warn) 30%,transparent);border-radius:var(--radius-md);margin-top:24px;font-size:13px;color:var(--warn-fg)}
+.src-note{margin-top:32px;padding:14px 18px;background:color-mix(in oklch,var(--accent) 6%,transparent);border:1px solid color-mix(in oklch,var(--accent) 20%,transparent);border-radius:var(--radius-md);font-size:13px;color:var(--muted)}
+.src-note strong{color:var(--fg)}
+.apps-section{display:flex;flex-direction:column;gap:8px}
+.app-group{display:flex;align-items:center;gap:14px;margin:32px 0 8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.app-group:first-of-type{margin-top:0}
+.app-group::before{content:'';width:4px;height:16px;border-radius:2px;background:var(--accent);flex-shrink:0}
+.app-group::after{content:'';flex:1;height:1px;background:var(--border)}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:920px){.app-grid{grid-template-columns:1fr}}
+.app-link{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding-top:12px;font-family:var(--font-mono);font-size:12px;color:var(--accent)}
+.app-link svg{width:14px;height:14px;flex-shrink:0}
+.app-link:hover{text-decoration:underline}
+.rec-card:has(.app-link) p{margin-bottom:4px}
+/* ---- 本页新增组件 ---- */
+.verdict{display:flex;gap:14px;padding:18px 20px;border-radius:var(--radius-md);font-size:14px;line-height:1.65;margin-top:24px}
+.verdict-ok{background:color-mix(in oklch,var(--success) 9%,transparent);border:1px solid color-mix(in oklch,var(--success) 32%,transparent)}
+.verdict-warn{background:color-mix(in oklch,var(--warn) 10%,transparent);border:1px solid color-mix(in oklch,var(--warn) 34%,transparent);color:var(--warn-fg)}
+.verdict-danger{background:color-mix(in oklch,#dc2626 8%,transparent);border:1px solid color-mix(in oklch,#dc2626 30%,transparent);color:#991b1b}
+.verdict .v-icon{font-size:20px;line-height:1.2;flex-shrink:0}
+.verdict strong{color:inherit}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+.table-wrap .ds-table{min-width:640px}
+.ds-table td{vertical-align:top}
+.ds-table td small{color:var(--muted);font-size:12px;display:block;margin-top:3px}
+.badge-yes{color:var(--success);font-weight:600}
+.badge-no{color:#b91c1c;font-weight:600}
+.badge-mid{color:var(--warn-fg);font-weight:600}
+.step-list{counter-reset:step;list-style:none;padding:0;margin:0}
+.step-list>li{counter-increment:step;position:relative;padding:0 0 22px 46px;border-left:2px solid var(--border);margin-left:15px}
+.step-list>li:last-child{border-left-color:transparent;padding-bottom:0}
+.step-list>li::before{content:counter(step);position:absolute;left:-16px;top:-2px;width:31px;height:31px;display:grid;place-items:center;background:var(--accent);color:#fff;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:13px;font-weight:600}
+.step-list h3{margin-bottom:4px}
+.step-list p{color:var(--muted);font-size:13px}
+.q-list{list-style:none;padding:0;margin:0}
+.q-list li{padding:11px 0;border-bottom:1px solid var(--border);font-size:14px;display:flex;gap:10px}
+.q-list li:last-child{border-bottom:none}
+.q-list .q-num{font-family:var(--font-mono);font-size:12px;color:var(--accent);flex-shrink:0;padding-top:2px}
+.q-list .q-why{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.kv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:16px}
+.kv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px}
+.kv-card .kv-k{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kv-card .kv-v{font-size:17px;font-weight:600;font-family:var(--font-display)}
+.kv-card .kv-n{font-size:12px;color:var(--muted);margin-top:5px}
+.pill-bank{background:color-mix(in oklch,var(--transport) 14%,transparent);color:var(--transport)}
+.pill-risk{background:color-mix(in oklch,#dc2626 12%,transparent);color:#b91c1c}
+.pill-law{background:color-mix(in oklch,var(--warn) 16%,transparent);color:var(--warn-fg)}
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px;font-family:var(--font-mono);font-size:13px;line-height:1.9;white-space:pre-wrap;overflow-x:auto}
+.calc .c-key{color:var(--muted)}
+.calc .c-sum{font-weight:600;color:var(--fg)}
+@media(max-width:640px){.hero h1{font-size:30px}.step-list>li{padding-left:38px}}
+/* 本页比主行程页导航项更多，窄屏下保留可横向滚动的导航 */
+@media(max-width:900px){.topnav-inner{flex-direction:column;align-items:flex-start;gap:10px;padding-block:10px}
+.topnav nav{display:flex !important;width:100%;gap:16px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+.topnav nav::-webkit-scrollbar{display:none}
+.topnav nav a{white-space:nowrap;font-size:13px}}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="container topnav-inner">
+    <span class="logo">HK 2026 · 开户篇</span>
+    <nav>
+      <a href="#conclusion">结论</a>
+      <a href="#banks">选哪家</a>
+      <a href="#compare">对比表</a>
+      <a href="#docs">材料</a>
+      <a href="#steps">流程</a>
+      <a href="#schedule">行程插入</a>
+      <a href="#funding">资金</a>
+      <a href="#compliance">合规</a>
+      <a href="#fees">费用</a>
+      <a href="#portfolio">配置</a>
+      <a href="#tax">税务</a>
+      <a href="#mistakes">避坑</a>
+      <a href="#checklist">清单</a>
+    </nav>
+  </div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 费率与门槛取自各行官网现行文件（中银香港 2026-09 版收费表、汇丰 POR-LSS 2026-05 版、恒生收费表、渣打服务收费表）</div>
+</header>
+
+<main>
+
+  <section class="section hero" id="overview">
+    <div class="container hero-center">
+      <p class="eyebrow">5 万人民币 · 美元/港币资产 · 长期小额 · 港股为主</p>
+      <h1>香港银行 + 证券账户开户攻略</h1>
+      <p class="lead">在 9/24–9/29 这趟香港行程里，顺路开一个香港银行账户并挂上证券账户。<strong>先说最重要的一句：银行证券账户手续费上限高、小额买入很吃亏，5 万本金的最优解是「银行账户 + 券商账户」两条腿。</strong>本页把该带什么、去哪家分行、什么时候去、钱怎么合法过去、每月要花多少、买什么，一次说清楚。</p>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">投入本金</div><div class="meta-value num">¥50,000</div></div>
+        <div class="meta-item"><div class="meta-label">折合港币</div><div class="meta-value num">约 HK$58,500</div></div>
+        <div class="meta-item"><div class="meta-label">建议账户</div><div class="meta-value">2 个</div></div>
+        <div class="meta-item"><div class="meta-label">建议开户日</div><div class="meta-value num">D3 / D6</div></div>
+      </div>
+      <div class="warn-box" style="text-align:left;margin-top:32px">⚠️ <div><strong>页面性质：</strong>这是攻略与信息整理，<strong>不构成投资、税务或法律建议</strong>。银行门槛、费率、外汇政策随时会变；本页已尽量逐条标注官网出处与文件版本，但<strong>去柜台前请再打一次电话确认</strong>。外汇红线部分请务必自己读懂并咨询持牌专业人士。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="conclusion">
+    <div class="container">
+      <div class="section-header">
+        <h2>结论先讲</h2>
+        <p>如果你只看一段，就看这一段。</p>
+      </div>
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>✅ 该做的三件事</h3>
+          <p style="margin-top:10px"><strong>1. 开一个中银香港账户（首选）或汇丰 One。</strong>中银香港对内地客户最友好：分行有专门的「跨境金融服务中心」和口岸分行，手机开户也明确支持「身处香港的内地访港旅客」，而且分行开户要求「綜合理財總值」最低一档只需 <span class="num">HK$10,000</span>（「自在理财」）。</p>
+          <p style="margin-top:8px"><strong>2. 证券账户不要只挂在银行。</strong>银行买入最低佣金普遍是 <span class="num">HK$50–100/笔</span>，你每月投 HK$2,000 就是 5% 的手续费。银行只作为「资金与外汇通道」，真正下单放到券商。</p>
+          <p style="margin-top:8px"><strong>3. 如果你已经是中国银行/中银香港的理财或特选客户，先走「见证开户」。</strong>中银香港在内地指定中行网点可以见证开户，官网称最快约两周完成，<strong>不用为开户单独占用香港的行程</strong>。两个前提：① 你必须已经是中行体系的理财/特选客户（否则门槛可能反而不低）；② 官网口径只写了开银行账户与网银，<strong>没写能不能同时开证券账户</strong>——打电话时一问。</p>
+        </div>
+        <div class="rec-card">
+          <h3>⛔ 别做的三件事</h3>
+          <p style="margin-top:10px"><strong>1. 别用「购汇额度」的钱直接汇去香港做证券投资。</strong>这是资本项目，个人年度 5 万美元便利化额度明文不覆盖。用钱庄/地下渠道更危险，可能被列入外汇「关注名单」影响后续购汇。</p>
+          <p style="margin-top:8px"><strong>2. 别在香港银行柜台开始就下大单。</strong>银行渠道佣金 0.25%+HK$100 起，且很多分行会先给你推储蓄保险/基金。坚持只要「银行账户 + 证券账户」，不买不需要的产品。</p>
+          <p style="margin-top:8px"><strong>3. 别以为「查不到」。</strong>香港和内地都已加入 CRS 并互相交换金融账户信息，境外证券收益在内地属于应税所得。金额小现实中未必被追，但这是你的合规责任，不是「没风险」。</p>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn"><span class="v-icon">💰</span><div><strong>5 万人民币的现实定位：</strong>这笔钱做长期小额配置是够的，但<strong>不够摊薄银行渠道的高固定成本</strong>。按本页方案（券商下单 + ETF），首年综合成本约 <span class="num">HK$300–500</span>（约 0.6–1%）；如果全用银行渠道买个股，首年成本会到 <span class="num">HK$1,200–1,800</span>（约 2–3%），一年就先亏掉一个月的收益。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="banks">
+    <div class="container">
+      <div class="section-header">
+        <h2>第一步：开哪个银行账户</h2>
+        <p>对内地访港旅客来说，真正的区别不在「能不能开」，而在<strong>「开了之后收你多少钱、能不能当场拿到证券账户」</strong>。下面四家是实际可行的主力选项。</p>
+      </div>
+
+      <div class="grid-2">
+
+        <div class="rec-card">
+          <h3>🥇 中银香港 BOCHK · 内地客户首选</h3>
+          <p><strong>为什么第一：</strong>唯一一家把「内地访港旅客」写成明确开户场景的银行，且分行里有专门的<strong>跨境金融服务中心</strong>和<strong>口岸分行</strong>。中行体系在内地的网点也能做见证开户。</p>
+          <p style="margin-top:8px"><strong>分行开户硬条件：</strong>「有跨境金融要求」的客户亲临分行开户，<strong>需要开立「综合理财服务」</strong>（中银理财 / 智盈理财 / 自在理财），并存入或符合对应的「综合理财总值」，同时提供有效住址证明（如需）。</p>
+          <p style="margin-top:8px"><strong>综合理财总值门槛（官网《服务概览》）：</strong>「自在理财」<span class="num">HK$10,000</span>（最低档，够用）；「智盈理财」<span class="num">HK$200,000</span>；再往上「中银理财」更高。<strong>选「自在理财」，你的 5 万本金是够的。</strong></p>
+          <p style="margin-top:8px"><strong>证券账户：</strong>分行可<strong>和银行账户一起开</strong>。一个证券账户同时买卖<strong>港股、中国 A 股、美股</strong>，且同一账户持有多个市场<strong>保管费只收一次</strong>。</p>
+          <p style="margin-top:8px"><strong>月供股票计划（本页强推）：</strong>每月最低 <span class="num">HK$500</span>/只；手续费 = 供款额的 <span class="num">0.25%</span>，<strong>最低 HK$50，且已包含佣金、印花税、交易征费、交易处理费</strong>；并<strong>豁免保管费与代收股息手续费</strong>。碎股可按正股价卖出。</p>
+          <div class="rec-meta">经纪佣金 0.25%（网上/手机，最低 HK$100）· 保管费每半年 HK$150（晋星级）· 买入交收费 HK$2.5/手（最低 HK$30 最高 HK$200）</div>
+          <a class="btn btn-secondary" href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/branch_network.html" target="_blank" rel="noopener">跨境分行名单 »</a>
+          <a class="btn btn-secondary" href="https://www.bochk.com/tc/investment/securities/monthly.html" target="_blank" rel="noopener">月供股票计划 »</a>
+        </div>
+
+        <div class="rec-card">
+          <h3>🥈 汇丰香港 HSBC · 网点最多、但新客有限制</h3>
+          <p><strong>优点：</strong>分行最多、App 最好用、港美股和 A 股都能买，全球转账方便。汇丰 One 门槛低。</p>
+          <p style="margin-top:8px"><strong>⚠️ 三个必须知道的新政（2026 年）：</strong></p>
+          <ol style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
+            <li><strong>低余额费：</strong>非香港身份证持有人、<strong>2026-01-01 及之后</strong>开汇丰 One，Below Balance Fee <span class="num">HK$100/月</span>；连续 3 个月维持平均总关系余额 <span class="num">HK$10,000</span> 可豁免。</li>
+            <li><strong>新客转账限额被压得很低：</strong><strong>2026-04-26 及之后</strong>首次在汇丰开户的非香港身份证客户，受 6 个月较低限额约束。默认值里 <strong>「转账至非登记收款人的分项限额 = HK$0」「跨境转账总额 = HK$0」「小额转账 = HK$0」</strong>——也就是说，<strong>刚开户时你一分钱也转不出去</strong>，必须先通过分行或客服把限额提上来。</li>
+            <li>前 3 个工作日所有非港 id 新客都受限。</li>
+          </ol>
+          <p style="margin-top:8px"><strong>证券费用：</strong>网上/手机下单 0.25%，<strong>最低 HK$100/笔</strong>；保管费 <span class="num">HK$25/月</span>（汇丰 One 等）；<strong>买入另收交收费 HK$5/手（最低 HK$30 最高 HK$200）</strong>——这一项让小额买入变得很不划算。</p>
+          <p style="margin-top:8px"><strong>月供股票 SMIP：</strong>每月最低 <span class="num">HK$1,000</span>，<strong>目前经纪费全免</strong>（含佣金、印花税、各项征费、交收费、CCASS 费），改计划/终止也免费。可选 HK 上市股票 + 盈富基金 + ABF 香港债券指数基金。</p>
+          <div class="rec-meta">标准佣金 0.25% / 最低 HK$100 · 保管费 HK$25/月 · 交收费 HK$5/手</div>
+          <a class="btn btn-secondary" href="https://www.hsbc.com.hk/investments/products/stocks/hk-trading/monthly/" target="_blank" rel="noopener">SMIP 月供计划 »</a>
+          <a class="btn btn-secondary" href="https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf" target="_blank" rel="noopener">限额说明 PDF »</a>
+        </div>
+
+        <div class="rec-card">
+          <h3>🥉 渣打香港 · 银行渠道里最低的单笔成本</h3>
+          <p><strong>最大亮点：</strong>网上银行 / SC Equities 佣金 <span class="num">0.20%</span>，<strong>最低只要 HK$50/笔</strong>——这是四大行里唯一两位数的最低佣金。</p>
+          <p style="margin-top:8px"><strong>其他费用非常干净：</strong>托管费<strong>豁免</strong>、账户维护费（半年）<strong>豁免</strong>；Easy Banking / Premium Banking 免维护费（Priority Banking 需 HK$1,000,000 最低关系余额，否则 HK$900/季）。</p>
+          <p style="margin-top:8px"><strong>美股：</strong>数字渠道 0.20%，最低 <span class="num">USD 18/笔</span>。港股通（北向 A 股）：网上 0.20%，最低 RMB 45。</p>
+          <p style="margin-top:8px"><strong>代收股息：</strong>股息不足 HK$30 的<strong>全额作为手续费</strong>；≥HK$30 收 0.5%，最低 HK$30。买高股息股票时要注意小额股息会被吃掉。</p>
+          <p style="margin-top:8px"><strong>实时报价：</strong>Priority 1,000 次/月、Premium 500 次、Easy Banking 200 次免费；每笔成交再送 100 次；超出 HK$0.1/次。</p>
+          <div class="rec-meta">佣金 0.20% / 最低 HK$50 · 托管费豁免 · 账户维护费豁免</div>
+          <a class="btn btn-secondary" href="https://av.sc.com/hk/content/docs/hk-service-charges-en.pdf" target="_blank" rel="noopener">服务收费表 PDF »</a>
+        </div>
+
+        <div class="rec-card">
+          <h3>恒生银行 · 有月费封顶方案</h3>
+          <p><strong>亮点：「月费计划」</strong>——每月 <span class="num">HK$30</span>，覆盖当月 <strong>≤HK$300,000 交易额的 $0 佣金</strong>（须用恒生个人 e-Banking / 手机 App / Invest Express App；不含 IPO 与月供计划），且这 HK$30 还一并覆盖交收费和保管费。对每月小额多次买入的人来说，这比按笔收费划算得多。</p>
+          <p style="margin-top:8px"><strong>标准佣金：</strong>网上/手机/自动化热线 0.25%，<strong>最低 HK$100</strong>；专人热线/分行 0.35%（&lt;HK$200,000）或 0.30%（≥HK$200,000）。</p>
+          <p style="margin-top:8px"><strong>保管费：</strong>Prestige <span class="num">HK$15/月</span>，其他客户 <span class="num">HK$25/月</span>；当月无持仓且无交易<strong>不收费</strong>。</p>
+          <p style="margin-top:8px"><strong>买入交收费：</strong>Prestige HK$2.5/手，其他客户 HK$5/手，最低 HK$30、最高 HK$188；结算前卖出可豁免。</p>
+          <p style="margin-top:8px"><strong>注意：</strong>月费计划里「月供计划」和「IPO」是<strong>被排除</strong>的，走标准收费。</p>
+          <div class="rec-meta">月费 HK$30 封顶 ≤HK$30万/月交易额 · 标准 0.25% / 最低 HK$100 · 保管费 HK$25/月</div>
+          <a class="btn btn-secondary" href="https://www.hangseng.com/cms/sec/eng/PDF/secu_char.pdf" target="_blank" rel="noopener">证券服务收费 PDF »</a>
+        </div>
+
+      </div>
+
+      <div class="verdict verdict-danger"><span class="v-icon">🚨</span><div><strong>虚银（ZA Bank / Mox / livi / WeLab / 天星）对你不适用。</strong>它们基本只提供存款、转账、卡片和基金，<strong>没有港股证券交易</strong>，而且面向非香港居民的开户政策各家不同且经常变。你的需求是「买港股 + 拿美元/港币资产」，虚银解决不了下单问题，最多作为收付款补充。不要为它专门跑一趟。</div></div>
+
+      <div class="verdict verdict-ok"><span class="v-icon">💡</span><div><strong>开户时的一句话话术：</strong>「我要开综合理财账户 + 证券账户，长期投资港股和美股，资金约 5 万人民币等值，不买保险和基金。」——把需求说死，可以省掉后面 40 分钟的产品推销。如果对方仍推产品，直接说「我今天只开户，产品以后再说」。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="compare">
+    <div class="container">
+      <div class="section-header">
+        <h2>银行对比表</h2>
+        <p>费率来自各行官网现行收费表。<strong>「最低收费」这一列才是决定你 5 万本金能否盈利的关键。</strong></p>
+      </div>
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead>
+            <tr><th>项目</th><th>中银香港</th><th>汇丰香港</th><th>渣打香港</th><th>恒生银行</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>网上/App 佣金</strong></td>
+              <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
+              <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
+              <td class="badge-yes">0.20%<small>最低 HK$50</small></td>
+              <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
+            </tr>
+            <tr>
+              <td><strong>分行/专人电话</strong></td>
+              <td>0.50%<small>最低 HK$100</small></td>
+              <td>0.50%<small>最低 HK$100</small></td>
+              <td>0.50%<small>最低 HK$150</small></td>
+              <td>0.30–0.35%<small>最低 HK$100</small></td>
+            </tr>
+            <tr>
+              <td><strong>买入交收费</strong></td>
+              <td>HK$2.5/手<small>最低 30 / 最高 200</small></td>
+              <td>HK$5/手<small>最低 30 / 最高 200</small></td>
+              <td>门市费豁免<small>另有 CCASS 结算费</small></td>
+              <td>HK$5/手<small>Prestige HK$2.5，最低 30 最高 188</small></td>
+            </tr>
+            <tr>
+              <td><strong>保管费 / 月费</strong></td>
+              <td>每半年 HK$150<small>晋星级；金星 HK$100；钻星豁免</small></td>
+              <td class="badge-no">HK$25/月<small>汇丰 One 等；一般证券账户 HK$30/月</small></td>
+              <td class="badge-yes">豁免</td>
+              <td>HK$25/月<small>Prestige HK$15；无持仓无交易不收费</small></td>
+            </tr>
+            <tr>
+              <td><strong>代收股息</strong></td>
+              <td>0.5%<small>最低 30 / 最高 2,500</small></td>
+              <td>0.5%<small>最低 30 / 最高 2,500</small></td>
+              <td class="badge-mid">0.5%，最低 30<small>股息 &lt;HK$30 则全额收取</small></td>
+              <td class="badge-yes">0.5%<small>最低 30 / 最高 2,000</small></td>
+            </tr>
+            <tr>
+              <td><strong>月供/定额计划</strong></td>
+              <td class="badge-yes">HK$500 起<small>0.25%，最低 HK$50，已含税费，豁免保管费</small></td>
+              <td class="badge-yes">HK$1,000 起<small>现时经纪费全免</small></td>
+              <td>—<small>以官网为准</small></td>
+              <td class="badge-mid">有<small>但被排除在 HK$30 月费计划外</small></td>
+            </tr>
+            <tr>
+              <td><strong>可买市场</strong></td>
+              <td class="badge-yes">港股 + A 股 + 美股<small>同一账户保管费只收一次</small></td>
+              <td class="badge-yes">港股 + A 股 + 美股</td>
+              <td>港股 + 美股 + 港股通</td>
+              <td>港股 + 美股 + 港股通</td>
+            </tr>
+            <tr>
+              <td><strong>最低账户门槛</strong></td>
+              <td class="badge-yes">自在理财 HK$10,000</td>
+              <td>汇丰 One 平均 TRB HK$10,000<small>否则 HK$100/月</small></td>
+              <td class="badge-yes">Easy / Premium 免维护费</td>
+              <td>视综合户口类型</td>
+            </tr>
+            <tr>
+              <td><strong>内地客户友好度</strong></td>
+              <td class="badge-yes">★★★★★<small>跨境服务中心 + 口岸分行 + 内地见证开户</small></td>
+              <td class="badge-mid">★★★<small>分行多，但 2026 新客限额很紧</small></td>
+              <td class="badge-mid">★★★</td>
+              <td class="badge-mid">★★★</td>
+            </tr>
+            <tr>
+              <td><strong>本页建议</strong></td>
+              <td class="badge-yes">主力账户</td>
+              <td>备选 / 已有汇丰其他账户者</td>
+              <td>如果只想跑一家、且主要按月买入</td>
+              <td>月交易频繁者的省钱方案</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src-note"><strong>来源：</strong>中银香港《一般银行服务收费》证券服务章节（2026-09-19 版，含 2026-11-16 无纸证券市场制度调整通知）；汇丰《Local Securities Services》POR-LSS(E)/MAY26；恒生《Securities Services Charges》PDF；渣打《Service Charges – An easy guide to banking fees》PDF。<strong>所有费率各行均可随时调整，开户前请在分行再确认一遍。</strong></div>
+      <div class="warn-box">⚠️ <div><strong>不要被「0 佣金优惠」迷惑。</strong>中银香港现推「新证券客户首 3 个月无上限买卖证券 $0 佣金」，汇丰 SMIP 是「经纪费豁免」，恒生是「月费封顶」。这些都有<strong>适用渠道、适用品种和期限限制</strong>（例如恒生明确排除 IPO 和月供计划），且监管费、印花税、交收费通常<strong>不</strong>在豁免范围内。签约前把优惠条款的 PDF 读一遍。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="docs">
+    <div class="container">
+      <div class="section-header">
+        <h2>第二步：带齐材料（这是最容易被拒的一步）</h2>
+        <p>内地访港旅客在港开户被拒，<strong>九成不是因为身份，而是因为地址证明和入境记录</strong>。下面每一项都按「必带 / 尽量带」标好。</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>🪪 身份类 · 必带</h3>
+          <ul class="q-list" style="margin-top:10px">
+            <li><span class="q-num">01</span><div><strong>中华人民共和国居民身份证</strong>（原件）<span class="q-why">港澳通行证不是身份证件的替代品，两者要同时带。</span></div></li>
+            <li><span class="q-num">02</span><div><strong>往来港澳通行证 + 有效签注</strong>（原件）<span class="q-why">中银香港手机开户明确要求身份证与通行证<strong>两者自申请日起至少 30 天有效期</strong>；务必在出发前检查签注次数是否够用。</span></div></li>
+            <li><span class="q-num">03</span><div><strong>护照</strong>（原件，尽量带）<span class="q-why">部分银行更接受护照作为主身份证明；若账户名需要英文拼写，护照最不容易出错。</span></div></li>
+            <li><span class="q-num">04</span><div><strong>入境记录 / 入境小票</strong><span class="q-why">中银香港手机开户要求提供「由国家移民局发出的『出入境纪录』电子档（含申请日在内最近 7 日内发出）」。内地可在移民局 App / 微信小程序自行下载打印；<strong>过关时的入境小票也不要丢</strong>。</span></div></li>
+          </ul>
+        </div>
+
+        <div class="rec-card">
+          <h3>🏠 地址证明 · 最容易卡住</h3>
+          <p style="margin-top:6px"><strong>中银香港的官方口径：</strong>「於最近三個月內由政府機構或公共事務機構發出具有客戶姓名及地址資料的通訊函或賬單。」——关键词是 <strong>① 三个月内 ② 政府或公共事业机构发出 ③ 有你的姓名和地址</strong>。</p>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">05</span><div><strong>水电燃气/宽带账单</strong>（3 个月内，本人姓名）<span class="q-why">最标准。注意很多内地家庭账单在户主名下——必须是你本人姓名。</span></div></li>
+            <li><span class="q-num">06</span><div><strong>信用卡账单 / 银行对账单</strong>（3 个月内，有姓名和邮寄地址）<span class="q-why">部分银行接受银行类单据，部分不接受。中银香港口径偏严（要政府/公共机构），所以这条是「补充」不是「替代」。</span></div></li>
+            <li><span class="q-num">07</span><div><strong>户口本 / 居住证</strong>（辅助）<span class="q-why">单独通常不够，配合上面的账单一起带。</span></div></li>
+            <li><span class="q-num">08</span><div><strong>内地手机号能接收短信</strong><span class="q-why">中银香港手机开户的硬条件之一就是「能提供内地的手提电话号码和地址」。开通国际漫游，确保在香港能收验证码。<strong>建议同时准备一个香港号码</strong>（7-11/OK 便利店可买储值卡），有些银行要求本地号接收一次性密码。</span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:14px"><strong>实用兜底：</strong>如果地址证明真的凑不齐，优先走<strong>分行开户</strong>而不是手机开户——分行职员有一定的判断空间，可以当面解释（例如账单在配偶名下 + 结婚证 + 说明）；手机 App 是按字段硬校验的，缺一项就退。</div>
+        </div>
+
+        <div class="rec-card">
+          <h3>💼 资金来源类 · 加分项</h3>
+          <p>5 万人民币的额度通常<strong>不会</strong>触发严格的资金审查，但如果被问起，能拿出材料会顺畅很多：</p>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">09</span><div><strong>近 3–6 个月工资流水 / 银行对账单</strong><span class="q-why">证明钱是工资积累，不是来路不明。</span></div></li>
+            <li><span class="q-num">10</span><div><strong>在职证明 / 名片 / 工牌</strong><span class="q-why">证明职业与稳定收入。若从事加密货币、贸易、珠宝等高关注行业，被多问几句是正常的，如实回答即可。</span></div></li>
+            <li><span class="q-num">11</span><div><strong>个税 App 的纳税记录截图</strong>（可选）<span class="q-why">很直观的收入证明，随手就能导出。</span></div></li>
+          </ul>
+        </div>
+
+        <div class="rec-card">
+          <h3>📝 现场要签的表 · 提前知道内容</h3>
+          <ul class="q-list" style="margin-top:10px">
+            <li><span class="q-num">12</span><div><strong>税务居民身份自我证明（CRS / 共同汇报标准）</strong><span class="q-why">你会声明为<strong>中国内地税务居民</strong>，提供内地税务居民编号（通常是身份证号）。这意味着你的账户信息会被香港税局收集并交换给国家税务总局。</span></div></li>
+            <li><span class="q-num">13</span><div><strong>FATCA 表格（美国身份声明）</strong><span class="q-why">声明你不是美国税务居民/公民。如实填写，有美国身份就要如实申报。</span></div></li>
+            <li><span class="q-num">14</span><div><strong>风险承受能力评估问卷</strong><span class="q-why">决定你能买什么产品。想买 ETF/股票就要如实填写投资经验。如果问卷把你评为「保守」，可能只能买债券基金。</span></div></li>
+            <li><span class="q-num">15</span><div><strong>W-8BEN 表格（买美股才需要）</strong><span class="q-why">声明非美国人士身份，把美股股息预扣税从 30% 降到 10%。<strong>不填就吃 30%。</strong></span></div></li>
+            <li><span class="q-num">16</span><div><strong>证券账户协议 + 风险披露声明</strong><span class="q-why">签字前至少翻一遍「收费章节」和「公司行动收费」。</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn"><span class="v-icon">📅</span><div><strong>关于「合理开户理由」：</strong>汇丰的海外开户页明确写着「您须年满 18 岁，并且<strong>有合理理由</strong>开立海外账户」。对你说，理由就是「长期投资港股与美股，做美元和港币资产配置」。这个理由要充分、具体、和你的实际情况一致（比如可以说「计划每月定投指数基金」）。<strong>不要说「随便开一个」「朋友介绍的」或者「想存钱」</strong>——反洗钱审查下这类回答会直接触发拒件。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="steps">
+    <div class="container">
+      <div class="section-header">
+        <h2>第三步：开户具体流程</h2>
+        <p>两条路：<strong>出发前在内地见证开户</strong>（推荐）或<strong>到香港现场开户</strong>。两条路并行做最稳。</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3 style="margin-bottom:18px">路线 A · 内地见证开户（推荐先走）</h3>
+          <ol class="step-list">
+            <li>
+              <h3>找一家能办见证的内地中行网点</h3>
+              <p>中银香港的「见证开户服务」允许在内地/澳门/香港以外<strong>指定见证网点</strong>签署开户文件，开立「中银理财」或「智盈理财」账户，并申请网上银行/电话银行。<strong>要求：年满 18 岁，且是中国银行或中银香港分子行的理财或特选客户</strong>，不接受他人代办。</p>
+            </li>
+            <li>
+              <h3>备齐身份证明与地址证明</h3>
+              <p>内地居民凭<strong>中华人民共和国居民身份证或中国护照</strong>即可（注意：如果是<strong>亲临中银香港分行</strong>办理，<strong>还需同时提交入境旅行证件</strong>，也就是港澳通行证）。地址证明同前：3 个月内、政府/公共机构发出、有本人姓名地址。</p>
+            </li>
+            <li>
+              <h3>提交并等待</h3>
+              <p>官网说明：<strong>如文件齐备有效，开户手续最快可于约两周内完成。</strong>资金门槛按「智盈理财」口径是综合理财总值 HK$200,000——<strong>这一条要打电话问清楚</strong>：你是 5 万人民币的量级，可能需要指定「自在理财」档次，或按见证网点当地准入条件执行。</p>
+            </li>
+            <li>
+              <h3>到香港时只做收尾</h3>
+              <p>抵港后到任意中银香港分行<strong>激活卡片、领取保安编码器、设置转账限额、加开证券账户</strong>。这些通常 30–60 分钟能办完，不用占用一整天。</p>
+            </li>
+          </ol>
+          <div class="src-note"><strong>注意：</strong>见证开户的前提是你已经是中行体系的理财/特选客户。如果你在中行没有账户或余额很小，这条路的门槛可能反而不低。<strong>先打中银香港跨境客户服务专线确认：+86 400 800 2388（内地拨打）/ +852 3988 2222（香港以外拨打）。</strong><br>另一个问不清楚就换人的问题：<strong>见证网点能不能同时开证券账户？</strong>官网口径只写了开立「中银理财」/「智盈理财」账户及网银/电话银行，<strong>没写证券账户</strong>。如果不行，证券账户仍须到港或后续网上开。</div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:18px">路线 B · 香港现场开户</h3>
+          <ol class="step-list">
+            <li>
+              <h3>出发前 1 周：网上预约</h3>
+              <p>中银香港官网提供「预约开立香港账户」入口，可先在网上预约。<strong>不预约直接 walk-in 在口岸分行和旅游区分行很容易排队 1–2 小时</strong>，甚至当天排满。</p>
+            </li>
+            <li>
+              <h3>也可以先在 App 上试手机开户</h3>
+              <p>中银香港手机开户明确支持「身处香港的内地访港旅客」，7×24 办理，条件是：年满 18 岁、身处香港、全新客户、持有效身份证 + 港澳通行证（均 ≥30 天有效期）、持最近 7 日内的出入境记录电子档、能提供内地手机号与地址、有电邮和税务居民编号。</p>
+          <p style="margin-top:8px"><strong>⚠️ 但有一个关键限制：</strong>官网写明「上传地址证明即可<strong>同时开立证券账户（适用于香港身份证持有人）</strong>」——也就是说，<strong>手机开户开出来的可能只是银行账户，证券账户仍须去分行</strong>。可以把 App 开户当作「先把银行账户拿到手」的手段，证券账户当天或次日去分行补。</p>
+              <p style="margin-top:8px"><strong>⚠️ 另一个手机开户容易撞墙的点：</strong>部分银行把「非香港身份证客户手机开户」作为试点功能，<strong>上线范围、可用证件类型和是否支持即时开通全功能账户会随时调整</strong>。如果 App 报错，直接转分行，不要在 App 上反复试。</p>
+            </li>
+            <li>
+              <h3>到分行：先开综合理财账户</h3>
+              <p>带齐材料到分行，说明要开「综合理财账户（自在理财档次）」+ 证券账户。职员会做身份核验、地址证明核验、CRS/FATCA 表格、风险评估问卷。</p>
+            </li>
+            <li>
+              <h3>加开证券账户（同一次办完）</h3>
+              <p>在同一家分行申请证券账户，一个账户覆盖港股 + A 股 + 美股。当场设置交易密码、开通网上/手机证券服务、申请即时报价服务（中银香港：手机银行/网上银行的网上即时报价<strong>豁免、无限次</strong>，但需自行在网上/手机银行申请开通）。</p>
+            </li>
+            <li>
+              <h3>当场把限额设好，并存入启动资金</h3>
+              <p><strong>这是最重要的一步。</strong>汇丰新客默认「转账至非登记收款人 = HK$0」「跨境转账 = HK$0」，必须当场要求职员调高限额并登记收款账户。中银香港也建议当场问清楚每日转账上限和 FPS（转数快）限额。同时存入第一笔资金（港币现金或从内地卡取现），让账户是活的。</p>
+            </li>
+            <li>
+              <h3>当场把「月供股票计划」设上</h3>
+              <p>中银香港月供最低 HK$500/只、费率 0.25%（最低 HK$50，已含各项税费）。这是最适合你「长期小额」的机制——<strong>设好之后每个月自动扣款买入，不用你每次手动下单，也不会每次吃 HK$100 最低佣金。</strong></p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="schedule">
+    <div class="container">
+      <div class="section-header">
+        <h2>第四步：把它插进你的 9/24–9/29 行程</h2>
+        <p>你的行程已经排得很满。<strong>开户必须避开周六日和公众假期</strong>——香港银行周末和公众假期不上班。</p>
+      </div>
+
+      <div class="warn-box" style="margin-top:0">⚠️ <div><strong>先把营业日排出来（这是本节的硬约束）：</strong>2026-09-25（周五）<strong>正常营业</strong> · 09-26（周六）<strong>「中秋节翌日」公众假期，休</strong> · 09-27（周日）<strong>休</strong> · 09-28（周一）<strong>正常营业</strong> · 09-29（周二）<strong>正常营业</strong>（国庆 10 月 1 日是周四，不影响你）。<br>所以你实际只有 <strong>9/25、9/28、9/29 三天</strong>能进银行。再加上 10 月 1 日前后的开户高峰，能约就尽早约。</div></div>
+
+      <div class="src-note"><strong>关于营业时间（必须自己确认）：</strong>香港银行各分行营业时间<strong>不统一</strong>——市中心/口岸分行常见 09:00–17:00（周一至周五），也有部分分行周一至周五延长至 17:30 或设周六上午时段，口岸分行则可能配合通关时间提前开门。<strong>本页未能逐家核实各分行当日具体营业时间，去之前请务必打中银香港个人客户服务热线 +852 3988 2388 或在其官网「分行网络」逐个查询。</strong>「提前 15 分钟到门口」的措辞就是这个原因——不要假定某个固定钟点一定开门。</div>
+
+      <div class="src-note" style="margin-top:12px"><strong>公众假期与股市的关系（顺带一提）：</strong>9/25 和 9/26 是香港法定假日，<strong>港股休市</strong>；9/28、9/29 港股正常交易。所以如果你在 9/25 开户成功当天，也只能做好账户设置，<strong>真正的成交要等到 9/28</strong>。</div>
+
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>方案</th><th>时间</th><th>怎么做</th><th>影响行程</th><th class="num-col">推荐度</th></tr></thead>
+          <tbody>
+            <tr>
+              <td rowspan="2"><strong>主力方案</strong><br><span class="muted" style="font-size:12px">配合 D2</span></td>
+              <td class="num">9/25 周五<br>08:30–09:45</td>
+              <td>W 酒店早餐提前到 07:30 吃完，08:15 出发去<strong>圆方分行</strong>（九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺，属口岸分行，也是离 W 酒店最近的一家中银香港跨境分行）。<strong>按该分行当日开门时间提前 15 分钟到门口排队</strong>，做综合理财 + 证券账户。约 1 小时后结束，步行 10 分钟回西九文化区。</td>
+              <td>M+ 入场从 10:00 往后顺延 20–40 分钟。其余行程不动。</td>
+              <td class="num-col">★★★★★</td>
+            </tr>
+            <tr>
+              <td class="num">9/25 白天<br>随时</td>
+              <td>如果上午没约到，D2 下午 14:00–18:00 都在旺角/油麻地。<strong>旺角分行、弥敦道沿线分行很多</strong>，可以顺路找一家 walk-in。但旺角是热门区，午市后排队可能 45–90 分钟。</td>
+              <td>挤掉 1 小时购物时间</td>
+              <td class="num-col">★★★</td>
+            </tr>
+            <tr>
+              <td><strong>备用方案 1</strong></td>
+              <td class="num">9/28 周一<br>08:30–10:00</td>
+              <td>迪士尼日是 10:30 开园。可以 08:00 吃完早餐直接去<strong>圆方分行或中银大厦分行</strong>，约 1 小时后结束，坐东涌线/迪士尼线在 11:00 前后到园。<strong>代价是排队优势没了</strong>（原计划 09:25 到园门口）。</td>
+              <td>晚进园约 1 小时；已有 8 项尊享卡，实际损失有限</td>
+              <td class="num-col">★★★★</td>
+            </tr>
+            <tr>
+              <td><strong>备用方案 2</strong></td>
+              <td class="num">9/29 周二<br>09:00–09:40</td>
+              <td>D6 上午 09:00–10:15 你在九龙城看城寨展。<strong>九龙城附近没有中银香港的跨境服务中心</strong>，但沿线有普通分行。<strong>只适合做「收尾」</strong>（领卡、激活、调限额、补开证券账户），不适合从零开户——时间不够。</td>
+              <td>几乎不影响，但要压缩看展时间</td>
+              <td class="num-col">★★★<small>仅收尾</small></td>
+            </tr>
+            <tr>
+              <td><strong>强烈推荐的前置动作</strong></td>
+              <td class="num">现在～出发前</td>
+              <td><strong>先走内地见证开户</strong>（见上一节路线 A）。这样香港那几天一行代码都不用改，到港后任选上面任一方案做 30–60 分钟的「激活 + 加开证券账户」即可。而且到港当场就能用，不会出现「开了户但限额是 0，钱转不出去」的尴尬。</td>
+              <td><strong>零影响</strong></td>
+              <td class="num-col">★★★★★</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2" style="margin-top:32px">
+        <div class="rec-card">
+          <h3>📍 就近分行清单（中银香港官方「跨境客户服务网络」）</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">A</span><div><strong>圆方分行</strong>（口岸分行）<span class="q-why">九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺 · <strong>离 W 酒店最近，高铁直达客户首选</strong>。D2/D5 早上都方便。</span></div></li>
+            <li><span class="q-num">B</span><div><strong>中银大厦分行</strong><span class="q-why">香港花园道 1 号 3 楼 · 中环商圈，D3（9/26 虽为假期，但若是平时会走中环）顺路。旗舰分行，专业度最高。</span></div></li>
+            <li><span class="q-num">C</span><div><strong>铜锣湾分行</strong><span class="q-why">香港铜锣湾轩尼诗道 505 号（SOGO 百货）· 大型商圈，D2 晚/D6 上午会经过铜锣湾。</span></div></li>
+            <li><span class="q-num">D</span><div><strong>信德中心分行</strong>（口岸分行）<span class="q-why">干诺道中 168-200 号信德中心二楼 294-295 号铺 · 港澳码头附近，水路来港用。</span></div></li>
+            <li><span class="q-num">E</span><div><strong>香港国际机场银行服务中心</strong><span class="q-why">一号客运大楼离港东大堂 6 楼 6T533A 号铺 · <strong>离境前最后一站</strong>，如果前面都没办成，这是最后机会。</span></div></li>
+            <li><span class="q-num">F</span><div><strong>上水分行 / 屯门市广场分行 / 开源道分行</strong><span class="q-why">分别对应罗湖·福田口岸、深圳湾口岸、皇岗口岸。你是坐高铁到西九龙，用不上，但如果改走陆路口岸就是首选。</span></div></li>
+          </ul>
+        </div>
+        <div class="rec-card">
+          <h3>⏱ 现场时间预算（做好心理准备）</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>排队取号：0–90 分钟</strong><span class="q-why">有预约 ≈ 0–15 分钟；无预约在旺角/尖沙咀/中环的旅游区分行，午市后 45–90 分钟很常见。口岸分行（圆方、信德）早上开门时人最少。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>银行账户开户面谈：25–45 分钟</strong><span class="q-why">身份核验、地址证明、CRS/FATCA、风险问卷、签字。有内地见证开户的话这一步已经做完。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>证券账户加开：20–40 分钟</strong><span class="q-why">另一套协议、另一份风险披露、另一次风险评估。有些银行会安排不同职员处理。</span></div></li>
+            <li><span class="q-num">4</span><div><strong>限额调整 + 卡激活 + App 绑定：15–30 分钟</strong><span class="q-why">这一步千万别省。</span></div></li>
+            <li><span class="q-num">5</span><div><strong>月供计划设置：15–20 分钟</strong><span class="q-why">如果当场设，需要指定每月扣款金额、日期、股票清单。</span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:14px"><strong>合计预留 2–3 小时。</strong>如果你只有 1.5 小时，就<strong>只做银行账户 + 当场把限额调好</strong>，证券账户回家后用网上银行开（中银香港官网明确写「现有客户可于网上银行开立证券账户，方便快捷」）。</div>
+        </div>
+      </div>
+
+      <div class="verdict verdict-ok"><span class="v-icon">🗓</span><div><strong>最优安排（一句话版）：</strong>现在就在内地打 <strong>+86 400 800 2388</strong> 问见证开户；同时在中银香港官网预约 <strong>9/25 上午 08:30 圆方分行</strong>作为保底。两条路都留着，哪条先成走哪条。<strong>不要只押一条路。</strong></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="funding">
+    <div class="container">
+      <div class="section-header">
+        <h2>第五步：钱怎么合法过去（本页最重要的一节）</h2>
+        <p>开户只是一张卡，真正难的是<strong>把钱从内地转到这个香港账户里</strong>。这一节请逐字读完。</p>
+      </div>
+
+      <div class="verdict verdict-danger"><span class="v-icon">⛔</span><div><strong>红线先划出来：</strong>内地个人每年 <span class="num">5 万美元</span>等值的购汇便利化额度，是给<strong>经常项目</strong>用的（旅游、留学、就医、亲属赡养等）。<strong>用这笔额度的钱去做境外证券投资属于资本项目，不在便利化额度覆盖范围内。</strong>购汇申请上填的用途必须真实——填「旅游」却把钱打进证券账户，属于申报不实。</div></div>
+
+      <div class="grid-2" style="margin-top:32px">
+        <div class="rec-card">
+          <h3>✅ 相对稳妥的做法</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>随身携带现金（每人每次不超过等值 US$5,000 / RMB 20,000）</strong><span class="q-why">这是最常用、也最接近个人真实用途的方式。你本来就要去旅游，带 2–3 万人民币等值的港币现金（约 HK$22,000–33,000）完全在合规范围内；超额必须向海关申报。<strong>到港后直接存入银行账户。</strong></span></div></li>
+            <li><span class="q-num">2</span><div><strong>银联卡在港取现</strong><span class="q-why">境内银联卡在境外 ATM 取现，受「每卡每日 + 每人每年」双重限制，常见口径是<strong>每人每年合计不超过 RMB 100,000</strong>，单卡单日约 RMB 10,000 等值。另有跨境取现手续费。<strong>具体限额与手续费请直接打你的发卡行客服确认</strong>——本页未能从银联官网核实到现行限额页面，各行执行也有差异。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>信用卡在港消费 + 用现金/境外收入还</strong><span class="q-why">日常消费走信用卡（经常项目，完全合规），把带过来的现金留下来入账投资。这是把「旅游用汇」和「投资本金」分开的实用技巧。</span></div></li>
+            <li><span class="q-num">4</span><div><strong>先在香港攒钱，再逐步配置</strong><span class="q-why">每年去一次香港，每次带一点，慢慢把仓位建起来。对你「长期小额」的定位来说，这个节奏反而更合适。</span></div></li>
+          </ul>
+        </div>
+
+        <div class="rec-card">
+          <h3>⚠️ 灰色 / 高风险，不要碰</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">5</span><div><strong>「蚂蚁搬家」式分拆购汇</strong><span class="q-why">用自己或亲友的多张身份证/多个账户，把大额拆成每人每年 5 万美元以下分别购汇再汇出。<strong>这是外汇局明确打击的行为，会被列入「关注名单」</strong>，之后 1–3 年内被暂停或严格限制购汇、结汇业务，并影响征信。</span></div></li>
+            <li><span class="q-num">6</span><div><strong>找换店 / 地下钱庄 / 私人对敲</strong><span class="q-why">境内给人民币、境外收港币，本质是地下钱庄结算。除外汇处罚外，还可能牵连<strong>洗钱</strong>及<strong>帮助信息网络犯罪活动</strong>的刑事风险——即使你的钱本身来源完全合法。</span></div></li>
+            <li><span class="q-num">7</span><div><strong>虚构用途购汇</strong><span class="q-why">以「留学」「就医」等名义购汇，实际投资境外证券。属于《外汇管理条例》下的申报不实，可处罚款并没收违法所得。</span></div></li>
+            <li><span class="q-num">8</span><div><strong>用别人的额度帮你汇</strong><span class="q-why">出借额度本身也是违规行为，双方都受影响，还容易引发资金归属纠纷。</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn" style="margin-top:32px"><span class="v-icon">🧭</span><div><strong>你的实际情况决定了这不是个大问题。</strong>5 万人民币本金，折合约 <span class="num">HK$58,500</span>（按 2026-09-21 中间价 1 CNY ≈ 1.1703 HKD 折算）。这个规模：<br>① 分 2–3 次、每次带 2 万人民币等值现金入港，完全在携带限额内；<br>② 就算一年内全部到位，也不需要任何「技巧」；<br>③ 反而是<strong>要主动避开</strong>那些传说中的「路子」——为了 5 万块钱去给自己留个外汇违规记录，不值得。</div></div>
+
+      <div class="src-note"><strong>本节的核对说明：</strong>个人年度购汇便利化额度为等值 5 万美元、以及「便利化额度不得用于境外买房、证券投资等尚未开放的资本项目」这一口径，属于长期稳定执行的监管规则，但本次未能从国家外汇管理局官网直接抓取到该条文页面（站点多次 404 / 超时），因此<strong>未能给出官方法条链接</strong>。有关处罚（《外汇管理条例》第四十一条、第四十二条）为处罚上限的常见表述，具体幅度以监管机构认定为准。<strong>请在动手前咨询持牌律师或银行合规部门。</strong></div>
+    </div>
+  </section>
+
+  <section class="section" id="compliance">
+    <div class="container">
+      <div class="section-header">
+        <h2>合规与信息披露：先搞懂 CRS</h2>
+        <p>开户时你会签一张表，那张表决定了你未来很多年的信息可见度。</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>🔍 你会被要求做什么</h3>
+          <p style="margin-top:8px">开户时银行会要求你填写 <strong>税务居民身份自我证明</strong>。你会声明：</p>
+          <ul class="q-list" style="margin-top:6px">
+            <li><span class="q-num">A</span><div><strong>税务居住地 = 中国内地</strong><span class="q-why">同时提供内地税务居民编号（一般是身份证号）。</span></div></li>
+            <li><span class="q-num">B</span><div><strong>非香港税务居民</strong><span class="q-why">你在香港没有通常居住，不构成香港税务居民。这会影响香港对你征税的范围。</span></div></li>
+            <li><span class="q-num">C</span><div><strong>美国身份声明（FATCA）</strong><span class="q-why">声明是否为美国公民/绿卡/税务居民。如实回答。</span></div></li>
+          </ul>
+          <p style="margin-top:12px"><strong>这意味着什么：</strong>香港和内地<strong>都已加入 CRS（共同汇报标准）</strong>并互相交换金融账户涉税信息。也就是说，你在这个香港账户上的<strong>利息、股息、账户余额</strong>等信息，会定期被报送香港税务局，并交换给国家税务总局。</p>
+        </div>
+
+        <div class="rec-card">
+          <h3>📊 交换的是什么，不是什么</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>交换：</strong>账户持有人身份、账户号码、税务居民身份、账户余额/价值、年度利息与股息总额、部分账户的毛收入。</div></li>
+            <li><span class="q-num">2</span><div><strong>不直接交换：</strong>每一笔买卖明细、你的持仓清单、成本基础。CRS 交换的是「汇总口径」，不是交易流水。</div></li>
+            <li><span class="q-num">3</span><div><strong>所以：</strong>资本利得（你卖出赚的差价）通常<strong>不会</strong>通过 CRS 自动呈现给内地。但这<strong>不等于</strong>你不需要申报——申报义务本身独立于信息是否被交换。</div></li>
+            <li><span class="q-num">4</span><div><strong>现实判断：</strong>5 万人民币级别的账户、每年几百块的股息，现实中触发核查的概率很低。但这是<strong>风险判断</strong>，不是<strong>合规结论</strong>。长期复利 20 年之后，账户规模和时间跨度都会变的。</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn"><span class="v-icon">🧾</span><div><strong>诚实填写表格是最省事的策略。</strong>CRS 表格上撒谎（比如声明自己是香港税务居民来规避交换）属于提供虚假资料，一旦被查出，银行可以<strong>直接关闭账户并报送可疑交易报告</strong>——那时候损失的就不只是这个账户了。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="fees">
+    <div class="container">
+      <div class="section-header">
+        <h2>第六步：算清楚每个月要花多少钱</h2>
+        <p>下面每个数字都列了出处。<strong>「年成本占本金比例」这一列才是我真正想让你看的。</strong></p>
+      </div>
+
+      <h3 style="margin-bottom:12px">交易一次的固定费用（港股）</h3>
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>费用项</th><th>费率</th><th>买卖方</th><th>最低 / 最高</th><th>出处</th></tr></thead>
+          <tbody>
+            <tr><td>经纪佣金（网上/手机）</td><td class="num">0.25%</td><td>单边</td><td class="badge-no">最低 HK$100</td><td>中银香港 / 恒生</td></tr>
+            <tr><td>经纪佣金（渣打网上）</td><td class="num">0.20%</td><td>单边</td><td class="badge-mid">最低 HK$50</td><td>渣打收费表</td></tr>
+            <tr><td><strong>印花税</strong></td><td class="num">0.10%</td><td class="badge-no">买卖双方各付</td><td>最低 HK$1</td><td>中银香港证券收费表</td></tr>
+            <tr><td>SFC 交易征费</td><td class="num">0.0027%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
+            <tr><td>HKEX 交易费</td><td class="num">0.00565%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
+            <tr><td>AFRC 交易征费</td><td class="num">0.00015%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
+            <tr><td>买入交收费（存仓）</td><td class="num">HK$2.5–5 / 手</td><td>仅买入</td><td>最低 HK$30 · 最高 HK$200</td><td>中银 / 汇丰 / 恒生</td></tr>
+            <tr><td colspan="5" style="background:color-mix(in oklch,var(--accent) 6%,transparent)"><strong>监管类合计（不含佣金，买卖各付）≈ 0.1085%</strong> = 印花税 0.10% + SFC 0.0027% + HKEX 0.00565% + AFRC 0.00015%。<strong>买卖两侧费率相同</strong>——港股印花税由买卖双方各自缴纳 0.1%，不是只收一方。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin:32px 0 12px">四种渠道的真实年成本（每月买入 HK$2,500，共 12 次 = 一年投入 HK$30,000）</h3>
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>渠道</th><th>每笔佣金实际支付</th><th>年佣金</th><th>年保管/月费</th><th class="num-col">年总成本</th><th class="num-col">占 5 万本金</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>中银香港 · 月供股票计划</strong><br><small>推荐</small></td>
+              <td>0.25%，最低 HK$50<br><small>该费用<strong>已含印花税、交易征费、交易处理费</strong>，且计划<strong>豁免保管费与代收股息手续费</strong></small></td>
+              <td class="num">HK$600</td>
+              <td class="num badge-yes">HK$0<br><small>计划豁免保管费</small></td>
+              <td class="num"><strong>HK$600</strong></td>
+              <td class="num badge-yes">1.03%</td>
+            </tr>
+            <tr>
+              <td><strong>汇丰 · SMIP 月供计划</strong></td>
+              <td class="badge-yes">HK$0<br><small>现时经纪费全免（含印花税、各项征费、交收费、CCASS 费）</small></td>
+              <td class="num badge-yes">HK$0</td>
+              <td class="num">HK$300<br><small>保管费 HK$25/月（SMIP 优惠未涵盖这一项）</small></td>
+              <td class="num"><strong>HK$300</strong></td>
+              <td class="num badge-yes">0.51%</td>
+            </tr>
+            <tr>
+              <td><strong>渣打 · 网上自行下单</strong></td>
+              <td>0.20%，最低 HK$50<br><small>另付印花税+征费（约 0.21%）</small></td>
+              <td class="num">HK$600<br><small>+ 税费约 HK$63</small></td>
+              <td class="num badge-yes">HK$0<br><small>托管费豁免、账户维护费豁免</small></td>
+              <td class="num"><strong>约 HK$663</strong></td>
+              <td class="num badge-yes">1.13%</td>
+            </tr>
+            <tr>
+              <td><strong>中银香港 · 直接买个股</strong><br><small>反面教材</small></td>
+              <td class="badge-no">HK$100<br><small>0.25% = HK$6.25，但被最低收费拉到 HK$100</small></td>
+              <td class="num badge-no">HK$1,200</td>
+              <td class="num">HK$300<br><small>每半年 HK$150</small></td>
+              <td class="num badge-no"><strong>HK$1,860</strong><br><small>再含交收费 HK$30/次 × 12 = HK$360</small></td>
+              <td class="num badge-no">3.18%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="verdict verdict-danger" style="margin-top:24px"><span class="v-icon">📉</span><div><strong>看清楚最后一行。</strong>同样在银行，用「直接按笔买个股」的方式每月投 HK$2,500，<strong>光手续费一年就吃掉本金的 3.18%</strong>。你用这 5 万块做长期投资，长期年化可能就是 5–7%，第一年 3% 的成本等于白白丢掉半年收益。<br><strong>这就是为什么本页反复强调：银行渠道一定要走「月供/定额计划」，不要手动按笔下单。</strong></div></div>
+
+      <div class="verdict verdict-ok"><span class="v-icon">🔢</span><div><strong>一次性买入的四种选择对比（HK$50,000 整笔）：</strong><br>· 中银香港月供计划（分 20 期投完，每期 HK$2,500）：总手续费 <strong>HK$1,000</strong>（50×20），且豁免保管费与代收股息费<br>· 汇丰 SMIP（现时经纪费全免）：总手续费 <strong>HK$0</strong>，但保管费 HK$25/月 ≈ HK$500/年<br>· 渣打网上整笔买入：佣金 HK$100（0.2% = HK$100，恰好等于最低收费）+ 税费 ≈ HK$104 → <strong>≈ HK$204</strong>，且托管费与账户维护费均豁免<br>· 中银香港整笔买个股：佣金 HK$125（0.25%）+ 交收费最高 HK$200 + 印花税 HK$50 → <strong>≈ HK$375</strong>（交收费按手数计，实际视股价而定）</div></div>
+
+      <div class="src-note"><strong>本节的估算口径：</strong>「每年 12 次买入、每次 HK$2,500，全年投入 HK$30,000」；保管费按持有一整年计；未计入卖出成本（卖出时同样产生佣金 + 印花税 + 征费）。「占 5 万本金」这一列是把年度总成本除以你的全部本金 HK$58,500（约 5 万人民币），方便你直观感受成本量级——<strong>它不是「已投入金额的占比」，也不是银行公布的数字，而是本页的算术推导。</strong><br><strong>关于 ETF 的印花税：</strong>业内长期存在「ETF 印花税豁免（2015 年后新上市、追踪指数且非持有香港股票的 ETF）」的说法，但<strong>本次核查未能从中银香港/汇丰/恒生/渣打的收费表或政府网站中确认该豁免的适用细节</strong>（各行收费表均统一列 0.1%）。<strong>请以你的实际成交单据为准，并在下单前向银行确认你要买的 ETF 是否免征印花税。</strong></div>
+    </div>
+  </section>
+
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <h2>第七步：这 5 万块怎么配</h2>
+        <p>你的目标已经说得很清楚：<strong>配置美元/港币资产 · 投资港股 · 长期小额</strong>。下面按这个目标给一个可执行的骨架。</p>
+      </div>
+
+      <div class="verdict verdict-warn" style="margin-top:0"><span class="v-icon">⚠️</span><div><strong>先明确一件事：本页不推荐任何具体标的，也不预测涨跌。</strong>下面给的是<strong>结构</strong>（哪些工具适合你的约束），不是选股建议。所有具体的代码、价格、费率，请你自己在下单前于券商平台核实。</div></div>
+
+      <div class="grid-2" style="margin-top:32px">
+        <div class="rec-card">
+          <h3>🎯 你这个资金量级的三个核心约束</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>固定成本摊不薄。</strong>每笔最低 HK$50–100 意味着你单笔投入<strong>至少要 HK$5,000 以上</strong>（否则费率超过 1%）。HK$2,500/笔时，单看佣金就是 2–4%。</div></li>
+            <li><span class="q-num">2</span><div><strong>个股太分散不了。</strong>一手腾讯可能要 HK$5 万+。5 万人民币的账户买 2–3 只个股就是全部身家压在少数公司上，风险极高。</div></li>
+            <li><span class="q-num">3</span><div><strong>你需要「一篮子」而不是「一只」。</strong>所以答案基本锁定在 <strong>ETF</strong> 和 <strong>月供计划</strong>这两件事上。</div></li>
+          </ul>
+        </div>
+        <div class="rec-card">
+          <h3>🧱 建议的资产结构</h3>
+          <div class="kv-grid" style="grid-template-columns:1fr;gap:12px">
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">港股宽基（核心）</div>
+              <div class="kv-v">45–55%</div>
+              <div class="kv-n">追踪恒生指数或恒生中国企业指数的本地 ETF，一手入场费低、流动性好。这是你的「主仓」。</div>
+            </div>
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">美元资产</div>
+              <div class="kv-v">20–30%</div>
+              <div class="kv-n">两个方向：① 港币与美元挂钩（7.75–7.85 区间），持有港币本身就有美元属性；② 若要纯美元敞口，用美元定存或美股 ETF。</div>
+            </div>
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">现金 / 应急</div>
+              <div class="kv-v">15–20%</div>
+              <div class="kv-n">放在港币或美元活期/短期定存，同时也是「跌了能补」的弹药。</div>
+            </div>
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">个股（可选）</div>
+              <div class="kv-v">0–15%</div>
+              <div class="kv-n">有明确研究结论再买。不要因为「想买腾讯」而把 5 万都压上去。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:24px">
+        <div class="rec-card">
+          <h3>🅰️ 港股 ETF · 适合你的入场方式</h3>
+          <p style="margin-top:8px">银行和券商的月供计划里通常都会包含追踪恒生指数的本地 ETF（汇丰 SMIP 的可选清单明确包含 <strong>Tracker Fund of Hong Kong（盈富基金）</strong>和 <strong>ABF 香港债券指数基金</strong>），中银香港月供计划的港股清单里也列有大量蓝筹。</p>
+          <p style="margin-top:8px"><strong>为什么 ETF 特别适合你的场景：</strong></p>
+          <ul class="q-list" style="margin-top:4px">
+            <li><span class="q-num">①</span><div>一次买入就是几十上百只股票，天然分散，解决「HK$50,000 买不了几手」的问题。</div></li>
+            <li><span class="q-num">②</span><div>入场费低。恒指 ETF 一手通常只要几千港币，是港股里最适合小资金的工具。</div></li>
+            <li><span class="q-num">③</span><div>管理费低（宽基 ETF 通常远低于主动型基金），长期复利下差异很大。</div></li>
+            <li><span class="q-num">④</span><div>如果确实适用 ETF 印花税豁免，能再省 0.1% 单边——<strong>这一条请下单前向你的银行/券商确认</strong>。</div></li>
+          </ul>
+          <div class="src-note" style="margin-top:12px"><strong>关于「高息 ETF / 高股息 ETF」：</strong>收入型投资者常被推荐这类产品，但注意<strong>代收股息手续费</strong>这一项：中银香港/汇丰是 0.5%（最低 HK$30、最高 HK$2,500），渣打是「股息不足 HK$30 则全额作为手续费」。小额持仓下，<strong>股息很可能被手续费吃掉相当大一部分</strong>。如果你追求现金流，先算清楚这一点。</div>
+        </div>
+        <div class="rec-card">
+          <h3>🅱️ 美元资产 · 三条路径</h3>
+          <ul class="q-list" style="margin-top:10px">
+            <li><span class="q-num">1</span><div><strong>走港币（最省事）</strong><span class="q-why">港币实行联系汇率制度，兑美元在 7.75–7.85 的窄区间内波动。<strong>持有港币资产本身就获得了绝大部分美元属性</strong>，而且不用付兑换点差。对你这个规模，这可能是最优解。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>美元定存</strong><span class="q-why">中银香港手机开户推广里就提到新客户可享特惠定存年利率（官网当期宣传语为「享高达 4.8% 定期存款年利率」，实际利率与期限、金额、推广期有关，<strong>以开户时柜台/App 显示的为准</strong>）。定存是最无脑的美元敞口，但要注意<strong>提前提取通常有罚息</strong>。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>美股 ETF（通过银行证券账户）</strong><span class="q-why">中银香港的证券账户<strong>同一个账户可买卖港股、中国 A 股及美股</strong>，且保管费只收一次。<strong>但要先算账：</strong>渣打美股最低佣金 <span class="num">USD 18/笔</span>；汇丰美股标准收费是「首 1,000 股每笔定额 + 超出部分每股 USD 0.015」。<strong>USD 18 相当于约 HK$140</strong>——你如果每笔只投 HK$2,500（约 USD 320），光是佣金就是 5.6%。<strong>美股必须攒够一笔再买。</strong></span></div></li>
+          </ul>
+          <div class="verdict verdict-danger" style="margin-top:16px"><span class="v-icon">🇺🇸</span><div><strong>买美股前，务必先搞懂两件事</strong>（详见下一节）：<br>① <strong>W-8BEN 表</strong>——不填就是 30% 股息预扣税，填了按中美税收协定降到 10%。<br>② <strong>美国遗产税</strong>——非美国居民持有美国公司股票，超过 <span class="num">US$60,000</span> 的部分要交美国遗产税。你现在规模远低于这条线，但长期复利＋加仓会逼近它。</div></div>
+        </div>
+      </div>
+
+      <div class="rec-card" style="margin-top:24px">
+        <h3>🅲 具体执行顺序（照着做）</h3>
+        <ol class="step-list" style="margin-top:16px">
+          <li><h3>先把银行账户的钱换一部分成港币</h3><p>在开户当天用港币现金存入，或存入人民币后通过 App 做 <strong>CNY→HKD 兑换</strong>。银行的兑换点差是隐形成本，<strong>港币兑人民币的点差通常比港币兑美元小</strong>，所以「先换港币、需要时再换美元」通常比直接人民币换美元划算。</p></li>
+          <li><h3>设一个月供计划，每月 HK$2,000–2,500</h3><p>中银香港最低 HK$500/只、汇丰最低 HK$1,000。设成 <strong>每月固定日期自动扣款</strong>，买港股宽基 ETF。这一步把你的「长期小额」变成真正自动化的纪律，也把每笔固定成本降到 0.25% 最低 HK$50 的水平。</p></li>
+          <li><h3>剩下的钱先放港币/美元活期或短定存</h3><p>不要一次全部投进去。留 15–20% 现金，既当应急金，也是市场大跌时的补仓弹药。<strong>定额投资的本质就是「跌的时候买更多」</strong>，前提是你手里还有钱。</p></li>
+          <li><h3>满一年后复盘一次</h3><p>看三件事：① 实际年化成本是多少（用对账单算，不是估算）；② 月供金额是否该调；③ 是否需要把一部分仓位切成美元资产。<strong>一年动一次手就够了</strong>，中途不要因为短期波动改计划。</p></li>
+          <li><h3>汇率这件事，别择时</h3><p>你无法预测人民币兑美元/港币的走向。每月固定换汇（相当于外汇版的定额投资）比「等一个好汇率再换」更适合你。这也是月供计划顺带解决的事。</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tax">
+    <div class="container">
+      <div class="section-header">
+        <h2>第八步：三个税务辖区，各有各的规则</h2>
+        <p>你的一笔投资会同时牵涉<strong>香港、美国、中国内地</strong>三个税务体系。这一节把每个辖区的规则和出处分开列清楚。</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="rec-card">
+          <h3>🇭🇰 香港 · 最友好</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">①</span><div><strong>资本利得税：没有</strong><span class="q-why">香港不征收资本利得税，买卖港股赚的差价原则上不征税（若被认定为「营业性质」的频繁交易则另论）。</span></div></li>
+            <li><span class="q-num">②</span><div><strong>股息税：没有</strong><span class="q-why">香港不征收股息预扣税。</span></div></li>
+            <li><span class="q-num">③</span><div><strong>但交易环节要交印花税</strong><span class="q-why">买卖双方<strong>各付 0.1%</strong>，这是香港股票交易最大的单项成本。</span></div></li>
+            <li><span class="q-num">④</span><div><strong>你是非香港税务居民</strong><span class="q-why">开户时声明后，香港对你只有源自香港的特定收入有征税权，而港股资本利得和股息都不在其列。</span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:12px">印花税 0.1% 双向收取已由中银香港证券收费表、恒生证券收费表、汇丰收费表三方交叉确认。「香港不征资本利得税和股息税」属长期稳定的税制事实，但<strong>本次核查未能直接访问税务局（IRD）官网</strong>（ird.gov.hk 多次连接失败），故未附官方链接。</div>
+        </div>
+
+        <div class="rec-card">
+          <h3>🇺🇸 美国 · 两个坑</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">①</span><div><strong>股息预扣税：填 W-8BEN 从 30% 降到 10%</strong><span class="q-why">《中美税收协定》第 9 条规定，若受益所有人为缔约国居民，股息征税<strong>不超过总额的 10%</strong>。不填 W-8BEN 就按美国国内法默认的 30% 扣。</span></div></li>
+            <li><span class="q-num">②</span><div><strong>美国遗产税：非居民门槛只有 US$60,000</strong><span class="q-why">这是最容易被忽略的坑。美国国税局明确：<strong>「依美国法律设立的公司之股票」属于「美国境内资产」</strong>，即使你通过香港银行持有、以名义人名义登记，也算在内。非居民外国人（非公民）的申报门槛是 <span class="num">US$60,000</span>，超出部分按累进税率（18% 起，最高 40%）。</span></div></li>
+            <li><span class="q-num">③</span><div><strong>而且中美之间没有遗产税协定</strong><span class="q-why">国税局列出的遗产税/赠与税协定国家包括澳洲、奥地利、加拿大、丹麦、芬兰、法国、德国、希腊、爱尔兰、意大利、日本、荷兰、南非、瑞士、英国——<strong>中国内地不在名单上</strong>。也就是说没有协定可以帮你提高免税额。</span></div></li>
+            <li><span class="q-num">④</span><div><strong>什么不算美国境内资产</strong><span class="q-why">国税局列明「境外分行存款」等不计入美国境内资产。<strong>推论：香港注册的基金/ETF 若持有美股，其份额本身不是美国境内资产</strong>——但要具体看产品结构。<strong>涉及大额规划时请咨询跨境税务专业人士，不要自己推断。</strong></span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:12px"><strong>出处：</strong>IRS Publication 901（2024-09 版）中美协定股息条款；IRS 官网《Some nonresidents with U.S. assets must file estate tax returns》；IRS Instructions for Form 706-NA（2026-07 版，申报门槛 US$60,000）；IRS《Estate & Gift Tax Treaties (International)》国家名单。</div>
+        </div>
+
+        <div class="rec-card">
+          <h3>🇨🇳 中国内地 · 你要自己申报</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">①</span><div><strong>你是中国税务居民</strong><span class="q-why">在中国境内有住所，或一年内在境内居住累计满 183 天，即为中国税务居民，<strong>需就全球所得申报纳税</strong>。</span></div></li>
+            <li><span class="q-num">②</span><div><strong>境外证券转让所得 = 财产转让所得</strong><span class="q-why">按 20% 比例税率计税，以转让收入减除财产原值和合理费用后的余额为应纳税所得额。</span></div></li>
+            <li><span class="q-num">③</span><div><strong>境外股息利息 = 利息、股息、红利所得</strong><span class="q-why">按 20% 比例税率，通常以<strong>收入全额</strong>计税，不能扣成本。香港不预扣，所以这 20% 全落在你身上（美国已扣的 10% 可按规定申请抵免）。</span></div></li>
+            <li><span class="q-num">④</span><div><strong>这个申报义务是主动的</strong><span class="q-why">没有哪个机构会「通知」你去交。CRS 交换的是汇总信息（余额、股息、利息总额），<strong>不交换你的每笔交易明细</strong>，所以资本利得的发现难度更高——但<strong>「难被发现」不等于「不用申报」</strong>，这是两件事。</span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:12px"><strong>出处说明：</strong>「财产转让所得 20%」「利息、股息、红利所得 20%」出自《中华人民共和国个人所得税法》及其实施条例的税率规定，属长期稳定条款；但<strong>本次核查未能访问国家税务总局（chinatax.gov.cn）与外汇局（safe.gov.cn）的相关条文页面</strong>（多次 404 / 连接超时）。<strong>具体申报口径、抵免流程、是否适用境外所得税收抵免，请咨询持证税务师。</strong></div>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn" style="margin-top:32px"><span class="v-icon">🧮</span><div><strong>用你的实际数字感受一下（HK$58,500 本金，假设年化 6%）：</strong><br>· 一年总收益 ≈ HK$3,510<br>· 香港：<strong>0</strong>（无资本利得税、无股息税）<br>· 美国（若持有美股 ETF 拿股息，假设 2% 股息率 = HK$1,170）：预扣 10% = <strong>HK$117</strong><br>· 中国内地（若如实申报全部所得）：20% × HK$3,510 = <strong>HK$702</strong>，其中美股已扣部分可申请抵免<br>· <strong>合计税负约 HK$700–800，占收益的 20% 左右</strong><br>这就是为什么说「长期不申报的风险」是<strong>合规风险</strong>而不是「省了大钱」——省下的金额在你的规模里很小，但要承担的责任却一直挂着。</div></div>
+
+      <div class="verdict verdict-danger"><span class="v-icon">⚖️</span><div><strong>本节的边界：</strong>以上是<strong>规则梳理</strong>，不是税务意见。<strong>税务居民身份判断、境外所得抵免的具体计算、遗产税的规划方案，都必须由持牌税务师或律师根据你的完整情况来做。</strong>如果你未来把仓位做大（尤其接近 US$60,000 美股），一定要在事前找专业人士，而不是事后。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="after">
+    <div class="container">
+      <div class="section-header">
+        <h2>第九步：开户之后的长期维护</h2>
+        <p>钱进去了不代表结束。香港账户有一个特点：<strong>不动就会被冻。</strong></p>
+      </div>
+
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>🚫 常见拒件原因与规避</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>地址证明不合格</strong><span class="q-why">最常见。要点：3 个月内、本人姓名、政府或公共事业机构发出。别拿别人的账单去。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>开户理由不充分</strong><span class="q-why">「随便开一个」会被直接拒。要说清楚：长期投资港股/美股、做美元港币资产配置、计划每月定额投入。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>风险评估问卷答得前后矛盾</strong><span class="q-why">说自己「没投资经验」又要求开通股票交易，可能被拒或被降级只能买基金。如实填，但要把你的真实经验说清楚（比如「A 股有 3 年经验」）。</span></div></li>
+            <li><span class="q-num">4</span><div><strong>高风险行业标签</strong><span class="q-why">加密货币、跨境贸易、珠宝、博彩等行业会受到更严格审查。<strong>如实说明职业和收入来源</strong>，准备好工资流水/在职证明，反而更容易过。</span></div></li>
+            <li><span class="q-num">5</span><div><strong>证件有效期不足</strong><span class="q-why">中银香港手机开户明确要求身份证和通行证<strong>均有 30 天以上有效期</strong>。出发前检查。</span></div></li>
+            <li><span class="q-num">6</span><div><strong>低资产被劝退</strong><span class="q-why">部分分行会以「最低存款」为由推你开更贵的账户。<strong>坚持选最低档（中银香港「自在理财」HK$10,000，汇丰 One）。</strong></span></div></li>
+          </ul>
+        </div>
+
+        <div class="rec-card">
+          <h3>🧊 休眠、冻结与日常维护</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>保持账户活跃</strong><span class="q-why">长期无交易的账户可能被标记为休眠（dormant），之后恢复需要重新做身份核验，甚至需要本人到港。<strong>建议每月或每季至少一次登录 App + 有一笔小额交易或转账。</strong>月供计划天然解决这个问题。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>账单地址要能收到</strong><span class="q-why">银行会寄电子/纸质结单，也会用它做后续核验。地址变了要主动在 App 里改。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>手机号千万不要换</strong><span class="q-why">这是找回账户和接收一次性密码的唯一通道。换号前先在 App 内更新，别等停机了再想办法。</span></div></li>
+            <li><span class="q-num">4</span><div><strong>保管费会在持仓月自动扣</strong><span class="q-why">中银香港每半年 HK$150（晋星级）、汇丰 HK$25/月、恒生 HK$25/月。恒生明确「当月无持仓且无交易不收费」，其他行也有类似逻辑——<strong>但清空仓位不等于免收，具体看各行规则。</strong></span></div></li>
+            <li><span class="q-num">5</span><div><strong>别把账户借给别人用</strong><span class="q-why">出借账户给别人转账是反洗钱高压线，会导致账户被冻结、关闭并影响你在所有香港银行的记录。</span></div></li>
+            <li><span class="q-num">6</span><div><strong>每年下载一次对账单存档</strong><span class="q-why">申报境外所得和计算成本基础都要用到。<strong>不要等到 10 年后想报税才发现查不到历史记录。</strong></span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="brokers">
+    <div class="container">
+      <div class="section-header">
+        <h2>补充：要不要用券商，而不是银行？</h2>
+        <p>这是本文最想让你自己判断的一个问题。<strong>券商便宜得多，但门槛和合规状态完全不同。</strong></p>
+      </div>
+
+      <div class="verdict verdict-warn" style="margin-top:0"><span class="v-icon">🔎</span><div><strong>先说清楚本节的局限：</strong>券商的<strong>内地客户准入政策变动极快</strong>，且本次核查<strong>未能成功抓取富途、老虎、盈透（IBKR）、长桥等券商的官网条款页面</strong>（页面结构为 JS 渲染，无法静态抓取）。因此<strong>本节不给出具体的准入结论，只给判断框架和需要你自己去核实的问题清单。</strong>请务必自行到各券商官网或客服处确认，不要依据本文或任何博客的二手说法。</div></div>
+
+      <div class="grid-2" style="margin-top:32px">
+        <div class="rec-card">
+          <h3>💸 券商为什么便宜这么多</h3>
+          <div class="table-wrap" style="margin-top:8px">
+            <table class="ds-table" style="min-width:0">
+              <thead><tr><th>项目</th><th>香港银行</th><th>互联网券商（典型）</th></tr></thead>
+              <tbody>
+                <tr><td>港股佣金</td><td>0.20–0.25%，最低 HK$50–100</td><td>常见低至 0.03% 或极低固定费</td></tr>
+                <tr><td>最低单笔收费</td><td class="badge-no">HK$50–100</td><td class="badge-yes">低或无</td></tr>
+                <tr><td>碎股交易</td><td>部分支持（如中银「买入碎股」0.25%）</td><td class="badge-yes">普遍支持</td></tr>
+                <tr><td>美股/ETF 品种</td><td>有，但费率高</td><td class="badge-yes">丰富且便宜</td></tr>
+                <tr><td>月供计划最低额</td><td>HK$500–1,000</td><td>可低至 HK$100 以下</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:12px;font-size:13px;color:var(--muted)">券商那一栏是<strong>行业常见区间的示意</strong>，不是来自本次核查确认的具体数字。请以各券商官网现行收费页为准。</p>
+        </div>
+
+        <div class="rec-card">
+          <h3>🚧 内地身份开户的现实障碍</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>内地监管对跨境互联网券商的限制</strong><span class="q-why">中国证监会对富途、老虎等跨境互联网券商开展过整改，核心要求是<strong>不得向境内投资者提供未经批准的跨境证券交易服务</strong>。结果是这些券商<strong>大幅收紧甚至停止了对内地新客户的开户</strong>。2026 年的具体执行口径<strong>请直接向券商客服确认</strong>。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>「有香港身份证/海外地址」通常是硬门槛</strong><span class="q-why">很多券商的合规要求是持有境外身份证件或海外居住地址。用内地身份证 + 内地地址，可能直接被系统拦截。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>资金进出更麻烦</strong><span class="q-why">券商账户通常不接受大额现金存入。而银行账户至少有柜台现金入账这条路。<strong>这一点常被忽略，但对你的场景很关键。</strong></span></div></li>
+            <li><span class="q-num">4</span><div><strong>港股通（沪深港通）不是替代品</strong><span class="q-why">港股通通过内地券商买卖，资金不出境，完全合规，<strong>但有个人投资者门槛</strong>（业内长期口径是证券账户资产合计不低于人民币 50 万元），而且只能买港股通标的、不能买美股、不能打新。你的 5 万本金<strong>够不上门槛</strong>。</span></div></li>
+          </ul>
+          <div class="src-note" style="margin-top:12px"><strong>关于港股通门槛：</strong>「50 万元资产门槛」是港股通个人投资者适当性管理的长期口径，本次核查未能从上交所/深交所官网抓取到该条文的准确页面（页面为动态渲染）。<strong>请以你的内地券商的最新告知为准。</strong></div>
+        </div>
+      </div>
+
+      <div class="verdict verdict-ok" style="margin-top:24px"><span class="v-icon">🎯</span><div><strong>本页给你的结论：</strong><br><strong>1. 银行账户必须开</strong>——它是你的资金入口、外汇通道和身份锚点，无论如何都需要。<br><strong>2. 证券账户先别急着决定放哪。</strong>到港后先开银行的证券账户（当天就能开、零额外成本），<strong>然后把「要不要再开券商账户」这个问题带回来慢慢研究</strong>。<br><strong>3. 短期的过渡方案：</strong>用银行的<strong>月供计划</strong>（中银 0.25% 最低 HK$50 已含税费，汇丰现时全免）先把定投跑起来。成本是 1% 左右，不是 3%——<strong>这已经足够让复利工作</strong>，你可以慢慢再优化。<br><strong>4. 不要为了省 0.2% 佣金去走不合规的资金通道。</strong>本末倒置。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="mistakes">
+    <div class="container">
+      <div class="section-header">
+        <h2>这个场景下最容易踩的 10 个坑</h2>
+        <p>按「踩了会有多痛」排序。</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="verdict verdict-danger" style="margin-top:0"><span class="v-icon">1</span><div><strong>为了 5 万块走地下钱庄/找换店。</strong>省下的汇率点差可能只有几百块，换来的是外汇违规记录，甚至洗钱法律风险。<strong>这是最不划算的一笔交易。</strong></div></div>
+          <div class="verdict verdict-danger"><span class="v-icon">2</span><div><strong>用「旅游」名义购汇后汇入证券账户。</strong>申报不实，属于可处罚行为。</div></div>
+          <div class="verdict verdict-danger"><span class="v-icon">3</span><div><strong>忘记填 W-8BEN。</strong>美股股息直接按 30% 预扣，而不是协定的 10%。三年下来够你买台 iPad。</div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">4</span><div><strong>在银行柜台手动按笔买小额个股。</strong>每次最低 HK$100 佣金 + HK$30 交收费，投 HK$2,500 就是 5% 成本。<strong>必须走月供/定额计划。</strong></div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">5</span><div><strong>开户当天没调转账限额就走了。</strong>汇丰新客默认「跨境转账 = HK$0」，你回家会发现钱根本转不出去，还得再跑一趟或打国际长途。</div></div>
+        </div>
+        <div>
+          <div class="verdict verdict-warn"><span class="v-icon">6</span><div><strong>9/26、9/27 跑去银行。</strong>9/26 是「中秋节翌日」公众假期、9/27 是周日，都关门。你只有 9/25、9/28、9/29 三天。详见行程那节。</div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">7</span><div><strong>地址证明用了配偶/父母名下。</strong>银行要求账单上有<strong>你本人</strong>的姓名。提前一个月把自己的水电账单或信用卡账单地址确认好。</div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">8</span><div><strong>被「首 3 个月 $0 佣金」吸引，三个月后继续按笔交易。</strong>优惠期一过，成本翻 20 倍。要么在优惠期内把仓位建好并转月供，要么从一开始就用月供。</div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">9</span><div><strong>把 5 万全押 1–2 只个股。</strong>一手腾讯就可能占掉你全部资金。用 ETF 分散，别赌单只股票。</div></div>
+          <div class="verdict verdict-warn"><span class="v-icon">10</span><div><strong>账户开完就不管了。</strong>半年不用可能变休眠，手机号换了就找不回，对账单不下载十年后没法算成本基础。<strong>把它当成一个需要每季度体检一次的长期资产。</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="checklist">
+    <div class="container">
+      <div class="section-header">
+        <h2>检查清单</h2>
+        <p>可以照着勾。建议出发前把这一节打印或截图。</p>
+      </div>
+      <div class="checklist-grid">
+        <div class="checklist-group">
+          <h3>📅 现在～出发前</h3>
+          <div class="checklist-item"><input type="checkbox" id="s1"><label for="s1">🔴 打 <strong>+86 400 800 2388</strong> 问中银香港「见证开户」是否适合自己 <span>（问清楚 5 万人民币量级对应哪个理财档次、要什么材料、多久完成）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s2"><label for="s2">🔴 网上预约 <strong>9/25 上午 08:30 中银香港圆方分行</strong> <span>（保底方案：官网「预约开立香港账户」）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s3"><label for="s3">检查港澳通行证签注次数与有效期 <span>（中银香港要求身份证 + 通行证均 ≥30 天有效期）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s4"><label for="s4">准备<strong>本人姓名</strong>的地址证明（3 个月内） <span>（水电燃气/宽带账单最优；政府或公共机构发出）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s5"><label for="s5">在内地办一张香港手机号（可选） <span>（7-11/OK 便利店储值卡；部分银行要本地号收短信）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s6"><label for="s6">确认内地手机号已开通国际漫游，能在香港收验证码</label></div>
+          <div class="checklist-item"><input type="checkbox" id="s7"><label for="s7">下载并注册「移民局」App / 微信小程序，会导出「出入境记录」电子档 <span>（要含申请日的最近 7 日内）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s8"><label for="s8">准备工资流水 / 在职证明（3–6 个月）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="s9"><label for="s9">提前算好要带的现金：人民币 ≤2 万 / 外币 ≤等值 US$5,000 <span>（约 HK$22,000–33,000，分两次带入足够）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="s10"><label for="s10">了解银联卡境外取现的当期额度与手续费 <span>（打你的发卡行客服确认，各行有差异）</span></label></div>
+        </div>
+        <div class="checklist-group">
+          <h3>🧳 出发要带的文件</h3>
+          <div class="checklist-item"><input type="checkbox" id="d1"><label for="d1">🔴 身份证原件</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d2"><label for="d2">🔴 港澳通行证原件 + 有效签注</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d3"><label for="d3">护照原件</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d4"><label for="d4">🔴 地址证明原件（3 个月内、本人姓名）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d5"><label for="d5">出入境记录电子档（打印件 + 手机存 PDF）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d6"><label for="d6">入境小票（过关时收好，别丢）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d7"><label for="d7">工资流水 / 在职证明（纸质或 PDF）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="d8"><label for="d8">港币现金（准备存入的首笔资金）</label></div>
+        </div>
+        <div class="checklist-group" style="margin-top:32px">
+          <h3>🏦 在分行当场要做的 7 件事</h3>
+          <div class="checklist-item"><input type="checkbox" id="b1"><label for="b1">开「综合理财账户」，选<strong>最低档次</strong> <span>（中银香港「自在理财」HK$10,000 / 汇丰 One）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="b2"><label for="b2">🔴 加开<strong>证券账户</strong>（港股 + A 股 + 美股）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="b3"><label for="b3">🔴 <strong>调高转账限额</strong>，登记常用收款账户 <span>（汇丰新客默认跨境转账 = HK$0）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="b4"><label for="b4">开通网上银行 + 手机银行，绑定保安编码器</label></div>
+          <div class="checklist-item"><input type="checkbox" id="b5"><label for="b5">🔴 设置<strong>月供股票计划</strong>（中银最低 HK$500 / 汇丰最低 HK$1,000）</label></div>
+          <div class="checklist-item"><input type="checkbox" id="b6"><label for="b6">申请即时报价服务 <span>（中银香港网上/手机豁免、无限次，但需自行申请开通）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="b7"><label for="b7">拿到全部协议的<strong>电子版或纸质版</strong>，特别是收费表</label></div>
+          <div class="checklist-item"><input type="checkbox" id="b8"><label for="b8">如买美股：当场填 <strong>W-8BEN</strong></label></div>
+        </div>
+        <div class="checklist-group" style="margin-top:32px">
+          <h3>🏠 回来之后</h3>
+          <div class="checklist-item"><input type="checkbox" id="a1"><label for="a1">测试一笔小额转账/买入，确认账户真的可用</label></div>
+          <div class="checklist-item"><input type="checkbox" id="a2"><label for="a2">把银行 App 的通知打开，别漏掉月供扣款失败提醒</label></div>
+          <div class="checklist-item"><input type="checkbox" id="a3"><label for="a3">在手机备忘录记下：账号、客服电话、W-8BEN 提交日期</label></div>
+          <div class="checklist-item"><input type="checkbox" id="a4"><label for="a4">年底下载一次全套对账单并备份 <span>（报税和成本基础都要用）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="a5"><label for="a5">每季度登录一次 App <span>（防休眠）</span></label></div>
+          <div class="checklist-item"><input type="checkbox" id="a6"><label for="a6">如果美股仓位接近 <strong>US$60,000</strong>，找跨境税务专业人士咨询遗产税规划</label></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="references">
+    <div class="container">
+      <div class="section-header">
+        <h2>参考资料与出处</h2>
+        <p>标注了每条链接到底支持本文的哪个具体数字。带 ⚠️ 的是本次核查<strong>未能直接核实</strong>、请在动手前自行确认的条目。</p>
+      </div>
+      <ul class="ref-list">
+        <li><a href="https://www.bochk.com/dam/investment/sec_fee_tc.pdf" target="_blank" rel="noopener">https://www.bochk.com/dam/investment/sec_fee_tc.pdf</a><div class="ref-desc">中银香港《一般银行服务收费表》证券服务章节（2026-09-19 版）。<strong>本页最重要的一手来源：</strong>佣金 0.18–0.50%、最低 HK$100；印花税 0.1% 双向；SFC 0.0027%、HKEX 0.00565%、AFRC 0.00015%；买入交收费 HK$2.5–5/手（最低 30 最高 200）；代收股息 0.5%（最低 30 最高 2500）；保管费每半年 HK$100–150；月供计划 0.25%（最低 HK$50）；证券会籍门槛（钻星 3,000 万 / 金星 300 万 / 银星 30 万 / 晋星 30 万以下）；美股 30% 预扣税；另含 2026-11-16 无纸证券市场制度收费调整通知</div></li>
+        <li><a href="https://www.bochk.com/tc/investment/securities/monthly.html" target="_blank" rel="noopener">https://www.bochk.com/tc/investment/securities/monthly.html</a><div class="ref-desc">中银香港「月供股票计划」：每月最低 HK$500（每增一只加 HK$500）、最多 20 只；手续费 = 供款额 0.25%、最低 HK$50，已含佣金+印花税+交易征费+交易处理费；豁免保管费与代收股东权益手续费；碎股可按正股价卖出；可用中银信用卡供款赚积分</div></li>
+        <li><a href="https://www.bochk.com/tc/investment/securities/trade.html" target="_blank" rel="noopener">https://www.bochk.com/tc/investment/securities/trade.html</a><div class="ref-desc">中银香港证券买卖服务：一个证券账户同时买卖港股/中国 A 股/美股，同一账户保管费只收一次；买卖 A 股无额外服务费；开户可在网上预约或亲临分行，现有客户可在网上银行开立证券账户</div></li>
+        <li><a href="https://www.bochk.com/dam/more/accountopening/tc.html" target="_blank" rel="noopener">https://www.bochk.com/dam/more/accountopening/tc.html</a><div class="ref-desc">中银香港手机开户：内地访港旅客可 7×24 手机开户；<strong>所需条件</strong>=年满 18 岁、身处香港、全新客户、持身份证+往来港澳通行证（均 ≥30 天有效期）、持国家移民局最近 7 日内「出入境纪录」电子档、能提供内地手机号与地址、电邮及税务居民编号；<strong>关键限制</strong>：上传地址证明同时开立证券账户仅适用于香港身份证持有人</div></li>
+        <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html</a><div class="ref-desc">中银香港「见证开户服务」：无需亲临香港，可在内地指定见证网点签署开户文件，开立「中银理财」或「智盈理财」账户；需年满 18 岁且为中国银行/中银香港分子行理财或特选客户；开户所需文件=内地居民凭身份证或中国护照；<strong>若亲临中银香港分行须同时提交入境旅行证件</strong>；地址证明要求「最近三个月内由政府机构或公共事务机构发出具有客户姓名及地址资料的通訊函或账单」；最快约两星期完成</div></li>
+        <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/branch_network.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/branch_network.html</a><div class="ref-desc">中银香港跨境客户服务网络：香港国际机场银行服务中心；圆方分行（九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺）；信德中心分行；中港城中银理财中心；上水分行；屯门市广场分行；开源道分行；中银大厦分行（香港花园道 1 号 3 楼）；铜锣湾分行（轩尼诗道 505 号）</div></li>
+        <li><a href="https://www.bochk.com/dam/wm/iFree_Guide_t.pdf" target="_blank" rel="noopener">https://www.bochk.com/dam/wm/iFree_Guide_t.pdf</a><div class="ref-desc">中银香港「自在理财」服务概览：需维持「综合理财总值」<strong>港币 10,000 元或以上</strong>（18 岁以下豁免；全日制学生可豁免在学期间及毕业后首 3 年）</div></li>
+        <li><a href="https://www.bochk.com/dam/wm/Enrich_Guide_t.pdf" target="_blank" rel="noopener">https://www.bochk.com/dam/wm/Enrich_Guide_t.pdf</a><div class="ref-desc">中银香港「智盈理财」服务概览：需维持「综合理财总值」<strong>港币 200,000 元或以上</strong></div></li>
+        <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/wmservice.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/wmservice.html</a><div class="ref-desc">中银香港综合理财服务：含港币储蓄账户、港币往来账户、外汇宝储蓄账户、证券及投资账户；「有跨境金融要求」的客户亲临分行开户需开立综合理财服务（中银理财/智盈理财/自在理财）并存入或符合对应综合理财总值金额、提供有效住址证明</div></li>
+        <li><a href="https://www.bochk.com/tc/servicecharge.html" target="_blank" rel="noopener">https://www.bochk.com/tc/servicecharge.html</a><div class="ref-desc">中银香港一般银行服务收费表：服务月费条款（该行现行版本中港币储蓄/往来账户综合平均结余低于 HK$5,000 的月费<strong>只适用于企业客户</strong>，个人客户豁免）</div></li>
+        <li><a href="https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/investments/stocks/top-trader-club/local-securities-product-fact-sheet.pdf" target="_blank" rel="noopener">https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/investments/stocks/top-trader-club/local-securities-product-fact-sheet.pdf</a><div class="ref-desc">汇丰《Local Securities Services》POR-LSS(E)/MAY26。<strong>本页汇丰数字的来源：</strong>标准佣金 0.25%（最低 HK$100）；专人热线/分行 0.50%；Top Trader Club 按交易量 0.25%→0.01%（最低 HK$100→HK$8）；保管费 HK$25/月（汇丰 One 等）/ HK$30/月（一般证券账户）；买入交收费 HK$5/手（最低 30 最高 200）；代收股息 0.5%（最低 30 最高 2500）；印花税 0.1%、SFC 0.0027%、AFRC 0.00015%、HKEX 0.00565%；Trade25（18–25 岁）月交易额 HK$25 万内 $0 佣金</div></li>
+        <li><a href="https://www.hsbc.com.hk/investments/products/stocks/hk-trading/monthly/" target="_blank" rel="noopener">https://www.hsbc.com.hk/investments/products/stocks/hk-trading/monthly/</a><div class="ref-desc">汇丰「Stocks Monthly Investment Plan (SMIP)」：每月最低 <strong>HKD 1,000</strong>；<strong>经纪费现时全免</strong>（含标准佣金 0.25%、印花税、SFC 交易征费、AFRC 交易征费、HKEX 交易费、买入交收费及 CCASS 费）；改计划/终止免费；可选标的含 <strong>Tracker Fund of Hong Kong（盈富基金）</strong>与 ABF 香港债券指数基金，以及一长串港交所上市股票（清单里包含腾讯 700、港交所 388、领展 823 等）</div></li>
+        <li><a href="https://www.hsbc.com.hk/accounts/products/one/" target="_blank" rel="noopener">https://www.hsbc.com.hk/accounts/products/one/</a><div class="ref-desc">汇丰 One 账户：非香港身份证持有人、<strong>2026-01-01 及之后</strong>开立汇丰 One，Below Balance Fee <strong>HK$100/月</strong>，连续 3 个月维持平均总关系余额 HK$10,000 可豁免；2026-01-01 前开户的非港 id 客户或使用香港身份证开户者不受最低 TRB/BBF 限制</div></li>
+        <li><a href="https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf" target="_blank" rel="noopener">https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf</a><div class="ref-desc">汇丰《非香港身份证客户转账及 ATM 提款限额》FAQ。<strong>2026 年新政：</strong>2026-04-26 及之后首次在汇丰开户、提供非香港身份证件、且持有汇丰 One 的客户，受开户当月及随后 6 个月较低限额；默认值中「转账至非登记收款人分项限额 = HK$0」「跨境转账总额 = HK$0」「小额转账 = HK$0」；所有非港 id 新客开户后首 3 个工作日亦受限</div></li>
+        <li><a href="https://www.hsbc.com.hk/zh-cn/international/account-opening/" target="_blank" rel="noopener">https://www.hsbc.com.hk/zh-cn/international/account-opening/</a><div class="ref-desc">汇丰海外开户要求：须年满 18 岁且「有合理理由开立海外账户」；需提供就业、收入及税务详情，身份证明文件，住址证明（如银行结单或水电煤账单）；可在 20 个目的地开户</div></li>
+        <li><a href="https://www.hangseng.com/cms/sec/eng/PDF/secu_char.pdf" target="_blank" rel="noopener">https://www.hangseng.com/cms/sec/eng/PDF/secu_char.pdf</a><div class="ref-desc">恒生银行证券服务收费表：网上/手机/自动化热线佣金 0.25%（最低 HK$100）；专人热线/分行 0.35%（&lt;HK$20 万）或 0.30%（≥HK$20 万）；<strong>月费计划 HK$30 覆盖当月 ≤HK$30 万交易额的 $0 佣金并含交收费与保管费</strong>（不含 IPO 与月供计划）；保管费 Prestige HK$15/月、其他 HK$25/月（无持仓无交易不收费）；买入交收费 HK$2.5–5/手（最低 30 最高 188）；代收股息 0.5%（最低 30 最高 2,000）</div></li>
+        <li><a href="https://av.sc.com/hk/content/docs/hk-service-charges-en.pdf" target="_blank" rel="noopener">https://av.sc.com/hk/content/docs/hk-service-charges-en.pdf</a><div class="ref-desc">渣打香港《Service Charges》收费表：港股网上/SC Equities 佣金 <strong>0.20%（最低 HK$50）</strong>，专人热线 0.50%（最低 HK$150）；美股数字渠道 0.20%（最低 USD 18）；港股通网上 0.20%（最低 RMB 45）；<strong>托管费豁免、账户维护费（半年）豁免</strong>；代收股息 0.5%（最低 HK$30；股息不足 HK$30 则全额收取）；Easy/Premium Banking 免维护费，Priority Banking HK$900/季（需 HK$1,000,000 最低关系余额）</div></li>
+        <li><a href="https://www.gov.hk/en/about/abouthk/holiday/2026.htm" target="_blank" rel="noopener">https://www.gov.hk/en/about/abouthk/holiday/2026.htm</a><div class="ref-desc">香港 2026 年公众假期（政府官网，供最终核对）</div></li>
+        <li><a href="https://publicholidays.hk/2026-dates/" target="_blank" rel="noopener">https://publicholidays.hk/2026-dates/</a><div class="ref-desc">2026 年香港公众假期表（本次界面抓取使用的来源）：<strong>26 Sep (Sat) The Day Following Mid-Autumn Festival</strong>、1 Oct (Thu) National Day、18–19 Oct Chung Yeung、25–26 Dec Christmas。<strong>9/25、9/28、9/29 均为正常营业日。</strong></div></li>
+        <li><a href="https://www.irs.gov/pub/irs-trty/china.pdf" target="_blank" rel="noopener">https://www.irs.gov/pub/irs-trty/china.pdf</a><div class="ref-desc">美国国税局公布的中美税收协定全文。<strong>Article 9 (Dividends) 第 2 款：</strong>「if the recipient is the beneficial owner of the dividends the tax so charged shall not exceed <strong>10 percent</strong> of the gross amount of the dividends.」——这是「填 W-8BEN 可把美股股息预扣税从 30% 降到 10%」的法律依据</div></li>
+        <li><a href="https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns" target="_blank" rel="noopener">https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns</a><div class="ref-desc">美国国税局：非美国居民（非公民）就其「美国境内资产」须缴美国遗产税；<strong>「Stock of corporations organized in or under U.S. law, even if the nonresident held the certificates abroad or registered the certificates in the name of a nominee」</strong>——即通过香港银行以名义人持有的美国公司股票仍属美国境内资产；境外分行存款等不计入</div></li>
+        <li><a href="https://www.irs.gov/pub/irs-pdf/i706na.pdf" target="_blank" rel="noopener">https://www.irs.gov/pub/irs-pdf/i706na.pdf</a><div class="ref-desc">IRS Form 706-NA 填报说明（2026 年现行版）：非居民境内资产价值<strong>超过 US$60,000 的申报门槛</strong>须填报 706-NA；须在死亡后 9 个月内申报</div></li>
+        <li><a href="https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international" target="_blank" rel="noopener">https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international</a><div class="ref-desc">IRS「Estate &amp; Gift Tax Treaties (International)」国家名单：Australia, Austria, Canada, Denmark, Finland, France, Germany, Greece, Ireland, Italy, Japan, Netherlands, South Africa, Switzerland, United Kingdom——<strong>中国内地不在其中</strong></div></li>
+        <li><a href="https://www.irs.gov/pub/irs-pdf/p901.pdf" target="_blank" rel="noopener">https://www.irs.gov/pub/irs-pdf/p901.pdf</a><div class="ref-desc">IRS Publication 901（2024-09 版）《U.S. Tax Treaties》：逐国协定摘要，含中美协定的适用范围说明</div></li>
+        <li><a href="https://www.irs.gov/individuals/international-taxpayers/nra-withholding" target="_blank" rel="noopener">https://www.irs.gov/individuals/international-taxpayers/nra-withholding</a><div class="ref-desc">IRS 非居民预扣税说明（W-8BEN 表格与协定优惠的申请途径）</div></li>
+        <li><a href="https://www.hkex.com.hk/Services/Trading/Securities/Overview/Trading-Mechanism?sc_lang=en" target="_blank" rel="noopener">https://www.hkex.com.hk/Services/Trading/Securities/Overview/Trading-Mechanism?sc_lang=en</a><div class="ref-desc">香港交易所证券交易机制：交易时段、买卖盘类型（增强限价盘/市价盘/竞价盘）、报价规则</div></li>
+        <li><a href="https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/Fees/Securities-(Hong-Kong)/Trading?sc_lang=en" target="_blank" rel="noopener">https://www.hkex.com.hk/Services/Rules-and-Fees-and-Fees/Fees/Securities-(Hong-Kong)/Trading?sc_lang=en</a><div class="ref-desc">香港交易所证券交易费用官方页面（交易费、交易系统使用费等，可用来交叉核对各行收费表中转嫁给客户的 HKEX 费用）</div></li>
+        <li><a href="https://open.er-api.com/v6/latest/CNY" target="_blank" rel="noopener">https://open.er-api.com/v6/latest/CNY</a><div class="ref-desc">汇率来源（2026-09-21 00:02 UTC 更新）：1 CNY = <strong>1.170289 HKD</strong>，1 CNY = 0.149149 USD（隐含 HKD/USD ≈ 7.846）。文中「5 万人民币 ≈ HK$58,500」即按此折算。<strong>这是参考中间价，不是你实际换汇能拿到的价——银行牌价含点差，通常差 0.3–1%。</strong></div></li>
+        <li><a href="https://www.sse.com.cn/services/hkexsc/home/" target="_blank" rel="noopener">https://www.sse.com.cn/services/hkexsc/home/</a><div class="ref-desc">上交所沪港通专题页：港股通标的名单、港股通日历、业务规则、投资者适当性管理指引（含《上海证券交易所港股通投资者适当性管理指引》）⚠️ <strong>该页面为动态渲染，「个人投资者 50 万元资产门槛」的具体条文本次未能直接抓取，请以你的内地券商最新告知为准</strong></div></li>
+        <li><a href="https://www.customs.gov.hk/" target="_blank" rel="noopener">https://www.customs.gov.hk/</a><div class="ref-desc">香港海关官网 ⚠️ <strong>本次多次尝试均未找到「跨境携带货币及不记名可转让票据」的现行页面（多个 URL 返回 404）</strong>。业内长期执行的申报要求是：入境香港时携带<strong>现金类物品总值超过 HK$120,000</strong> 须向海关作出书面申报。请以香港海关官网最新公告为准</div></li>
+        <li><a href="https://www.gov.cn/" target="_blank" rel="noopener">https://www.gov.cn/</a><div class="ref-desc">中国政府网 ⚠️ <strong>本次未能抓取到《个人外汇管理办法实施细则》《外汇管理条例》的现行有效页面（多次 404）</strong>。文中关于「个人年度 5 万美元便利化额度」「便利化额度不得用于境外买房、证券投资等资本项目」「蚂蚁搬家式分拆购汇会被列入关注名单」「《外汇管理条例》第 41/42 条处罚」的表述，属于长期稳定执行的监管口径，但<strong>请务必以国家外汇管理局官网（safe.gov.cn）最新公布为准，并咨询持牌专业人士</strong></div></li>
+        <li><a href="https://www.chinatax.gov.cn/" target="_blank" rel="noopener">https://www.chinatax.gov.cn/</a><div class="ref-desc">国家税务总局 ⚠️ <strong>本次未能抓取到个人所得税法中「财产转让所得 20%」「利息、股息、红利所得 20%」以及境外所得抵免的官方条文页面</strong>。相关税率属长期稳定条款，但具体申报口径与抵免计算<strong>请咨询持证税务师</strong></div></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pagefoot">
+  <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px">
+    <span class="meta">本攻略仅供参考 · 不构成投资、税务或法律建议 · 银行费率与外汇政策请以官方最新公布为准</span>
+    <span class="meta"><a href="./hongkong.html">← 回到主行程攻略</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
