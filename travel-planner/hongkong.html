@@ -130,6 +130,17 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
 .warn-box{display:flex;gap:12px;padding:16px;background:color-mix(in oklch,var(--warn) 10%,transparent);border:1px solid color-mix(in oklch,var(--warn) 30%,transparent);border-radius:var(--radius-md);margin-top:24px;font-size:13px;color:var(--warn-fg)}
 .src-note{margin-top:32px;padding:14px 18px;background:color-mix(in oklch,var(--accent) 6%,transparent);border:1px solid color-mix(in oklch,var(--accent) 20%,transparent);border-radius:var(--radius-md);font-size:13px;color:var(--muted)}
 .src-note strong{color:var(--fg)}
+.apps-section{display:flex;flex-direction:column;gap:8px}
+.app-group{display:flex;align-items:center;gap:14px;margin:32px 0 8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.app-group:first-of-type{margin-top:0}
+.app-group::before{content:'';width:4px;height:16px;border-radius:2px;background:var(--accent);flex-shrink:0}
+.app-group::after{content:'';flex:1;height:1px;background:var(--border)}
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:920px){.app-grid{grid-template-columns:1fr}}
+.app-link{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding-top:12px;font-family:var(--font-mono);font-size:12px;color:var(--accent)}
+.app-link svg{width:14px;height:14px;flex-shrink:0}
+.app-link:hover{text-decoration:underline}
+.rec-card:has(.app-link) p{margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -149,7 +160,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#budget">预算</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；预算移至清单之后、App 改为单卡片于 9/21）</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21）</div>
 </header>
 
 <main>
@@ -172,7 +183,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <div class="section-header">
         <h2>路线总览</h2>
       </div>
-      <div class="route-strip"><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">香港会师</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">西九·九龙旧区·信和中心·维园</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">中环建筑·山顶</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">港大·沙田赛马</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">迪士尼</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">九龙城寨·铜锣湾·湾仔</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">厦门/上海</span></div></div>
+      <div class="route-strip"><div class="route-node"><div class="route-dot"></div><span class="route-label">西九·九龙旧区·信和中心·维园</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">中环建筑·山顶</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">港大·沙田赛马</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">迪士尼</span></div><div class="route-line"></div><div class="route-node"><div class="route-dot"></div><span class="route-label">九龙城寨·铜锣湾·湾仔</span></div></div>
     </div>
   </section>
 
@@ -624,8 +635,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
         <button id="map-fullscreen-btn" type="button" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
       </div>
-      <div id="map-status" style="margin-top:12px;font-size:13px;color:var(--muted);"></div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标来自 fly.ai、官方地址与地图核验 · 无需 API Key</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标来自 fly.ai、已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店</p>
     </div>
   </section>
 
@@ -634,7 +644,6 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>套票购买及预订指南</h2>
-        <p>按「现在就能办 / 什么时候办 / 在哪办 / 多少钱 / 注意什么」整理。核对日期 2026-09-18，价格随时浮动，以支付页为准。</p>
       </div>
       <div class="grid-2">
 
@@ -733,155 +742,217 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <div class="section-header">
         <h2>出行必备 App</h2>
       </div>
-      <div class="grid-3">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="ico-play" viewBox="0 0 24 24"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></symbol>
+      </svg>
+      <div class="apps-section">
 
-        <div class="rec-card">
-          <h3>Google 地图</h3>
-          <p>主力导航，港铁/步行/巴士都能查；出发前把 W 酒店、维园、沙田马场、迪士尼站存好。</p>
+        <div class="app-group">导航与交通</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>Google 地图</h3>
+            <p>主力导航，港铁/步行/巴士都能查；出发前把 W 酒店、维园、沙田马场、迪士尼站存好。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.google.android.apps.maps" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>MTR Mobile</h3>
+            <p>港铁官方 App。路线、票价、转乘与下一班车，离线也能看线路图。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.mtr.mtrmobile" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>香港出行易 HKeMobility</h3>
+            <p>运输署官方。实时交通 + 步行路线，台风天查交通受阻很好用。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.ptes.ptes" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Citymapper</h3>
+            <p>巴士/小巴/渡轮路线比 Google 准，查叮叮车与天星小轮接驳方便。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.citymapper.app.release" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>App1933（九巴）</h3>
+            <p>巴士到站时间，可买旅客日票。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.kmb.app1933" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>香港电车 HK Tramways</h3>
+            <p>叮叮车实时到站（D6 用）。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.hktramways.client" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>MTR Mobile</h3>
-          <p>港铁官方 App。路线、票价、转乘与下一班车，离线也能看线路图。</p>
+        <div class="app-group">天气与安全</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>我的天文台 MyObservatory <span class="pill pill-success">必装</span></h3>
+            <p>天文台官方。台风、暴雨警告推送，还有分区降雨预报；你们这次正好落在台风关注窗口内。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=hko.MyObservatory_v1_0" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>HKSOS</h3>
+            <p>警务处紧急求救 App，一键报警并发送位置。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.sosapp.user" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>香港出行易 HKeMobility</h3>
-          <p>运输署官方。实时交通 + 步行路线，台风天查交通受阻很好用。</p>
+        <div class="app-group">支付与交通卡</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>旅客八达通 Octopus for Tourist <span class="pill pill-success">必装</span></h3>
+            <p>八达通官方 App（「旅客八达通」与普通八达通是同一个 App）。可直接把八达通加进 iPhone / Apple Watch，不用买实体卡；手机拍卡搭港铁、巴士、叮叮车、天星小轮，也能在便利店和连锁店付款。<span class="muted">（沙田马场公众席入闸就是刷八达通 HK$10）</span></p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.octopuscards.octopus" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>AlipayHK</h3>
+            <p>扫码付款。内地支付宝在大部分连锁店能用，但小店、街市、马场摊位未必收，备点现金更稳。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=hk.alipay.wallet" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>WeChat Pay HK</h3>
+            <p>扫码付款。内地微信支付在大部分连锁店能用，但小店、街市、马场摊位未必收，备点现金更稳。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.tencent.mm" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>Citymapper</h3>
-          <p>巴士/小巴/渡轮路线比 Google 准，查叮叮车与天星小轮接驳方便。</p>
+        <div class="app-group">门票与预约</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>香港迪士尼乐园（官方 App） <span class="pill pill-success">必装</span></h3>
+            <p>入园预约、8 项尊享卡当天逐项预约设施时段、实时排队时间、园区地图与餐厅。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.disney.hongkongdisneyland" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Klook</h3>
+            <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.klook" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>KKday</h3>
+            <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.kkday.member" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Trip.com</h3>
+            <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=ctrip.android.view" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>飞猪 / fly.ai</h3>
+            <p>你们订迪士尼套票和山顶票用的就是这个。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.taobao.trip" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>App1933（九巴）</h3>
-          <p>巴士到站时间，可买旅客日票。</p>
+        <div class="app-group">吃与排队</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>OpenRice 開飯喇</h3>
+            <p>香港版大众点评，找店、看评价、直接订位。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=openrice.hongkong" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>THE GULU</h3>
+            <p>手机取号排队（稻香、牛一、放题类餐厅都用它），不用站在门口等。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.foodgulu" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>香港电车 HK Tramways</h3>
-          <p>叮叮车实时到站（D6 用）。</p>
+        <div class="app-group">工具（这次会用到）</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>WhatsApp</h3>
+            <p>香港最通用的即时通讯。<strong>镛记订位就用它（2522 1624）</strong>，联系餐厅、酒店、司机也都它。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.whatsapp" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Price.com.hk 香港格價網</h3>
+            <p>全港最大比价平台。<strong>买镜头前先在上面查行情与店铺报价</strong>，再去星际城市现场比价砍价。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=hk.com.price.ipad" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>撲水 Water for Free</h3>
+            <p>免费饮水机地图，1000+ 点位，标注冷/热/室温水和开放时间；配你们带的保温杯用（迪士尼园内也有盛水式水机）。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=org.waterforfree.app" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Google 翻译</h3>
+            <p>看菜单和路牌。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.google.android.apps.translate" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
+
+          <div class="rec-card">
+            <h3>Google Lens</h3>
+            <p>拍照即时翻译菜单、路牌与招牌。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.google.ar.lens" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>我的天文台 MyObservatory <span class="pill pill-success">必装</span></h3>
-          <p>天文台官方。台风、暴雨警告推送，还有分区降雨预报；你们这次正好落在台风关注窗口内。</p>
+        <div class="app-group">上网</div>
+        <div class="app-grid">
+
+          <div class="rec-card">
+            <h3>内地号漫游包</h3>
+            <p>联通/移动/电信的港澳漫游包都能用，落地即通，最省事。</p>
+          </div>
+
+          <div class="rec-card">
+            <h3>eSIM / 本地储值卡（SoSIM、MySim）</h3>
+            <p>要便宜可选 SoSIM、MySim（便利店有售）或 eSIM 产品；需要香港号码收验证码的话另选。</p>
+          </div>
+
+          <div class="rec-card">
+            <h3>csl Wi-Fi</h3>
+            <p>csl 官方 App，查询全港公共 Wi-Fi 热点。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.pccwwifihotspot" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
-        <div class="rec-card">
-          <h3>HKSOS</h3>
-          <p>警务处紧急求救 App，一键报警并发送位置。</p>
-        </div>
+        <div class="app-group">深圳段（P 的行程）</div>
+        <div class="app-grid">
 
-        <div class="rec-card">
-          <h3>旅客八达通 Octopus for Tourist <span class="pill pill-success">必装</span></h3>
-          <p>可直接把八达通加进 iPhone / Apple Watch，不用买实体卡；手机拍卡搭港铁、巴士、叮叮车、天星小轮，也能在便利店和连锁店付款。<span class="muted">（沙田马场公众席入闸就是刷八达通 HK$10）</span></p>
-        </div>
+          <div class="rec-card">
+            <h3>高德地图</h3>
+            <p>宝安机场 T3 → 深圳地铁 11 号线 → 福田站，内地路线更准。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.autonavi.minimap" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
 
-        <div class="rec-card">
-          <h3>AlipayHK</h3>
-          <p>扫码付款。内地支付宝在大部分连锁店能用，但小店、街市、马场摊位未必收，备点现金更稳。</p>
-        </div>
+          <div class="rec-card">
+            <h3>百度地图</h3>
+            <p>深圳段导航备选，与高德互为补充。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.baidu.BaiduMap" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
 
-        <div class="rec-card">
-          <h3>WeChat Pay HK</h3>
-          <p>扫码付款。内地微信支付在大部分连锁店能用，但小店、街市、马场摊位未必收，备点现金更稳。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>香港迪士尼乐园（官方 App） <span class="pill pill-success">必装</span></h3>
-          <p>入园预约、8 项尊享卡当天逐项预约设施时段、实时排队时间、园区地图与餐厅。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>Klook</h3>
-          <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>KKday</h3>
-          <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>Trip.com</h3>
-          <p>景点门票比价；山顶缆车、大富翁都有折扣。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>飞猪 / fly.ai</h3>
-          <p>你们订迪士尼套票和山顶票用的就是这个。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>OpenRice 開飯喇</h3>
-          <p>香港版大众点评，找店、看评价、直接订位。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>THE GULU</h3>
-          <p>手机取号排队（稻香、牛一、放题类餐厅都用它），不用站在门口等。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>WhatsApp</h3>
-          <p>香港最通用的即时通讯。<strong>镛记订位就用它（2522 1624）</strong>，联系餐厅、酒店、司机也都它。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>Price.com.hk 香港格價網</h3>
-          <p>全港最大比价平台。<strong>买镜头前先在上面查行情与店铺报价</strong>，再去星际城市现场比价砍价。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>撲水 Water for Free</h3>
-          <p>免费饮水机地图，1000+ 点位，标注冷/热/室温水和开放时间；配你们带的保温杯用（迪士尼园内也有盛水式水机）。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>Google 翻译</h3>
-          <p>看菜单和路牌。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>Google Lens</h3>
-          <p>拍照即时翻译菜单、路牌与招牌。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>csl Wi-Fi</h3>
-          <p>csl 官方 App，查询全港公共 Wi-Fi 热点。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>内地号漫游包</h3>
-          <p>联通/移动/电信的港澳漫游包都能用，落地即通，最省事。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>eSIM / 本地储值卡（SoSIM、MySim）</h3>
-          <p>要便宜可选 SoSIM、MySim（便利店有售）或 eSIM 产品；需要香港号码收验证码的话另选。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>高德地图</h3>
-          <p>宝安机场 T3 → 深圳地铁 11 号线 → 福田站，内地路线更准。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>百度地图</h3>
-          <p>深圳段导航备选，与高德互为补充。</p>
-        </div>
-
-        <div class="rec-card">
-          <h3>12306</h3>
-          <p>高铁票订单与检票口；你们已出票，直接看订单即可。</p>
+          <div class="rec-card">
+            <h3>12306</h3>
+            <p>高铁票订单与检票口；你们已出票，直接看订单即可。</p>
+            <a class="app-link" href="https://play.google.com/store/apps/details?id=com.MobileTicket" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#ico-play"/></svg>Google Play</a>
+          </div>
         </div>
 
       </div>
-      <div class="src-note"><strong>更多官方 App：</strong>香港旅发局「实用 Apps」页（discoverhongkong.com → 旅客資訊 → 實用Apps）另收录 My HKG（机场）、香港入境事務處、MyMapHK（地政总署地图）、香港持牌旅館、HKSOS 等，可按需再加。</div>
+      <div class="src-note"><strong>更多官方 App：</strong>香港旅发局「实用 Apps」页（discoverhongkong.com → 旅客資訊 → 實用Apps）另收录 My HKG（机场）、香港入境事務處、MyMapHK（地政总署地图）、香港持牌旅館、HKSOS 等，可按需再加。<br><strong>关于 Play 链接：</strong>链接按各应用当前包名生成，制作时本机网络无法访问 Google Play，未能逐条联网核实；若打开后提示找不到应用，直接在 Google Play 内搜索应用名即可。</div>
     </div>
   </section>
 
@@ -1367,8 +1438,6 @@ group.addTo(map);
 
 map.fitBounds(group.getBounds(), { padding: [40, 40] });
 
-document.getElementById('map-status').textContent =
-    '已标注 ' + TRIP_POIS.length + ' 个行程地点 + ' + UNSCHEDULED.length + ' 个备用景点 + ' + HOTELS.length + ' 家酒店 ✓ · 点击图例可隐藏/显示 · 坐标来自 fly.ai、官方地址与地图核验';
 </script>
 
 <script>
