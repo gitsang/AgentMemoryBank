@@ -160,7 +160,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#budget">预算</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 22 家特色店铺地图标记）</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 31 家特色店铺地图标记）</div>
 </header>
 
 <main>
@@ -628,14 +628,14 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>行程地图</h2>
-        <p>行程地点按天分色；另加入咖啡、甜品和文艺店铺推荐，可点击图例单独开关。坐标定位到门店或商场入口，无需 API Key；点击标记可查看地址并打开导航。</p>
+        <p>行程地点按天分色；另加入咖啡、甜品和城市探索/美学空间推荐，可点击图例单独开关。坐标定位到门店或商场入口，无需 API Key；点击标记可查看地址并打开导航。</p>
       </div>
       <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
       <div style="position:relative;">
         <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
         <button id="map-fullscreen-btn" type="button" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
       </div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 22 家特色店铺（咖啡 / 甜品 / 文艺好拍）</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 31 家特色店铺（咖啡 / 甜品 / 城市探索/美学空间）</p>
     </div>
   </section>
 
@@ -1212,6 +1212,20 @@ const SHOP_POIS = [
   { name: 'Kubrick · 油麻地', category: 'artshop', hours: '随百老汇电影中心及书店时间调整', lat: 22.3121, lng: 114.1691, addr: '油麻地众坊街 3 号百老汇电影中心 · 书店与电影周边', note: '电影书、独立出版物和影院空间适合慢逛，可和油麻地戏院、果栏放在一条线上。' },
 ];
 
+const SHOP_POIS_ADDITIONS = [
+  { name: 'Winstons Coffee · 西营盘', category: 'cafe', hours: '官方页面显示每日早上营业；出发前确认分店时间', lat: 22.2865, lng: 114.1418, addr: '西营盘一带 · 邻里咖啡与鸡尾酒吧（坐标约定位）', note: '官方分店页列有 Sai Ying Pun；适合和港大、西营盘旧楼街景一起安排。', link: 'https://www.winstonscoffee.com/' },
+  { name: 'Winstons Coffee · 坚尼地城', category: 'cafe', hours: '官方页面显示每日早上营业；出发前确认分店时间', lat: 22.2811, lng: 114.1288, addr: '坚尼地城一带 · 邻里咖啡与鸡尾酒吧（坐标约定位）', note: '官方分店页列有 Kennedy Town；从港大或西区海滨过去较顺路。', link: 'https://www.winstonscoffee.com/' },
+  { name: 'Winstons Coffee · 大坑', category: 'cafe', hours: '官方页面显示每日早上营业；出发前确认分店时间', lat: 22.2809, lng: 114.1950, addr: '大坑一带 · 邻里咖啡与鸡尾酒吧（坐标约定位）', note: '可和大坑街区、火龙路线及维园一起安排；官方分店页列有 Tai Hang。', link: 'https://www.winstonscoffee.com/' },
+  { name: 'Bakehouse · 湾仔', category: 'dessert', hours: '周一至周四 08:00-21:00；周五至日及公众假期至21:30', lat: 22.2768, lng: 114.1728, addr: '湾仔大王东街 14 号 · 面包、蛋挞与咖啡', note: '官方地址明确；建议早上去，热门出炉品可能较快售罄。', link: 'https://www.bakehouse.hk/locations' },
+  { name: 'Bakehouse · Soho', category: 'dessert', hours: '每日 08:00-21:00', lat: 22.2836, lng: 114.1508, addr: '中环士丹顿街 5 号 · 外带店', note: '和 PMQ、大馆、嘉咸街同区，适合 D3 中环步行时顺手买。', link: 'https://www.bakehouse.hk/locations' },
+  { name: 'Bakehouse · 铜锣湾', category: 'dessert', hours: '每日 08:00-21:00', lat: 22.2797, lng: 114.1853, addr: '铜锣湾启超道 16 号 · 外带店', note: '适合和时代广场、SOGO、怡和午炮放在同一条路线。', link: 'https://www.bakehouse.hk/locations' },
+  { name: 'Bakehouse · 尖沙咀', category: 'dessert', hours: '每日 08:00-21:00', lat: 22.2958, lng: 114.1714, addr: '尖沙咀汉口道 44 号 · 外带店', note: '离尖沙咀海滨、1881 Heritage和重庆大厦较近，适合作为下午茶补给。', link: 'https://www.bakehouse.hk/locations' },
+  { name: '泰昌饼家 · 中环', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2843, lng: 114.1529, addr: '中环摆花街 / 士丹顿街一带 · 传统蛋挞与酥皮点心', note: '老字号传统蛋挞，适合和 Soho、PMQ、大馆一段步行路线组合；前往前确认当日门店。', link: 'https://www.tai-cheong.com/' },
+  { name: 'The Lion Rock Press · 香港设计礼物', category: 'artshop', hours: '实体店位置和营业时间以官方页面当天公告为准', lat: 22.2832, lng: 114.1519, addr: 'PMQ 元创方一带 · 香港主题设计礼物与文创（坐标约定位）', note: '适合买香港主题明信片、家品和纪念品；建议和 PMQ 设计店群一起逛。', link: 'https://www.thelionrockpress.com/' },
+];
+
+SHOP_POIS.push.apply(SHOP_POIS, SHOP_POIS_ADDITIONS);
+
 const HOTELS = [
   { name: '香港喜来登酒店', img: 'https://img.alicdn.com/imgextra/i4/6000000006227/O1CN018iT79U1vs1DtOyPvi_!!6000000006227-0-hotel.jpg', hours: '全天24小时', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C', brand: '万豪' },
   { name: '香港万丽海景酒店', img: 'https://img.alicdn.com/imgextra/i3/6000000003829/O1CN01JPVlVJ1e9jfQ9tIlQ_!!6000000003829-0-hotel.jpg', hours: '全天24小时', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK', brand: '万豪' },
@@ -1287,7 +1301,7 @@ makeLegendItem('unscheduled', '#999', '备用景点', 'dashed');
 makeLegendItem('hotel', '#666', '酒店', 'square');
 makeLegendItem('shop-cafe', '#0f766e', '咖啡店', 'circle');
 makeLegendItem('shop-dessert', '#db2777', '甜品店', 'circle');
-makeLegendItem('shop-artshop', '#b45309', '文艺好拍 / 设计店', 'square');
+makeLegendItem('shop-artshop', '#b45309', '城市探索/美学空间', 'square');
 
 const allMarkers = [];
 const group = L.featureGroup();
@@ -1425,7 +1439,7 @@ layerGroups['shop-artshop'] = L.layerGroup();
 const SHOP_CATEGORIES = {
   cafe: { label: '咖啡店', icon: '☕', color: '#0f766e' },
   dessert: { label: '甜品店', icon: '🍧', color: '#db2777' },
-  artshop: { label: '文艺好拍 / 设计店', icon: '🎨', color: '#b45309' },
+  artshop: { label: '城市探索/美学空间', icon: '🎨', color: '#b45309' },
 };
 
 SHOP_POIS.forEach(function(shop) {
