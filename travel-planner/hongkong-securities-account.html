@@ -186,7 +186,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
 .topnav nav{display:flex !important;width:100%;gap:16px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
 .topnav nav::-webkit-scrollbar{display:none}
 .topnav nav a{white-space:nowrap;font-size:13px}}
-/* ---- 四家银行 SOP 专用 ---- */
+/* ---- 各银行 SOP 专用 ---- */
 .sop-head{display:flex;align-items:center;gap:16px;padding:18px 22px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);margin-bottom:24px}
 .sop-head .sop-logo{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0;font-family:var(--font-display);line-height:1}
 .sop-head h3{font-size:19px;margin-bottom:3px}
@@ -218,18 +218,16 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <span class="logo">HK 2026 · 开户篇</span>
     <nav>
       <a href="#compare">银行对比</a>
-      <a href="#fees">费用</a>
       <a href="#docs">材料</a>
-      <a href="#steps">中银路线</a>
-      <a href="#channel">线上/到店</a>
       <a href="#sop-bochk">中银香港</a>
       <a href="#sop-hsbc">汇丰</a>
-      <a href="#sop-sc">渣打</a>
       <a href="#sop-hangseng">恒生</a>
+      <a href="#cash">现金</a>
+      <a href="#mobile">手机银行</a>
       <a href="#after">开户后维护</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-22 · 费率与门槛取自各行官网现行文件（中银香港 2026-09 版收费表、汇丰 POR-LSS 2026-05 版、恒生收费表、渣打服务收费表）；开户渠道与分行营业时间已逐家核实</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-22 · 费率与门槛取自各行官网现行文件（中银香港 2026-09 版收费表、汇丰 POR-LSS 2026-05 版、恒生收费表）；开户渠道与分行营业时间已逐家核实</div>
 </header>
 
 <main>
@@ -238,7 +236,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container hero-center">
       <p class="eyebrow">5 万人民币 · 美元/港币资产 · 长期小额 · 港股为主</p>
       <h1>香港银行 + 证券账户开户攻略</h1>
-      <p class="lead">开一个香港银行账户并挂上证券账户。<strong>先说最重要的一句：银行证券账户的固定手续费很高，小额买入很吃亏，5 万本金一定要走「月供/定额计划」，不要手动按笔下单。</strong>本页给出银行对比、材料清单、通用流程，以及<strong>中银香港、汇丰、渣打、恒生四家各自独立成篇的开户 SOP</strong>。</p>
+      <p class="lead">开一个香港银行账户并挂上证券账户。<strong>先说最重要的一句：银行证券账户的固定手续费很高，小额买入很吃亏，5 万本金一定要走「月供/定额计划」，不要手动按笔下单。</strong>本页给出银行对比、材料清单、现金与资金安排，以及<strong>中银香港、汇丰、恒生三家各自独立成篇的开户 SOP</strong>，最后是手机银行开通与转账验证。</p>
       <div class="meta-grid">
         <div class="meta-item"><div class="meta-label">投入本金</div><div class="meta-value num">¥50,000</div></div>
         <div class="meta-item"><div class="meta-label">折合港币</div><div class="meta-value num">约 HK$58,500</div></div>
@@ -257,49 +255,43 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <div class="table-wrap">
         <table class="ds-table">
           <thead>
-            <tr><th>项目</th><th>中银香港</th><th>汇丰香港</th><th>渣打香港</th><th>恒生银行</th></tr>
+            <tr><th>项目</th><th>中银香港</th><th>汇丰香港</th><th>恒生银行</th></tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>网上/App 佣金</strong></td>
               <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
               <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
-              <td class="badge-yes">0.20%<small>最低 HK$50</small></td>
               <td class="badge-mid">0.25%<small>最低 HK$100</small></td>
             </tr>
             <tr>
               <td><strong>分行/专人电话</strong></td>
               <td>0.50%<small>最低 HK$100</small></td>
               <td>0.50%<small>最低 HK$100</small></td>
-              <td>0.50%<small>最低 HK$150</small></td>
               <td>0.30–0.35%<small>最低 HK$100</small></td>
             </tr>
             <tr>
               <td><strong>买入交收费</strong></td>
               <td>HK$2.5/手<small>最低 30 / 最高 200</small></td>
               <td>HK$5/手<small>最低 30 / 最高 200</small></td>
-              <td>门市费豁免<small>另有 CCASS 结算费</small></td>
               <td>HK$5/手<small>Prestige HK$2.5，最低 30 最高 188</small></td>
             </tr>
             <tr>
               <td><strong>保管费 / 月费</strong></td>
               <td>每半年 HK$150<small>晋星级；金星 HK$100；钻星豁免</small></td>
               <td class="badge-no">HK$25/月<small>汇丰 One 等；一般证券账户 HK$30/月</small></td>
-              <td class="badge-yes">豁免</td>
               <td>HK$25/月<small>Prestige HK$15；无持仓无交易不收费</small></td>
             </tr>
             <tr>
               <td><strong>代收股息</strong></td>
               <td>0.5%<small>最低 30 / 最高 2,500</small></td>
               <td>0.5%<small>最低 30 / 最高 2,500</small></td>
-              <td class="badge-mid">0.5%，最低 30<small>股息 &lt;HK$30 则全额收取</small></td>
               <td class="badge-yes">0.5%<small>最低 30 / 最高 2,000</small></td>
             </tr>
             <tr>
               <td><strong>月供/定额计划</strong></td>
               <td class="badge-yes">HK$500 起<small>0.25%，最低 HK$50，已含税费，豁免保管费</small></td>
               <td class="badge-yes">HK$1,000 起<small>现时经纪费全免</small></td>
-              <td>—<small>以官网为准</small></td>
               <td class="badge-mid">有<small>但被排除在 HK$30 月费计划外</small></td>
             </tr>
             <tr>
@@ -307,109 +299,33 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
               <td class="badge-yes">港股 + A 股 + 美股<small>同一账户保管费只收一次</small></td>
               <td class="badge-yes">港股 + A 股 + 美股</td>
               <td>港股 + 美股 + 港股通</td>
-              <td>港股 + 美股 + 港股通</td>
             </tr>
             <tr>
               <td><strong>最低账户门槛</strong></td>
               <td class="badge-yes">自在理财 HK$10,000</td>
               <td>汇丰 One 平均 TRB HK$10,000<small>否则 HK$100/月</small></td>
-              <td class="badge-yes">Easy / Premium 免维护费</td>
-              <td>视综合户口类型</td>
+              <td class="badge-yes">Preferred Banking 无 TRB 要求</td>
             </tr>
             <tr>
               <td><strong>内地客户友好度</strong></td>
-              <td class="badge-yes">★★★★★<small>跨境服务中心 + 口岸分行 + 内地见证开户</small></td>
+              <td class="badge-yes">★★★★★<small>跨境服务中心 + 口岸分行 + 访港旅客手机开户</small></td>
               <td class="badge-mid">★★★<small>分行多，但 2026 新客限额很紧</small></td>
-              <td class="badge-mid">★★★</td>
-              <td class="badge-mid">★★★</td>
+              <td class="badge-yes">★★★★<small>内地居民可手机开户，材料要求轻</small></td>
             </tr>
             <tr>
               <td><strong>本页建议</strong></td>
               <td class="badge-yes">主力账户</td>
               <td>备选 / 已有汇丰其他账户者</td>
-              <td>如果只想跑一家、且主要按月买入</td>
               <td>月交易频繁者的省钱方案</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="src-note"><strong>来源：</strong>中银香港《一般银行服务收费》证券服务章节（2026-09-19 版，含 2026-11-16 无纸证券市场制度调整通知）；汇丰《Local Securities Services》POR-LSS(E)/MAY26；恒生《Securities Services Charges》PDF；渣打《Service Charges – An easy guide to banking fees》PDF。<strong>所有费率各行均可随时调整，开户前请在分行再确认一遍。</strong></div>
+      <div class="src-note"><strong>来源：</strong>中银香港《一般银行服务收费》证券服务章节（2026-09-19 版，含 2026-11-16 无纸证券市场制度调整通知）；汇丰《Local Securities Services》POR-LSS(E)/MAY26；恒生《Securities Services Charges》PDF。<strong>所有费率各行均可随时调整，开户前请在分行再确认一遍。</strong></div>
       <div class="warn-box">⚠️ <div><strong>不要被「0 佣金优惠」迷惑。</strong>中银香港现推「新证券客户首 3 个月无上限买卖证券 $0 佣金」，汇丰 SMIP 是「经纪费豁免」，恒生是「月费封顶」。这些都有<strong>适用渠道、适用品种和期限限制</strong>（例如恒生明确排除 IPO 和月供计划），且监管费、印花税、交收费通常<strong>不</strong>在豁免范围内。签约前把优惠条款的 PDF 读一遍。</div></div>
     </div>
   </section>
-  <section class="section" id="fees">
-    <div class="container">
-      <div class="section-header">
-        <h2>费用：每个月要花多少钱</h2>
-        <p>下面每个数字都列了出处。<strong>「年成本占本金比例」这一列才是我真正想让你看的。</strong></p>
-      </div>
-
-      <h3 style="margin-bottom:12px">交易一次的固定费用（港股）</h3>
-      <div class="table-wrap">
-        <table class="ds-table">
-          <thead><tr><th>费用项</th><th>费率</th><th>买卖方</th><th>最低 / 最高</th><th>出处</th></tr></thead>
-          <tbody>
-            <tr><td>经纪佣金（网上/手机）</td><td class="num">0.25%</td><td>单边</td><td class="badge-no">最低 HK$100</td><td>中银香港 / 恒生</td></tr>
-            <tr><td>经纪佣金（渣打网上）</td><td class="num">0.20%</td><td>单边</td><td class="badge-mid">最低 HK$50</td><td>渣打收费表</td></tr>
-            <tr><td><strong>印花税</strong></td><td class="num">0.10%</td><td class="badge-no">买卖双方各付</td><td>最低 HK$1</td><td>中银香港证券收费表</td></tr>
-            <tr><td>SFC 交易征费</td><td class="num">0.0027%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
-            <tr><td>HKEX 交易费</td><td class="num">0.00565%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
-            <tr><td>AFRC 交易征费</td><td class="num">0.00015%</td><td>单边</td><td>—</td><td>同一份收费表</td></tr>
-            <tr><td>买入交收费（存仓）</td><td class="num">HK$2.5–5 / 手</td><td>仅买入</td><td>最低 HK$30 · 最高 HK$200</td><td>中银 / 汇丰 / 恒生</td></tr>
-            <tr><td colspan="5" style="background:color-mix(in oklch,var(--accent) 6%,transparent)"><strong>监管类合计（不含佣金，买卖各付）≈ 0.1085%</strong> = 印花税 0.10% + SFC 0.0027% + HKEX 0.00565% + AFRC 0.00015%。<strong>买卖两侧费率相同</strong>——港股印花税由买卖双方各自缴纳 0.1%，不是只收一方。</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 style="margin:32px 0 12px">四种渠道的真实年成本（每月买入 HK$2,500，共 12 次 = 一年投入 HK$30,000）</h3>
-      <div class="table-wrap">
-        <table class="ds-table">
-          <thead><tr><th>渠道</th><th>每笔佣金实际支付</th><th>年佣金</th><th>年保管/月费</th><th class="num-col">年总成本</th><th class="num-col">占 5 万本金</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>中银香港 · 月供股票计划</strong><br><small>推荐</small></td>
-              <td>0.25%，最低 HK$50<br><small>该费用<strong>已含印花税、交易征费、交易处理费</strong>，且计划<strong>豁免保管费与代收股息手续费</strong></small></td>
-              <td class="num">HK$600</td>
-              <td class="num badge-yes">HK$0<br><small>计划豁免保管费</small></td>
-              <td class="num"><strong>HK$600</strong></td>
-              <td class="num badge-yes">1.03%</td>
-            </tr>
-            <tr>
-              <td><strong>汇丰 · SMIP 月供计划</strong></td>
-              <td class="badge-yes">HK$0<br><small>现时经纪费全免（含印花税、各项征费、交收费、CCASS 费）</small></td>
-              <td class="num badge-yes">HK$0</td>
-              <td class="num">HK$300<br><small>保管费 HK$25/月（SMIP 优惠未涵盖这一项）</small></td>
-              <td class="num"><strong>HK$300</strong></td>
-              <td class="num badge-yes">0.51%</td>
-            </tr>
-            <tr>
-              <td><strong>渣打 · 网上自行下单</strong></td>
-              <td>0.20%，最低 HK$50<br><small>另付印花税+征费（约 0.21%）</small></td>
-              <td class="num">HK$600<br><small>+ 税费约 HK$63</small></td>
-              <td class="num badge-yes">HK$0<br><small>托管费豁免、账户维护费豁免</small></td>
-              <td class="num"><strong>约 HK$663</strong></td>
-              <td class="num badge-yes">1.13%</td>
-            </tr>
-            <tr>
-              <td><strong>中银香港 · 直接买个股</strong><br><small>反面教材</small></td>
-              <td class="badge-no">HK$100<br><small>0.25% = HK$6.25，但被最低收费拉到 HK$100</small></td>
-              <td class="num badge-no">HK$1,200</td>
-              <td class="num">HK$300<br><small>每半年 HK$150</small></td>
-              <td class="num badge-no"><strong>HK$1,860</strong><br><small>再含交收费 HK$30/次 × 12 = HK$360</small></td>
-              <td class="num badge-no">3.18%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="verdict verdict-danger" style="margin-top:24px"><span class="v-icon">📉</span><div><strong>看清楚最后一行。</strong>同样在银行，用「直接按笔买个股」的方式每月投 HK$2,500，<strong>光手续费一年就吃掉本金的 3.18%</strong>。你用这 5 万块做长期投资，长期年化可能就是 5–7%，第一年 3% 的成本等于白白丢掉半年收益。<br><strong>这就是为什么本页反复强调：银行渠道一定要走「月供/定额计划」，不要手动按笔下单。</strong></div></div>
-
-      <div class="verdict verdict-ok"><span class="v-icon">🔢</span><div><strong>一次性买入的四种选择对比（HK$50,000 整笔）：</strong><br>· 中银香港月供计划（分 20 期投完，每期 HK$2,500）：总手续费 <strong>HK$1,000</strong>（50×20），且豁免保管费与代收股息费<br>· 汇丰 SMIP（现时经纪费全免）：总手续费 <strong>HK$0</strong>，但保管费 HK$25/月 ≈ HK$500/年<br>· 渣打网上整笔买入：佣金 HK$100（0.2% = HK$100，恰好等于最低收费）+ 税费 ≈ HK$104 → <strong>≈ HK$204</strong>，且托管费与账户维护费均豁免<br>· 中银香港整笔买个股：佣金 HK$125（0.25%）+ 交收费最高 HK$200 + 印花税 HK$50 → <strong>≈ HK$375</strong>（交收费按手数计，实际视股价而定）</div></div>
-
-      <div class="src-note"><strong>本节的估算口径：</strong>「每年 12 次买入、每次 HK$2,500，全年投入 HK$30,000」；保管费按持有一整年计；未计入卖出成本（卖出时同样产生佣金 + 印花税 + 征费）。「占 5 万本金」这一列是把年度总成本除以你的全部本金 HK$58,500（约 5 万人民币），方便你直观感受成本量级——<strong>它不是「已投入金额的占比」，也不是银行公布的数字，而是本页的算术推导。</strong><br><strong>关于 ETF 的印花税：</strong>业内长期存在「ETF 印花税豁免（2015 年后新上市、追踪指数且非持有香港股票的 ETF）」的说法，但<strong>本次核查未能从中银香港/汇丰/恒生/渣打的收费表或政府网站中确认该豁免的适用细节</strong>（各行收费表均统一列 0.1%）。<strong>请以你的实际成交单据为准，并在下单前向银行确认你要买的 ETF 是否免征印花税。</strong></div>
-    </div>
-  </section>
-  <section class="section" id="docs">
+    <section class="section" id="docs">
     <div class="container">
       <div class="section-header">
         <h2>材料：带齐这些（最容易被拒的一步）</h2>
@@ -436,6 +352,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
             <li><span class="q-num">07</span><div><strong>户口本 / 居住证</strong>（辅助）<span class="q-why">单独通常不够，配合上面的账单一起带。</span></div></li>
             <li><span class="q-num">08</span><div><strong>内地手机号能接收短信</strong><span class="q-why">中银香港手机开户的硬条件之一就是「能提供内地的手提电话号码和地址」。开通国际漫游，确保在香港能收验证码。<strong>建议同时准备一个香港号码</strong>（7-11/OK 便利店可买储值卡），有些银行要求本地号接收一次性密码。</span></div></li>
           </ul>
+          <div class="src-note" style="margin-top:14px"><strong>现金要不要带、带多少：</strong>见后面「现金与资金安排」一节。要点是一次性最多只能带等值 <strong>US$5,000</strong> 出境，建议首次带 <span class="num">HK$12,000–15,000</span>。</div>
           <div class="src-note" style="margin-top:14px"><strong>实用兜底：</strong>如果地址证明真的凑不齐，优先走<strong>分行开户</strong>而不是手机开户——分行职员有一定的判断空间，可以当面解释（例如账单在配偶名下 + 结婚证 + 说明）；手机 App 是按字段硬校验的，缺一项就退。</div>
         </div>
 
@@ -464,251 +381,125 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <div class="verdict verdict-warn"><span class="v-icon">📅</span><div><strong>关于「合理开户理由」：</strong>汇丰的海外开户页明确写着「您须年满 18 岁，并且<strong>有合理理由</strong>开立海外账户」。对你说，理由就是「长期投资港股与美股，做美元和港币资产配置」。这个理由要充分、具体、和你的实际情况一致（比如可以说「计划每月定投指数基金」）。<strong>不要说「随便开一个」「朋友介绍的」或者「想存钱」</strong>——反洗钱审查下这类回答会直接触发拒件。</div></div>
     </div>
   </section>
-  <section class="section" id="steps">
-    <div class="container">
-      <div class="section-header">
-        <h2>通用流程：中银香港的两条路线</h2>
-        <p>以下流程<strong>仅适用于中银香港</strong>。汇丰、渣打、恒生各有独立流程，见后面各自的 SOP 章节。</p>
-      </div>
-
-      <div class="grid-2">
-        <div>
-          <h3 style="margin-bottom:18px">路线 A · 内地见证开户（推荐先走）</h3>
-          <ol class="step-list">
-            <li>
-              <h3>找一家能办见证的内地中行网点</h3>
-              <p>中银香港的「见证开户服务」允许在内地/澳门/香港以外<strong>指定见证网点</strong>签署开户文件，开立「中银理财」或「智盈理财」账户，并申请网上银行/电话银行。<strong>要求：年满 18 岁，且是中国银行或中银香港分子行的理财或特选客户</strong>，不接受他人代办。</p>
-            </li>
-            <li>
-              <h3>备齐身份证明与地址证明</h3>
-              <p>内地居民凭<strong>中华人民共和国居民身份证或中国护照</strong>即可（注意：如果是<strong>亲临中银香港分行</strong>办理，<strong>还需同时提交入境旅行证件</strong>，也就是港澳通行证）。地址证明同前：3 个月内、政府/公共机构发出、有本人姓名地址。</p>
-            </li>
-            <li>
-              <h3>提交并等待</h3>
-              <p>官网说明：<strong>如文件齐备有效，开户手续最快可于约两周内完成。</strong>资金门槛按「智盈理财」口径是综合理财总值 HK$200,000——<strong>这一条要打电话问清楚</strong>：你是 5 万人民币的量级，可能需要指定「自在理财」档次，或按见证网点当地准入条件执行。</p>
-            </li>
-            <li>
-              <h3>到香港时只做收尾</h3>
-              <p>抵港后到任意中银香港分行<strong>激活卡片、领取保安编码器、设置转账限额、加开证券账户</strong>。这些通常 30–60 分钟能办完，不用占用一整天。</p>
-            </li>
-          </ol>
-          <div class="src-note"><strong>注意：</strong>见证开户的前提是你已经是中行体系的理财/特选客户。如果你在中行没有账户或余额很小，这条路的门槛可能反而不低。<strong>先打中银香港跨境客户服务专线确认：+86 400 800 2388（内地拨打）/ +852 3988 2222（香港以外拨打）。</strong><br>另一个问不清楚就换人的问题：<strong>见证网点能不能同时开证券账户？</strong>官网口径只写了开立「中银理财」/「智盈理财」账户及网银/电话银行，<strong>没写证券账户</strong>。如果不行，证券账户仍须到港或后续网上开。</div>
-        </div>
-
-        <div>
-          <h3 style="margin-bottom:18px">路线 B · 香港现场开户</h3>
-          <ol class="step-list">
-            <li>
-              <h3>出发前 1 周：网上预约</h3>
-              <p>中银香港官网提供「预约开立香港账户」入口，可先在网上预约。<strong>不预约直接 walk-in 在口岸分行和旅游区分行很容易排队 1–2 小时</strong>，甚至当天排满。</p>
-            </li>
-            <li>
-              <h3>也可以先在 App 上试手机开户</h3>
-              <p>中银香港手机开户明确支持「身处香港的内地访港旅客」，7×24 办理，条件是：年满 18 岁、身处香港、全新客户、持有效身份证 + 港澳通行证（均 ≥30 天有效期）、持最近 7 日内的出入境记录电子档、能提供内地手机号与地址、有电邮和税务居民编号。</p>
-          <p style="margin-top:8px"><strong>⚠️ 但有一个关键限制：</strong>官网写明「上传地址证明即可<strong>同时开立证券账户（适用于香港身份证持有人）</strong>」——也就是说，<strong>手机开户开出来的可能只是银行账户，证券账户仍须去分行</strong>。可以把 App 开户当作「先把银行账户拿到手」的手段，证券账户当天或次日去分行补。</p>
-              <p style="margin-top:8px"><strong>⚠️ 另一个手机开户容易撞墙的点：</strong>部分银行把「非香港身份证客户手机开户」作为试点功能，<strong>上线范围、可用证件类型和是否支持即时开通全功能账户会随时调整</strong>。如果 App 报错，直接转分行，不要在 App 上反复试。</p>
-            </li>
-            <li>
-              <h3>到分行：先开综合理财账户</h3>
-              <p>带齐材料到分行，说明要开「综合理财账户（自在理财档次）」+ 证券账户。职员会做身份核验、地址证明核验、CRS/FATCA 表格、风险评估问卷。</p>
-            </li>
-            <li>
-              <h3>加开证券账户（同一次办完）</h3>
-              <p>在同一家分行申请证券账户，一个账户覆盖港股 + A 股 + 美股。当场设置交易密码、开通网上/手机证券服务、申请即时报价服务（中银香港：手机银行/网上银行的网上即时报价<strong>豁免、无限次</strong>，但需自行在网上/手机银行申请开通）。</p>
-            </li>
-            <li>
-              <h3>当场把限额设好，并存入启动资金</h3>
-              <p><strong>这是最重要的一步。</strong>汇丰新客默认「转账至非登记收款人 = HK$0」「跨境转账 = HK$0」，必须当场要求职员调高限额并登记收款账户。中银香港也建议当场问清楚每日转账上限和 FPS（转数快）限额。同时存入第一笔资金（港币现金或从内地卡取现），让账户是活的。</p>
-            </li>
-            <li>
-              <h3>当场把「月供股票计划」设上</h3>
-              <p>中银香港月供最低 HK$500/只、费率 0.25%（最低 HK$50，已含各项税费）。这是最适合你「长期小额」的机制——<strong>设好之后每个月自动扣款买入，不用你每次手动下单，也不会每次吃 HK$100 最低佣金。</strong></p>
-            </li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="section" id="channel">
-    <div class="container">
-      <div class="section-header">
-        <h2>哪些能线上开、哪些必须到店、哪些要预约</h2>
-        <p>这是决定「要不要占用你行程时间」的关键问题。<strong>答案比大多数人以为的好：主力选择可以全程线上完成，不用进分行。</strong></p>
-      </div>
-
-      <div class="verdict verdict-ok" style="margin-top:0"><span class="v-icon">✅</span><div><strong>一句话结论：</strong>如果你愿意把主力放在<strong>汇丰</strong>或<strong>恒生</strong>，银行账户和投资账户<strong>都能在酒店用手机开完</strong>，香港那几天不用为开户牺牲任何行程。<br>只有<strong>中银香港的证券账户</strong>是硬性必须到店的（它的手机开户只能开银行账户，开证券账户仅限香港身份证持有人）。渣打则因为要求 HKID，线上对你不开放。</div></div>
-
-      <h3 style="margin:36px 0 14px">按银行拆开看</h3>
-      <div class="table-wrap">
-        <table class="ds-table">
-          <thead><tr><th>银行</th><th>银行账户</th><th>投资/证券账户</th><th>对内地客户的实际结论</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>汇丰 HSBC</strong></td>
-              <td class="badge-yes">✅ App 可开<br><small>通行证（EEP）被明确接受</small></td>
-              <td class="badge-yes">✅ App 可开<br><small>官网原话「Invest with ease on your mobile <strong>without visiting a branch</strong>」</small></td>
-              <td class="badge-yes"><strong>全程线上。</strong>资格写明「aged 18 or above, and <strong>live in Hong Kong, mainland China, or Taiwan</strong>」——内地居民符合。但内地投资者要额外提交一份 <em>Declaration for Chinese Mainland Investors</em></td>
-            </tr>
-            <tr>
-              <td><strong>恒生银行</strong></td>
-              <td class="badge-yes">✅ App 可开</td>
-              <td class="badge-yes">✅ App 可开 / 激活<br><small>官网写「activate your investment accounts easily with Hang Seng Mobile App」</small></td>
-              <td class="badge-yes"><strong>全程线上。</strong>官网直接列出两类可手机开户的人：香港居民（HKID）<strong>和内地居民</strong>——年满 18、<strong>身在香港</strong>、居住地址在内地、持有效 EEP</td>
-            </tr>
-            <tr>
-              <td><strong>中银香港</strong></td>
-              <td class="badge-warn">⚠️ App 可开（访港旅客）</td>
-              <td class="badge-no">❌ 只能分行<br><small>官网写「上传地址证明即可同时开立证券账户<strong>（适用于香港身份证持有人）</strong>」</small></td>
-              <td class="badge-mid"><strong>一半一半。</strong>银行账户能在酒店开；<strong>证券账户必须进一次分行</strong>。如果你只想去一次分行，那就把「银行 App 开户 + 到店加证券账户」合并成一趟</td>
-            </tr>
-            <tr>
-              <td><strong>渣打香港</strong></td>
-              <td class="badge-no">❌ 需 HKID</td>
-              <td class="badge-no">❌ 需 HKID</td>
-              <td class="badge-no"><strong>线上对你不开放。</strong>SC Mobile 开 IDA 明确要求「Holding a valid <strong>Hong Kong Identity Card</strong> (2018 Version)」。持通行证必须到分行，且是否受理取决于分行判断</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="src-note">汇丰投资账户页 FAQ 还有一条对你很关键：<strong>「If you're a Chinese Mainland Investor, you'll need to submit a declaration to enable investment services before you can start trading.」</strong>——也就是说，即使账户开好了，<strong>没交这份声明之前不能下单</strong>。官网提供专门的 PDF（Declaration for Chinese Mainland Investors, Opening / Maintaining Account），另有《Address proof upload instruction for customers with residential address in <strong>mainland China</strong> or Taiwan》——这两份文件的存在本身就说明内地地址是被支持的。</div>
-
-      <h3 style="margin:36px 0 14px">那「必须到店」和「必须预约」的分别是什么</h3>
-      <div class="grid-2">
-        <div class="rec-card">
-          <h3>🏃 只有这几件事必须人到</h3>
-          <ul class="q-list" style="margin-top:8px">
-            <li><span class="q-num">1</span><div><strong>中银香港开设证券账户</strong><span class="q-why">唯一的硬性到店项。手机开户开证券账户仅限 HKID 持有人。</span></div></li>
-            <li><span class="q-num">2</span><div><strong>渣打全流程</strong><span class="q-why">因为要求 HKID。</span></div></li>
-            <li><span class="q-num">3</span><div><strong>存入大额现金</strong><span class="q-why">你带港币现金入港的话，柜台存现是最直接的入账方式（ATM 存现有限额）。</span></div></li>
-            <li><span class="q-num">4</span><div><strong>需要手写签名的东西</strong><span class="q-why">汇丰官网提到支票簿申请等需手写签名的服务要去分行留签名样本。开户本身不需要。</span></div></li>
-            <li><span class="q-num">5</span><div><strong>线上申请被要求补充材料时</strong><span class="q-why">渣打原话：「After internal review, we may invite you to visit branch if we require additional information / documentation」。<strong>所以线上不是保证，失败要能接受转分行。</strong></span></div></li>
-          </ul>
-        </div>
-        <div class="rec-card">
-          <h3>📅 预约：建议而非强制</h3>
-          <ul class="q-list" style="margin-top:8px">
-            <li><span class="q-num">1</span><div><strong>汇丰：部分分行可预约且即时确认</strong><span class="q-why">官网原话「Book an appointment for account opening <strong>at select branches</strong> prior to your visit and get instant confirmation」；其他分行提交的是「Request an appointment」（请求，非确认）。另有 eTicketing 可看实时排队人数并取号。</span></div></li>
-            <li><span class="q-num">2</span><div><strong>中银香港：官网写「按此先作预约」</strong><span class="q-why">措辞是建议，但口岸/旅游区分行不预约可能要等很久。</span></div></li>
-            <li><span class="q-num">3</span><div><strong>walk-in 通常可以</strong><span class="q-why">香港银行普遍接受无预约客户，但会排在预约客户之后。你的行程贴着国庆，9/28、9/29 是高峰期。</span></div></li>
-            <li><span class="q-num">4</span><div><strong>但「能 walk-in」≠「值得 walk-in」</strong><span class="q-why">排队 1–2 小时 + 办理 1–2 小时，一个下午就没了。能线上就线上。</span></div></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="verdict verdict-warn" style="margin-top:28px"><span class="v-icon">📱</span><div><strong>「App 可开」的两个隐含条件，别忽略：</strong><br>① <strong>恒生要求你「身在香港」</strong>——App 会做定位/网络校验，回到内地再开可能直接失败。所以人在香港那几天就把这事办掉。<br>② <strong>两者都要求你上传地址证明</strong>（3 个月内、与登记地址一致）。汇丰的 FAQ 明确列出可接受：银行对账单、水电煤等公共事业账单、政府部门或高校签发的文件。<br><strong>所以正确的姿势是：出发前把地址证明扫描成清晰的 PDF/照片存在手机里，到香港当天在酒店花 20 分钟开完。</strong></div></div>
-
-      <div class="warn-box" style="margin-top:28px">⚠️ <div><strong>别被中介骗钱。</strong>汇丰官网特别写了一句：「Please don't share your information with third parties, or engage with any intermediaries to open an account. If you'd like to open an account, you can apply via HSBC HK App or by making an appointment online in advance — <strong>all free of charge</strong>.」市面上有收费「代办香港开户」的中介，而这件事本身是免费的、且自己就能做。</div></div>
-    </div>
-  </section>
-  <section class="section" id="sop-bochk">
+        <section class="section" id="sop-bochk">
     <div class="container sop-bochk">
       <div class="section-header">
         <h2>中银香港 开户 SOP</h2>
-        <p>四家里唯一<strong>明确把「内地访港旅客」写成开户场景</strong>的银行，有专门的跨境金融服务中心和口岸分行，内地中行网点还能做见证开户。</p>
+        <p>唯一<strong>明确把「内地访港旅客」写成开户场景</strong>的主流银行，银行账户可以直接在手机上开，不用预约、不用排队。</p>
       </div>
 
       <div class="sop-head">
         <div class="sop-logo">BOC</div>
         <div>
           <h3>中国银行（香港）· BOCHK</h3>
-          <div class="sop-sub">适合：想用「月供股票计划」长期小额定投 · 想一次开齐港股/美股/A股 · 已经是中行体系客户</div>
+          <div class="sop-sub">适合：想用「月供股票计划」长期小额定投 · 想一次开齐港股/美股/A股</div>
         </div>
       </div>
 
       <div>
         <span class="sop-tag sop-tag-ok">银行账户：手机可开</span>
         <span class="sop-tag sop-tag-no">证券账户：必须到分行</span>
-        <span class="sop-tag sop-tag-ok">内地见证开户：可选</span>
+        <span class="sop-tag sop-tag-ok">无需预约</span>
         <span class="sop-tag sop-tag-ok">最低理财档次 HK$10,000</span>
         <span class="sop-tag sop-tag-ok">月供最低 HK$500/只</span>
         <span class="sop-tag">客户热线 +852 3988 2388</span>
-        <span class="sop-tag">内地专线 +86 400 800 2388</span>
       </div>
+
+      <div class="verdict verdict-warn" style="margin-top:28px"><span class="v-icon">⚠️</span><div><strong>先明确一条你无法绕过的限制：手机开户只能开银行账户，开不了证券账户。</strong><br>中银香港官网写得很清楚——「上传地址证明即可同时开立证券账户（<strong>适用于香港身份证持有人</strong>）」。你持往来港澳通行证，<strong>证券账户必须去一次分行</strong>。<br>所以本 SOP 分两段：<strong>手机开银行账户（无门槛）→ 到分行加证券账户（需跑一趟）</strong>。</div></div>
 
       <div class="phase-label">阶段一 · 出发前准备</div>
       <div class="sop-phases">
 <ol class="step-list">
         <li>
-          <h3>确认走哪条路（最重要的一步）</h3>
-          <p>中银香港有三条路，难度和耗时完全不同：</p>
+          <h3>准备材料</h3>
+          <p>手机开户的硬条件来自官网，逐条对一遍：</p>
           <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
-            <li><strong>A. 内地见证开户</strong>——不用亲临香港，但要求你<strong>已经是</strong>中国银行或中银香港分子行的理财/特选客户，官网称文件齐备最快约两周完成。</li>
-            <li><strong>B. 抵港手机开户 + 到分行加开证券账户</strong>——银行账户在酒店就能开，证券账户进一次分行。</li>
-            <li><strong>C. 直接到分行一次办齐</strong>——银行账户 + 证券账户同一趟搞定。</li>
+            <li>年满 <strong>18 岁</strong>，且<strong>开户时人身在香港</strong>（App 会校验）</li>
+            <li><strong>全新客户</strong>——未持有任何中银香港个人/联名储蓄或往来账户（持有 BoC Pay 支付账户或中银信用卡不受影响）</li>
+            <li><strong>中华人民共和国居民身份证</strong> + <strong>往来港澳通行证</strong>——官网要求<strong>两种证件自申请日起均有 30 天以上有效期</strong></li>
+            <li><strong>出入境记录电子档</strong>——由国家移民局发出，须为<strong>含申请日在内的最近 7 日内</strong>。在「移民局」App 或微信小程序可自行导出 PDF</li>
+            <li><strong>内地手机号 + 内地地址</strong>（能接收短信，出发前开好国际漫游）</li>
+            <li><strong>有效电邮地址</strong></li>
+            <li><strong>税务居民编号</strong>（通常是身份证号）</li>
           </ul>
-          <div class="step-note"><strong>建议：</strong>如果你在中行有理财/特选身份，先打 <strong>+86 400 800 2388</strong> 问 A 路线（并顺便问「见证网点能不能同时开证券账户」——官网只写了银行账户和网银，没写证券账户）。否则走 B 或 C。</div>
+          <div class="step-note"><strong>提前导出入境记录这条最容易忘。</strong>入境香港当天或次日再导出最稳妥，因为要含「申请日在内最近 7 日内」。</div>
         </li>
         <li>
-          <h3>准备材料</h3>
-          <p>分行开户需要你开立<strong>综合理财服务</strong>（中银理财 / 智盈理财 / 自在理财），并符合对应的「综合理财总值」，同时提供有效住址证明。带齐：</p>
-          <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
-            <li><strong>中华人民共和国居民身份证</strong>（原件）</li>
-            <li><strong>往来港澳通行证</strong>（原件，含有效签注）——官网明确：<strong>亲临中银香港分行办理，须同时提交入境旅行证件</strong></li>
-            <li><strong>住址证明</strong>——官网口径是「於最近三個月內由政府機構或公共事務機構發出具有客戶姓名及地址資料的通訊函或賬單」。即：3 个月内、政府或公共事业机构发出、有<strong>你本人姓名</strong>和地址</li>
-            <li><strong>入境记录</strong>——手机开户要求「由国家移民局发出的出入境纪录电子档（含申请日在内最近 7 日内发出）」，可在移民局 App/微信小程序导出。过关时的<strong>入境小票</strong>也留着</li>
-            <li>港币现金（准备存入的首笔资金）</li>
-          </ul>
-          <div class="step-note"><strong>理财档次与门槛：</strong>「自在理财」只需综合理财总值 <span class="num">HK$10,000</span>（最低档，够用）；「智盈理财」<span class="num">HK$200,000</span>。5 万人民币量级<strong>指定「自在理财」</strong>即可，别被劝去开更贵的档次。</div>
+          <h3>下载「中银香港手机银行」App</h3>
+          <p>在 App Store / Google Play 搜索「BOCHK 中银香港」下载官方 App。<strong>出发前先装好并确认能打开</strong>，避免到港后因为应用商店区域问题装不上。</p>
         </li>
       </ol>
 
-      <div class="phase-label">阶段二 · 在香港办理</div>
+      <div class="phase-label">阶段二 · 在香港：手机开银行账户</div>
       <ol class="step-list">
         <li>
-          <h3>选分行 + 预约</h3>
-          <p>官网提供「预约开立香港账户」入口，写了「亲临中银香港任何一家分行（<strong>按此先作预约</strong>）」。以下分行在你行程附近，且服务列表含投资服务：</p>
+          <h3>四步完成开户</h3>
+          <p>官网给出的流程：</p>
           <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
-            <li><strong>圆方分行</strong>（口岸分行）— 九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺。<strong>离 W 酒店最近</strong>，平日 9:00–17:00、周六 9:00–13:00</li>
-            <li><strong>香港西九龙站银行服务中心</strong>— 西九龙站售票大堂 WEK B1-14 号铺。就在你下车的地方，但只列 15 项服务（完整分行 28–33 项）</li>
-            <li><strong>中银大厦分行</strong>— 花园道 1 号 3 楼。旗舰店，中环商圈</li>
+            <li><strong>1.</strong> 下载「中银香港手机银行」，选择「<strong>开立账户</strong>」</li>
+            <li><strong>2.</strong> 完成身份认证（拍摄身份证 + 通行证，人脸识别）</li>
+            <li><strong>3.</strong> 设定用户名称及密码</li>
+            <li><strong>4.</strong> 输入简单个人资料，完成开户</li>
+          </ul>
+          <p style="margin-top:8px">7×24 可办，无需预约、无需到分行。</p>
+          <div class="step-note"><strong>开户时开出的账户包括：</strong>综合理财服务、港元储蓄账户、外汇宝账户、手机银行及网上银行、中银卡（提款卡）。<strong>注意这里没有证券账户</strong>——见下一阶段。</div>
+        </li>
+        <li>
+          <h3>确认理财档次是「自在理财」</h3>
+          <p>你的 5 万人民币量级对应最低档「<strong>自在理财</strong>」，综合理财总值要求 <span class="num">HK$10,000</span>。更高一档「智盈理财」要求 <span class="num">HK$200,000</span>，<strong>你没有必要选</strong>。</p>
+          <div class="step-note"><strong>「综合理财总值」是平均值不是时点值</strong>，且存款、外币、证券市值都计入。所以不用真的留 HK$10,000 现金不动——买成股票后市值照样算。</div>
+        </li>
+      </ol>
+
+      <div class="phase-label">阶段三 · 到分行加开证券账户</div>
+      <ol class="step-list">
+        <li>
+          <h3>选一家有投资服务的分行</h3>
+          <p>中银香港全港 <strong>146 家分行</strong>提供 INVESTMENT_SERVICE。以下几家在你行程附近（均已核实营业时间与存钞机配置）：</p>
+          <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
+            <li><strong>圆方分行</strong>— 九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺。<strong>离 W 酒店最近</strong>，有双币存钞机</li>
+            <li><strong>香港西九龙站银行服务中心</strong>— 西九龙站售票大堂 WEK B1-14 号铺。就在你下车的地方，有双币存钞机；但只列 15 项服务（完整分行 28–33 项），<strong>能否从零开证券账户建议先电话确认</strong></li>
+            <li><strong>中银大厦分行</strong>— 花园道 1 号 3 楼，旗舰店</li>
             <li><strong>铜锣湾分行</strong>— 轩尼诗道 505 号（SOGO 百货），D2 晚/D6 上午顺路</li>
             <li><strong>旺角分行</strong>— 弥敦道 589 号；<strong>尖沙咀分行</strong>— 加拿芬道 24-28 号</li>
           </ul>
-          <div class="step-note"><strong>⚠️ 分行搬迁，别搜错：</strong><strong>金马伦道中银理财中心</strong>（尖沙咀金马伦道 30 号）已于 <strong>2026-09-18</strong> 迁往尖沙咀分行。很多地图还是旧地址。<br><strong>⏰ 营业时间：</strong>中银香港全港 180 家分行中 172 家都是「平日 9:00–17:00 · 周六 9:00–13:00 · 周日及公众假期休息」。<strong>唯一例外</strong>是机场店（平日 9:00–19:00、周六日 9:00–15:00，但在离港禁区里，你进不去）。</div>
+          <div class="step-note"><strong>⏰ 营业时间：</strong>全港 180 家分行中 172 家都是「平日 9:00–17:00 · 周六 9:00–13:00 · 周日及公众假期休息」。<strong>唯一例外</strong>是机场店（平日 9:00–19:00、周六日 9:00–15:00，但在离港禁区里，你进不去）。<br><strong>⚠️ 别搜错地址：</strong>金马伦道中银理财中心（尖沙咀金马伦道 30 号）已于 <strong>2026-09-18</strong> 迁往尖沙咀分行。</div>
         </li>
         <li>
-          <h3>到分行：先开综合理财账户</h3>
-          <p>带齐材料到分行，说明要开「综合理财账户（<strong>自在理财</strong>档次）」+ 证券账户。职员会做身份核验、地址证明核验、填写 <strong>CRS 税务居民自我证明</strong>（声明为<strong>中国内地税务居民</strong>，提供税务居民编号，通常是身份证号）、<strong>FATCA</strong> 美国身份声明、以及风险评估问卷。</p>
-          <div class="step-note"><strong>话术：</strong>「我要开综合理财账户 + 证券账户，长期投资港股和美股，资金约 5 万人民币等值，<strong>不买保险和基金</strong>。」把需求说死可以省掉 40 分钟产品推销。</div>
+          <h3>带齐材料，说明来意</h3>
+          <p>带<strong>身份证 + 通行证 + 住址证明</strong>（3 个月内、政府或公共事业机构发出、有本人姓名和地址）。职员会做身份核验、地址证明核验、<strong>CRS 税务居民自我证明</strong>（声明为中国内地税务居民）、<strong>FATCA</strong> 美国身份声明、风险评估问卷。</p>
+          <div class="step-note"><strong>话术：</strong>「我已经有你们账户了，今天来<strong>加开证券账户</strong>，长期投资港股和美股，约 5 万人民币等值，<strong>不买保险和基金</strong>。」——把需求说死可以省掉大量产品推销。</div>
         </li>
         <li>
-          <h3>加开证券账户</h3>
-          <p>同一家分行申请证券账户——<strong>这是必须到店的那一步</strong>（手机开户同时开证券账户仅适用于香港身份证持有人）。一个证券账户可同时买卖<strong>港股、中国 A 股、美股</strong>，且同一账户持有多个市场<strong>保管费只收一次</strong>。</p>
-          <p style="margin-top:6px">当场设置交易密码、开通网上/手机证券服务。并记得申请<strong>即时报价服务</strong>——中银香港网上/手机银行的网上即时报价<strong>豁免、无限次</strong>，但需要你自己在网上/手机银行申请开通，不会自动生效。</p>
-        </li>
-        <li>
-          <h3>当场调好转账限额 + 存入第一笔资金</h3>
-          <p>问清楚每日转账上限和 FPS（转数快）限额并当场设置。同时存入第一笔资金（港币现金或从内地卡取现），让账户是活的。</p>
+          <h3>开通证券账户并申请即时报价</h3>
+          <p>一个证券账户可同时买卖<strong>港股、中国 A 股、美股</strong>，且同一账户持有多个市场<strong>保管费只收一次</strong>。当场设置交易密码、开通网上/手机证券服务。</p>
+          <p style="margin-top:6px">记得申请<strong>即时报价服务</strong>——中银香港网上/手机银行的即时报价<strong>豁免、无限次</strong>，但<strong>需要你自己申请开通</strong>，不会自动生效。</p>
         </li>
         <li>
           <h3>当场设置「月供股票计划」</h3>
-          <p>这是中银香港对你最划算的产品：每月最低 <span class="num">HK$500</span>/只（每增一只加 HK$500），最多 20 只；手续费 = 供款额的 <span class="num">0.25%</span>，<strong>最低 HK$50，且已包含佣金、印花税、交易征费、交易处理费</strong>；并<strong>豁免保管费与代收股息手续费</strong>；碎股可按正股价卖出。可用中银信用卡供款赚积分。</p>
-          <div class="step-note"><strong>对比一下：</strong>同样每月投 HK$2,500，走月供计划一年手续费 HK$600（含全部税费、免保管费）；直接按笔买个股是 HK$100 最低佣金 + HK$30 交收费，一年约 <span class="num">HK$1,860</span>。<strong>差 3 倍。</strong></div>
+          <p>这是中银香港对你最划算的产品：每月最低 <span class="num">HK$500</span>/只（每增一只加 HK$500），最多 20 只；手续费 = 供款额的 <span class="num">0.25%</span>，<strong>最低 HK$50，且已包含佣金、印花税、交易征费、交易处理费</strong>；并<strong>豁免保管费与代收股息手续费</strong>；碎股可按正股价卖出。</p>
+          <div class="step-note"><strong>为什么必须走月供而不是手动买：</strong>同样每月投 HK$2,500，走月供计划一年手续费 HK$600（含全部税费、免保管费）；直接按笔买个股是 HK$100 最低佣金 + HK$30 交收费，一年约 <span class="num">HK$1,860</span>。<strong>差 3 倍。</strong></div>
         </li>
       </ol>
 
-      <div class="phase-label">阶段三 · 回大陆之后</div>
+      <div class="phase-label">阶段四 · 回大陆之后</div>
       <ol class="step-list">
         <li>
-          <h3>确认账户真的可用</h3>
-          <p>测试一笔小额转账或买入。确认月供计划的首期扣款日与扣款金额（要保证结算账户里有足够余额，扣款失败可能影响计划）。</p>
+          <h3>测试转入转出</h3>
+          <p>完整的转账验证清单见「手机银行开通与转账验证」一节。<strong>中银香港的重点是确认 FPS（转数快）和每日转账上限已经设好</strong>，以及月供计划的首期扣款日。</p>
         </li>
         <li>
-          <h3>保持账户活跃，防止休眠</h3>
-          <p>长期无交易可能被标记为休眠，恢复需重新做身份核验甚至本人到港。<strong>月供计划天然解决这个问题</strong>——每月自动扣款买入。另外每季度登录一次 App。</p>
+          <h3>防休眠 + 对账</h3>
+          <p>月供计划每月自动扣款，天然避免账户休眠。另外<strong>每年下载一次对账单存档</strong>；每季度登录一次 App。</p>
         </li>
         <li>
-          <h3>每年下载对账单存档</h3>
-          <p>报税和计算成本基础都要用到。不要等到十年后想报税才发现查不到历史记录。</p>
-        </li>
-        <li>
-          <h3>改地址/换手机号要主动更新</h3>
-          <p>手机号是找回账户和接收一次性密码的唯一通道，<strong>换号前先在 App 内更新</strong>，别等停机了再想办法。地址变了也要主动改。</p>
+          <h3>换号/改地址要主动更新</h3>
+          <p>手机号是找回账户和接收一次性密码的唯一通道，<strong>换号前先在 App 内更新</strong>。</p>
         </li>
       </ol>
       </div>
 
-      <div class="verdict verdict-warn"><span class="v-icon">⚠️</span><div><strong>中银香港的三个注意点：</strong><br>① <strong>证券账户必须到店</strong>，这是它最大的不便。<br>② <strong>分行开户要维持「综合理财总值」</strong>——选「自在理财」是 HK$10,000，务必确认你开的是这一档。<br>③ <strong>月供计划的标的有限制</strong>，是从中银香港提供的精选清单里选，不是全市场任选。<strong>签约前先看清单里有没有你想买的 ETF。</strong></div></div>
+      <div class="verdict verdict-ok"><span class="v-icon">✅</span><div><strong>中银香港这条路的关键判断：</strong>银行账户零门槛、手机就能开，<strong>证券账户必须跑一次分行</strong>。如果你不想进分行，就选汇丰或恒生（它们的投资账户也能线上开）。<br><strong>中银香港相对值得跑这一趟的理由：</strong>月供计划费率 <span class="num">0.25% / 最低 HK$50</span> 且已含全部税费、豁免保管费——这是三家银行里对小额定投最友好的机制之一。</div></div>
     </div>
   </section>
 
@@ -716,7 +507,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container sop-hsbc">
       <div class="section-header">
         <h2>汇丰香港 开户 SOP</h2>
-        <p>四家里<strong>唯一可以全程线上完成</strong>（银行账户 + 投资账户都在 App 里开）的主流银行，而且官网明确把「mainland China」写进资格要求。</p>
+        <p><strong>可以全程线上完成</strong>（银行账户 + 投资账户都在 App 里开）的主流银行，而且官网明确把「mainland China」写进资格要求。</p>
       </div>
 
       <div class="sop-head">
@@ -825,7 +616,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <ol class="step-list">
         <li>
           <h3>确认限额已经提升生效</h3>
-          <p>用 App 查「转账限额」页面确认已经不是 HK$0。如果还是 0，再打一次 <strong>+852 2233 3000</strong>。</p>
+          <p>用 App 查「转账限额」页面确认已经不是 HK$0。如果还是 0，再打一次 <strong>+852 2233 3000</strong>。<strong>汇丰的海外 ATM 提款限额也是预设为零</strong>，想在内地取现要自己打开——完整的验证清单见「手机银行开通与转账验证」一节。</p>
         </li>
         <li>
           <h3>盯住低余额费</h3>
@@ -842,132 +633,13 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       </ol>
       </div>
 
-      <div class="verdict verdict-ok"><span class="v-icon">✅</span><div><strong>汇丰是本页四家里对你最省事的：</strong>银行账户和投资账户都能在酒店用手机开完，<strong>不用占用任何行程时间</strong>，而且 SMIP 现在经纪费全免。<strong>代价是两件事</strong>：① 新客默认转账限额是 0，必须主动提升；② 非港 id 新客有 HK$100/月的低余额费，要靠维持 HK$10,000 余额来豁免。</div></div>
+      <div class="verdict verdict-ok"><span class="v-icon">✅</span><div><strong>汇丰是三家银行里对你最省事的：</strong>银行账户和投资账户都能在酒店用手机开完，<strong>不用占用任何行程时间</strong>，而且 SMIP 现在经纪费全免。<strong>代价是两件事</strong>：① 新客默认转账限额是 0，必须主动提升；② 非港 id 新客有 HK$100/月的低余额费，要靠维持 HK$10,000 余额来豁免。</div></div>
 
       <div class="warn-box">⚠️ <div><strong>别找中介。</strong>汇丰官网专门写了一段：「Please don't share your information with third parties, or engage with any intermediaries to open an account. If you'd like to open an account, you can apply via HSBC HK App or by making an appointment online in advance — <strong>all free of charge</strong>.」市面上收费的「代办香港开户」你自己就能做。</div></div>
     </div>
   </section>
 
-  <section class="section" id="sop-sc">
-    <div class="container sop-sc">
-      <div class="section-header">
-        <h2>渣打香港 开户 SOP</h2>
-        <p>银行渠道里<strong>单笔成本最低</strong>（网上佣金 0.20%、最低只要 HK$50），托管费和账户维护费都豁免。但<strong>线上开户对你不开放</strong>——必须本人到分行。</p>
-      </div>
-
-      <div class="sop-head">
-        <div class="sop-logo">SC</div>
-        <div>
-          <h3>渣打银行（香港）· Standard Chartered</h3>
-          <div class="sop-sub">适合：愿意跑一次分行，换取更低的单笔佣金 · 主要买美股 · 不想被收保管费</div>
-        </div>
-      </div>
-
-      <div>
-        <span class="sop-tag sop-tag-no">银行账户：线上需 HKID</span>
-        <span class="sop-tag sop-tag-no">投资账户：线上需 HKID</span>
-        <span class="sop-tag sop-tag-ok">必须到分行办理</span>
-        <span class="sop-tag sop-tag-ok">佣金 0.20% / 最低 HK$50</span>
-        <span class="sop-tag sop-tag-ok">托管费豁免</span>
-        <span class="sop-tag sop-tag-ok">账户维护费豁免</span>
-        <span class="sop-tag sop-tag-warn">股息 &lt;HK$30 全额收手续费</span>
-      </div>
-
-      <div class="phase-label">阶段一 · 出发前准备</div>
-      <div class="sop-phases">
-<ol class="step-list">
-        <li>
-          <h3>先接受一个现实：线上开不了</h3>
-          <p>渣打 SC Mobile App 开户的资格条件明确要求「Holding a valid <strong>Hong Kong Identity Card (2018 Version)</strong>」。你持往来港澳通行证，<strong>App 这条路走不通</strong>，必须到分行。</p>
-          <div class="step-note"><strong>但渣打的 App 仍然有用：</strong>投资账户可以在 App 内开——「If you do not have any Investment Account, you can open the Investment Account via <strong>SC Mobile App</strong>」，在 Invest 标签页点「<strong>Open Full Investment Account</strong>」。<strong>前提是你先有渣打的银行账户。</strong>所以顺序是：分行开银行账户 → App 开投资账户。</div>
-        </li>
-        <li>
-          <h3>准备材料</h3>
-          <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
-            <li><strong>中华人民共和国居民身份证</strong>（原件）</li>
-            <li><strong>往来港澳通行证</strong>（原件，含有效签注）</li>
-            <li><strong>护照</strong>（建议带，部分分行更接受护照作主身份证明）</li>
-            <li><strong>地址证明</strong>——3 个月内，有本人姓名和内地居住地址</li>
-            <li>港币现金（首笔存入）</li>
-          </ul>
-          <div class="step-note"><strong>渣打官网提到的一个条件对你有利：</strong>SC Mobile 线上开户要求「Residing in <strong>Hong Kong or China</strong>」——也就是说<strong>内地居住地址是被接受的</strong>，只是卡在 HKID 这一项。到分行时可以据此说明你的居住地与开户意图。</div>
-        </li>
-        <li>
-          <h3>想清楚要不要跑这一趟</h3>
-          <p>渣打的核心优势是费率结构。把你的实际情况代进去算：</p>
-          <div class="calc"><span class="c-key">每月买入 HK$2,500 × 12 次</span>
-渣打网上佣金   0.20% → 每笔 HK$5，被最低收费拉到 <span class="c-key">HK$50</span>
-               年佣金 = 50 × 12 = <span class="c-key">HK$600</span>
-另付印花税+征费 ≈ 0.21% → 约 HK$63
-托管费          <span class="c-sum">豁免</span>
-账户维护费      <span class="c-sum">豁免</span>
-────────────────────────────────
-年总成本        <span class="c-sum">约 HK$663</span>（占 5 万本金约 1.13%）</div>
-          <div class="step-note"><strong>对比：</strong>中银香港月供计划一年 HK$600（略低，且不用手动下单）；汇丰 SMIP 一年 HK$300（更低，但新客限额麻烦）。<strong>渣打的优势主要在于「美股」和「不想被收保管费」</strong>——它美股数字渠道 0.20%、最低 USD 18，而中银/汇丰的美股费率更高。</div>
-        </li>
-      </ol>
-
-      <div class="phase-label">阶段二 · 在香港办理</div>
-      <ol class="step-list">
-        <li>
-          <h3>预约分行</h3>
-          <p>渣打官网建议线上预约（「To save your waiting time, you may make an appointment on our website to open the account at a preferred branch」）。由于你必须柜台办理，<strong>强烈建议预约</strong>。</p>
-          <p style="margin-top:6px">分行层级选择上，你的 5 万人民币量级属于 <strong>Easy Banking</strong>（最低档），<strong>免维护费</strong>。不要被劝去开 Priority Banking（需 HK$1,000,000 最低关系余额，否则 HK$900/季）。</p>
-        </li>
-        <li>
-          <h3>到分行：开银行账户</h3>
-          <p>说明要开 Integrated Deposits Account（IDA）或同等综合账户。填写 CRS 税务居民自我证明（内地税务居民）、FATCA 声明、风险评估问卷。</p>
-          <div class="step-note"><strong>注意渣打的一条不确定性：</strong>官网写明「After internal review, we may invite you to <strong>visit branch</strong> if we require additional information / documentation from you.」——分行有裁量权。<strong>材料越全越好，尤其是地址证明和在职/收入证明。</strong></div>
-        </li>
-        <li>
-          <h3>在 App 内开投资账户</h3>
-          <p>拿到银行账户后，用 <strong>SC Mobile App</strong> → <strong>Invest</strong> 标签页 → 点「<strong>Open Full Investment Account</strong>」。这条路对已持有渣打账户的客户开放，不需要再次到分行。</p>
-        </li>
-        <li>
-          <h3>确认费率与持仓安排</h3>
-          <p>渣打的费率结构：</p>
-          <ul style="margin:6px 0 0;padding-left:20px;font-size:13px;color:var(--muted)">
-            <li>港股：网上/SC Equities <strong>0.20%，最低 HK$50</strong>；专人热线 0.50%（最低 HK$150）</li>
-            <li>美股：数字渠道 <strong>0.20%，最低 USD 18</strong></li>
-            <li>港股通（北向 A 股）：网上 0.20%，最低 RMB 45</li>
-            <li><strong>托管费豁免、账户维护费（半年）豁免</strong></li>
-            <li>代收股息 0.5%，最低 HK$30——<strong>但股息不足 HK$30 的，全额作为手续费</strong></li>
-          </ul>
-          <div class="step-note"><strong>⚠️ 那个「股息不足 HK$30 全额收取」要留意：</strong>如果你买高股息但持仓很小的股票，每次派息可能被手续费全部吃掉。小额持仓下优先选<strong>不派息或低股息的宽基 ETF</strong>，可以规避这一项。</div>
-        </li>
-        <li>
-          <h3>申请实时报价服务</h3>
-          <p>渣打的免费实时报价额度按客户层级给：Priority Banking 1,000 次/月、Premium Banking 500 次、Easy Banking 200 次。每笔成交再送 <strong>100 次</strong>额外额度。超出部分 HK$0.1/次（最低 HK$10/月）。<strong>小额投资者的免费额度基本够用。</strong></p>
-        </li>
-      </ol>
-
-      <div class="phase-label">阶段三 · 回大陆之后</div>
-      <ol class="step-list">
-        <li>
-          <h3>确认 App 能正常登录</h3>
-          <p>设置好 <strong>SC Mobile Key</strong>（渣打的双因素认证）。注意：渣打线上开户流程里 SC Mobile Key 是必设项，柜台开户后要在 App 内完成绑定。</p>
-        </li>
-        <li>
-          <h3>确认没有隐性月费</h3>
-          <p>渣打 Easy Banking 免维护费，但<strong>确认你开的是低档账户</strong>，不是 Priority Banking（HK$900/季，需 HK$1,000,000 最低关系余额才能豁免）。</p>
-        </li>
-        <li>
-          <h3>自己设定定投节奏</h3>
-          <p>渣打没有中银香港/汇丰那种「月供股票计划」的官方入口（以官网为准）。你需要<strong>自己每月手动下单</strong>，或设定持续买入的纪律。</p>
-          <div class="step-note"><strong>这意味着成本结构不同：</strong>手动下单每次最低 HK$50，你如果每月只投 HK$2,500，费率就是 2%。<strong>建议改为每季度投一次 HK$7,500</strong>，最低收费的占比就降到 0.67%，明显更划算。</div>
-        </li>
-        <li>
-          <h3>长期维护</h3>
-          <p>每季度登录一次防休眠；每年下载对账单存档；换手机号前先在 App 内更新。若后续想开美股，记得填 <strong>W-8BEN</strong> 把股息预扣税从 30% 降到 10%。</p>
-        </li>
-      </ol>
-      </div>
-
-      <div class="verdict verdict-warn"><span class="v-icon">⚠️</span><div><strong>渣打适合谁：</strong>愿意为「0.20% 佣金 + 最低 HK$50 + 托管费和维护费全免 + 便宜的美股通道」专门跑一趟分行的投资者。<strong>不适合谁：</strong>想全程线上、或者想用官方月供计划做无脑定投的人——渣打这两点都给不了。<br><strong>另外：5 万本金下，渣打没有月供计划这件事可能比佣金率更重要</strong>，因为它意味着你必须手动操作、且要自己控制单笔金额别太小。</div></div>
-    </div>
-  </section>
-
-  <section class="section" id="sop-hangseng">
+    <section class="section" id="sop-hangseng">
     <div class="container sop-hangseng">
       <div class="section-header">
         <h2>恒生银行 开户 SOP</h2>
@@ -1087,7 +759,215 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       </ol>
       </div>
 
-      <div class="verdict verdict-ok"><span class="v-icon">✅</span><div><strong>恒生和汇丰一样可以全程线上</strong>，区别在于：<br>· <strong>恒生</strong>的材料要求更轻（只要通行证 + 出入境记录），有 HK$30 月费封顶，<strong>但开户后 2–3 个工作日才能转账</strong>，且 ATM 卡要邮寄。<br>· <strong>汇丰</strong>开户即时可用，但新客默认限额为 0，且有 HK$100/月 低余额费。<br>两家都值得考虑，<strong>如果你计划每月多次下单（哪怕金额小），恒生的月费封顶是四家里最省钱的机制。</strong></div></div>
+      <div class="verdict verdict-ok"><span class="v-icon">✅</span><div><strong>恒生和汇丰一样可以全程线上</strong>，区别在于：<br>· <strong>恒生</strong>的材料要求更轻（只要通行证 + 出入境记录），有 HK$30 月费封顶，<strong>但开户后 2–3 个工作日才能转账</strong>，且 ATM 卡要邮寄。<br>· <strong>汇丰</strong>开户即时可用，但新客默认限额为 0，且有 HK$100/月 低余额费。<br>两家都值得考虑，<strong>如果你计划每月多次下单（哪怕金额小），恒生的月费封顶是三家银行里最省钱的机制。</strong></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="cash">
+    <div class="container">
+      <div class="section-header">
+        <h2>现金与资金安排：要不要带港币现金</h2>
+        <p>答案是<strong>要带，但一次带不完 5 万</strong>。而且「HK$10,000」那个数字常被误解成「存 1 万免年费」——它不是。</p>
+      </div>
+
+      <h3 style="margin-bottom:14px">先把三个限额摆出来（这是硬约束）</h3>
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>环节</th><th>限制项</th><th>额度</th><th>你的 5 万人民币</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>内地出境</strong></td>
+              <td>携带<strong>外币</strong>现钞</td>
+              <td class="num">≤ 等值 <strong>US$5,000</strong></td>
+              <td class="badge-no">约 HK$39,200 · <strong>超了</strong></td>
+            </tr>
+            <tr>
+              <td><strong>内地出境</strong></td>
+              <td>携带<strong>人民币</strong>现钞</td>
+              <td class="num">≤ <strong>¥20,000</strong></td>
+              <td class="badge-no">约一半</td>
+            </tr>
+            <tr>
+              <td><strong>香港入境</strong></td>
+              <td>实体货币及不记名可转让票据<strong>申报门槛</strong></td>
+              <td class="num">≥ 等值 <strong>HK$120,000</strong> 才需申报</td>
+              <td class="badge-yes">约 HK$58,500 · <strong>远未到，无需申报</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="verdict verdict-ok" style="margin-top:20px"><span class="v-icon">✅</span><div><strong>香港这边完全不是问题。</strong>5 万人民币折合约 <span class="num">HK$58,500</span>（按 2026-09-21 中间价 1 CNY ≈ 1.1703 HKD），<strong>连 HK$120,000 申报门槛的一半都不到</strong>，入境时不用填任何申报表。<br><strong>真正的瓶颈在内地出境那一侧</strong>——一次最多带等值 US$5,000（约 HK$39,000 / ¥33,400）。<strong>想把 5 万一次性搬过去，做不到。</strong></div></div>
+
+      <div class="src-note"><strong>⚠️ 这两个内地额度的来源说明：</strong>「外币现钞 ≤ 等值 US$5,000」「人民币现钞 ≤ ¥20,000」属长期执行的监管口径，但<strong>本次核查未能从国家外汇管理局或海关总署官网抓到现行条文页面</strong>（站点多次改版与超时）。<br>香港侧的申报门槛我找到了对应条例——<strong>《实体货币及不记名可转让票据跨境流动条例》（第 629 章）</strong>，这是香港海关官网在「管制及执法」职责说明中明确引用的法例，但具体金额门槛也未能从官网直接确认。<br><strong>结论：动手前请打内地海关热线 12360 与香港海关 +852 2815 7711 确认当期执行口径。</strong></div>
+
+      <h3 style="margin:36px 0 14px">「HK$10,000」到底是什么意思</h3>
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>❌ 常见的三个误解</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>不是「存 1 万免年费」</strong><span class="q-why">它是「总关系余额（TRB）」，超了才收月费，不是年费。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>不是开户当天存 1 万就行</strong><span class="q-why">汇丰的措辞是「连续 3 个月维持平均 TRB ≥ HK$10,000」——<strong>是平均值，不是时点值</strong>。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>不只是现金才算</strong><span class="q-why"><strong>股票市值、外币、定期存款都计入 TRB</strong>。所以理论上你不需要真的留 HK$10,000 现金不动。</span></div></li>
+          </ul>
+        </div>
+        <div class="rec-card">
+          <h3>✅ 三家银行的真实门槛</h3>
+          <div class="kv-grid" style="grid-template-columns:1fr;gap:12px">
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">恒生 · Preferred Banking</div>
+              <div class="kv-v">无 TRB 要求</div>
+              <div class="kv-n">官网明确：Preferred Banking、Family+、Money Safe 都<strong>没有总关系余额要求</strong>，不会被收低余额费。<strong>最低门槛的一家。</strong></div>
+            </div>
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">中银香港 · 自在理财</div>
+              <div class="kv-v">HK$10,000</div>
+              <div class="kv-n">综合理财总值。「智盈理财」要 HK$200,000，别被劝去开那一档。</div>
+            </div>
+            <div class="kv-card" style="padding:13px">
+              <div class="kv-k">汇丰 · 汇丰 One</div>
+              <div class="kv-v">HK$10,000（平均）</div>
+              <div class="kv-n">连续 3 个月平均总关系余额。不到则 <strong>HK$100/月</strong>——一年 HK$1,200，占你本金 2%。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:36px 0 14px">该带多少：建议 HK$12,000–15,000</h3>
+      <div class="calc"><span class="c-key">第一次入境建议携带</span>
+港元现金          HK$12,000 – 15,000
+折合人民币        ≈ ¥10,300 – 12,800
+────────────────────────────────
+<span class="c-key">这笔钱要覆盖</span>
+· 立即可存入银行的启动资金
+· 汇丰/中银 前 3 个月还没投资时的 TRB 缓冲
+· 开户期间的餐饮交通
+
+<span class="c-key">剩余约 ¥37,000 怎么过去</span>
+· 银联卡在港 ATM 取现（每人每年约 ¥100,000 额度）
+· 分 2–3 次赴港时分别携带（每次 ≤ US$5,000 等值）
+· 或等有收入后逐步汇入</div>
+
+      <div class="verdict verdict-warn"><span class="v-icon">💡</span><div><strong>换汇方式二选一，各有取舍：</strong><br>① <strong>内地银行购汇</strong>——合规、汇率透明，<strong>但会占用你的年度 5 万美元便利化额度</strong>，且购汇用途要与实际相符（旅游）。<br>② <strong>带人民币现金（≤¥20,000）到香港找换店换</strong>——<strong>不占用购汇额度</strong>，且香港找换店汇率常常不比银行差。缺点是找换店良莠不齐，<strong>要在有牌照的店里换</strong>（香港海关签发金钱服务经营者牌照，可要求出示）。<br><strong>注意：无论哪种方式，都不要用「购汇额度」的资金直接汇入证券账户做投资</strong>——那属于资本项目，不在便利化额度覆盖范围内。</div></div>
+
+      <h3 style="margin:36px 0 14px">去哪里能存现金</h3>
+      <div class="grid-3">
+        <div class="rec-card">
+          <h3>中银香港 · 存钞机</h3>
+          <p><strong>你行程附近的这几家都有双币存钞机</strong>（我逐行解析了中银香港官方分行数据）：</p>
+          <ul class="q-list" style="margin-top:6px">
+            <li><span class="q-num">✓</span><div><strong>圆方分行</strong><small class="muted">离 W 酒店最近</small></div></li>
+            <li><span class="q-num">✓</span><div><strong>香港西九龙站银行服务中心</strong><small class="muted">下车即到</small></div></li>
+            <li><span class="q-num">✓</span><div><strong>中银大厦分行</strong><small class="muted">中环</small></div></li>
+            <li><span class="q-num">✓</span><div><strong>铜锣湾 / 旺角 / 尖沙咀分行</strong></div></li>
+          </ul>
+          <div class="rec-meta">服务代码 CASH_DEPOSIT_DUAL_CURRENCY，支持港币与人民币</div>
+        </div>
+        <div class="rec-card">
+          <h3>汇丰 · Cash Deposit Machines</h3>
+          <p>官网明确：「<strong>Deposit cash instantly at our Cash Deposit Machines</strong>」——存钞机可即时入账，并会打印带存款记录的凭条。</p>
+          <p style="margin-top:8px">另有 <strong>Digital Banker 自助服务亭</strong>（可开户、重置卡密码、更新手机号与电邮），地点：</p>
+          <ul class="q-list" style="margin-top:6px">
+            <li><span class="q-num">✓</span><div><strong>启德</strong><small class="muted">Kai Tak Express Banking，Kai Tak Mall 2 二楼 M2-211&amp;212</small></div></li>
+            <li><span class="q-num">✓</span><div><strong>旺角</strong><small class="muted">Mong Kok Express Banking，弥敦道 673 号汇丰大厦 L/G</small></div></li>
+          </ul>
+          <div class="rec-meta">Digital Banker 支持 HKID、通行证（EEP）及合资格海外护照</div>
+        </div>
+        <div class="rec-card">
+          <h3>恒生 · 存钞机</h3>
+          <p>恒生同样设有存钞机，但<strong>本次未抓到官方页面确认具体机型与单次限额</strong>。</p>
+          <p style="margin-top:8px"><strong>更省事的做法：</strong>恒生 Preferred Banking 无 TRB 要求，你可以<strong>先开户、再从其他银行转入</strong>（FPS 转数快通常即时到账），不一定要存现金。</p>
+          <div class="rec-meta">⚠️ 存钞机机型与限额请到分行确认</div>
+        </div>
+      </div>
+
+      <div class="verdict verdict-warn" style="margin-top:24px"><span class="v-icon">🏧</span><div><strong>存现金的两个实操提醒：</strong><br>① <strong>存钞机通常只收纸币</strong>，不接受硬币；且有<strong>单次与每日上限</strong>（各行不同，超出要分次或走柜台）。<br>② <strong>柜台存较大金额时，银行会问资金来源</strong>——这是反洗钱要求，不是针对你。把<strong>内地银行的购汇单据、取现凭条</strong>留着，被问到时直接出示即可，反而会让流程更顺。</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="mobile">
+    <div class="container">
+      <div class="section-header">
+        <h2>手机银行开通与转账验证</h2>
+        <p><strong>这一节的目的：让你在香港期间就把网上银行、手机银行和转账限额全部配好并验证通过</strong>，不要等回到内地才发现用不了、还得再飞一趟。</p>
+      </div>
+
+      <div class="verdict verdict-danger" style="margin-top:0"><span class="v-icon">🚨</span><div><strong>必须先说清楚一件事：本页无法替你「试转一笔」。</strong><br>我没有你的银行账户，也不能代你操作任何转账。下面给的是<strong>每一家银行的官方限额、需要设置的项目、以及一份你自己照着做的验证清单</strong>。真正的验证必须由你在香港用真金白银跑一遍——<strong>这正是本节要求你在离港前完成的原因</strong>。</div></div>
+
+      <h3 style="margin:36px 0 14px">汇丰香港：限额最复杂的一家</h3>
+      <div class="table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>项目</th><th>官方额度</th><th>新客默认值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>每日转账总限额</td><td class="num">最高 HK$1,000,000</td><td class="num">HK$1,000,000</td><td>以付款人计的总额</td></tr>
+            <tr><td><strong>跨境转账总额</strong></td><td class="num">最高 HK$1,000,000</td><td class="badge-no">HK$0</td><td class="badge-no">不动它，钱就出不去</td></tr>
+            <tr><td>转至非登记收款人</td><td class="num">最高 HK$200,000</td><td class="badge-no">分项 HK$0</td><td>需先登记收款账户</td></tr>
+            <tr><td>小额转账</td><td class="num">最高 HK$10,000</td><td class="badge-no">HK$0</td><td>—</td></tr>
+            <tr><td>环球转账至第三方海外汇丰账户</td><td class="num">最高 US$50,000</td><td>—</td><td>—</td></tr>
+            <tr><td>ATM 每日提现</td><td class="num">HK$80,000</td><td>—</td><td>本地</td></tr>
+            <tr><td><strong>海外 ATM 每日提款限额</strong></td><td class="num">可设置</td><td class="badge-no">预设为 0</td><td class="badge-no">「为加强保安，海外 ATM 每日提款限额（含现金透支）预设为零」——回内地后取不了钱，要自己改</td></tr>
+            <tr><td>缴费（PPS）</td><td class="num">HK$100,000/卡/日</td><td>—</td><td>—</td></tr>
+            <tr><td>EPS / 银联刷卡</td><td class="num">HK$50,000/卡/日</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src-note"><strong>来源：</strong>汇丰《非香港身份证客户转账及 ATM 提款限额》FAQ 与 Express Banking 页面。<strong>注意脚注：</strong>「Lower limits apply to <strong>designated HSBC One non-HKID customers during the first 6 months</strong> after account opening」——你正好是这一类，前 6 个月都会受限。</div>
+
+      <h3 style="margin:32px 0 14px">恒生：有等待期，且卡片是邮寄的</h3>
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>⏱ 时间线（务必记住）</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>收到确认短信</strong><span class="q-why">开户成功后恒生会发确认短信。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>可以立即存款</strong><span class="q-why">短信确认后即可入金。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>转账和提款要等 2–3 个工作日</strong><span class="badge-no">官网原话：「You'll be able to make transfers and withdrawals after <strong>2 to 3 working days</strong>」——<strong>这意味着你在香港期间可能来不及验证转账</strong></span></div></li>
+            <li><span class="q-num">4</span><div><strong>ATM 卡 5 个工作日内寄出</strong><span class="q-why">是<strong>邮寄</strong>，不是当场拿。会寄到你登记的内地地址。</span></div></li>
+          </ul>
+          <div class="step-note"><strong>⚠️ 这是恒生最大的行程风险：</strong>如果你 9/25 开户，2–3 个工作日后的 9/29 或 9/30 才能转账——<strong>你 9/29 就走了</strong>。所以<strong>要么尽早开（越早越好），要么接受回内地后再验证</strong>。</div>
+        </div>
+        <div class="rec-card">
+          <h3>🔧 要设置的三件事</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>激活 Personal e-Banking</strong><span class="q-why">官网说明：手机开户成功后<strong>可以立即激活</strong>；若当时退出激活页面，可在收到 ATM 卡与密码后，通过官网登录页或 App 再激活。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>激活 ATM 卡并设密码</strong><span class="q-why">收到卡后：App →「<strong>Settings &amp; Security</strong>」→「<strong>Card</strong>」→「<strong>Reset Card PIN</strong>」，激活与设密一次完成，<strong>立即生效</strong>。</span></div></li>
+            <li><span class="q-num">3</span><div><strong>确认账户层级是 Preferred</strong><span class="q-why">Preferred Banking 无 TRB 要求。若被开成 Prestige（需 HK$1,000,000）会有低余额费。</span></div></li>
+          </ul>
+          <div class="step-note"><strong>客服热线：</strong>Prestige <strong>+852 2998 9188</strong> · Preferred <strong>+852 2822 8228</strong></div>
+        </div>
+      </div>
+
+      <h3 style="margin:32px 0 14px">中银香港：即时报价要自己申请</h3>
+      <div class="grid-2">
+        <div class="rec-card">
+          <h3>🔧 要设置的几件事</h3>
+          <ul class="q-list" style="margin-top:8px">
+            <li><span class="q-num">1</span><div><strong>手机银行 / 网上银行</strong><span class="q-why">手机开户流程里已一并开通，登录确认可用即可。</span></div></li>
+            <li><span class="q-num">2</span><div><strong>申请即时报价服务</strong><span class="badge-no">中银香港网上/手机银行的即时报价<strong>豁免、无限次</strong>，但<strong>需要你自己在网上/手机银行申请开通</strong>——不会自动生效</span></div></li>
+            <li><span class="q-num">3</span><div><strong>确认每日转账上限与 FPS 限额</strong><span class="q-why">开户后向客服或分行问清楚，并确认是否需要额外设置。</span></div></li>
+            <li><span class="q-num">4</span><div><strong>月供计划扣款账户余额</strong><span class="q-why">确认每月扣款日与金额，保证结算账户里有足够余额，扣款失败可能影响计划。</span></div></li>
+          </ul>
+          <div class="step-note"><strong>客服热线：</strong>+852 3988 2388 · 内地专线 +86 400 800 2388</div>
+        </div>
+        <div class="rec-card">
+          <h3>✅ 离港前的转账验证清单</h3>
+          <p>照着做一遍。<strong>建议用「小额真实转账」而不是只看设置页面</strong>——设置对了不代表通道真的通。</p>
+          <ol style="margin:8px 0 0;padding-left:20px;font-size:13px;color:var(--muted);line-height:1.9">
+            <li>确认<strong>网上银行 / 手机银行能登录</strong>（不只是 App 能打开）</li>
+            <li>查看<strong>转账限额页面</strong>，确认不是 HK$0</li>
+            <li>转入一笔钱（自己另一张卡 / 现金存入）——<strong>验证「转入」</strong></li>
+            <li>转出一笔<strong>小额</strong>（HK$100 级别）到登记收款人——<strong>验证「转出」</strong></li>
+            <li>若需跨境转账，<strong>确认跨境限额已提升</strong>（汇丰默认 HK$0）</li>
+            <li>登记一个常用收款账户，确认在名单里</li>
+            <li>确认<strong>保安设备</strong>（编码器 / App 令牌）已绑定，且换手机后能恢复</li>
+            <li>把<strong>客服电话存进手机</strong>——回内地后打国际长途才能求救</li>
+          </ol>
+          <div class="step-note"><strong>为什么强调「在香港做」：</strong>部分银行的功能开通与身份校验会检测<strong>网络位置</strong>；回内地后若某个环节需要到分行或需要本地网络，你就得再飞一趟。<strong>在香港把能点的都点一遍，是最省事的保险。</strong></div>
+        </div>
+      </div>
+
+      <div class="warn-box" style="margin-top:28px">⚠️ <div><strong>两个最容易回内地才发现的问题：</strong><br>① <strong>汇丰海外 ATM 提款预设为 0</strong>——你想在内地用汇丰卡取现，得先在 App/ATM 里把这个限额打开。<br>② <strong>恒生的 2–3 个工作日等待期</strong>——如果你在行程最后一天才开户，等于回内地后才能验证，万一有问题就只能打电话解决。</div></div>
+
+      <div class="src-note"><strong>本节来源：</strong>汇丰《非香港身份证客户转账及 ATM 提款限额》FAQ（onelimitfaq.pdf）、汇丰 Express Banking 页面（ATM 限额与 Digital Banker 地点）、恒生 Mobile Account Opening FAQ（等待期、ATM 卡邮寄、e-Banking 激活、卡密码重置路径）、中银香港证券买卖服务页（即时报价需自行申请）。<strong>中银香港的转账上限与 FPS 限额本次未能从官网抓到具体数字，请在开户时直接向分行或 +852 3988 2388 确认。</strong></div>
     </div>
   </section>
 
@@ -1136,7 +1016,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <li><a href="https://www.bochk.com/tc/investment/securities/monthly.html" target="_blank" rel="noopener">https://www.bochk.com/tc/investment/securities/monthly.html</a><div class="ref-desc">中银香港「月供股票计划」：每月最低 HK$500（每增一只加 HK$500）、最多 20 只；手续费 = 供款额 0.25%、最低 HK$50，已含佣金+印花税+交易征费+交易处理费；豁免保管费与代收股东权益手续费；碎股可按正股价卖出；可用中银信用卡供款赚积分</div></li>
         <li><a href="https://www.bochk.com/tc/investment/securities/trade.html" target="_blank" rel="noopener">https://www.bochk.com/tc/investment/securities/trade.html</a><div class="ref-desc">中银香港证券买卖服务：一个证券账户同时买卖港股/中国 A 股/美股，同一账户保管费只收一次；买卖 A 股无额外服务费；开户可在网上预约或亲临分行，现有客户可在网上银行开立证券账户</div></li>
         <li><a href="https://www.bochk.com/dam/more/accountopening/tc.html" target="_blank" rel="noopener">https://www.bochk.com/dam/more/accountopening/tc.html</a><div class="ref-desc">中银香港手机开户：内地访港旅客可 7×24 手机开户；<strong>所需条件</strong>=年满 18 岁、身处香港、全新客户、持身份证+往来港澳通行证（均 ≥30 天有效期）、持国家移民局最近 7 日内「出入境纪录」电子档、能提供内地手机号与地址、电邮及税务居民编号；<strong>关键限制</strong>：上传地址证明同时开立证券账户仅适用于香港身份证持有人</div></li>
-        <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html</a><div class="ref-desc">中银香港「见证开户服务」：无需亲临香港，可在内地指定见证网点签署开户文件，开立「中银理财」或「智盈理财」账户；需年满 18 岁且为中国银行/中银香港分子行理财或特选客户；开户所需文件=内地居民凭身份证或中国护照；<strong>若亲临中银香港分行须同时提交入境旅行证件</strong>；地址证明要求「最近三个月内由政府机构或公共事务机构发出具有客户姓名及地址资料的通訊函或账单」；最快约两星期完成</div></li>
+        <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/account.html</a><div class="ref-desc"><strong>（本条对你的适用性低）</strong>中银香港「见证开户服务」：无需亲临香港，可在内地指定见证网点签署开户文件，开立「中银理财」或「智盈理财」账户；需年满 18 岁且为中国银行/中银香港分子行理财或特选客户；开户所需文件=内地居民凭身份证或中国护照；<strong>若亲临中银香港分行须同时提交入境旅行证件</strong>；地址证明要求「最近三个月内由政府机构或公共事务机构发出具有客户姓名及地址资料的通訊函或账单」；最快约两星期完成。<br><strong>⚠️ 前提是你已经是中国银行或中银香港分子行的理财/特选客户</strong>——如果在内地中行的资产或身份不够，这条路的门槛反而更高，因此本页的中银香港 SOP 只写线上开户流程。</div></li>
         <li><a href="https://www.bochk.com/tc/crossborder/personal/financialservicehk/branch_network.html" target="_blank" rel="noopener">https://www.bochk.com/tc/crossborder/personal/financialservicehk/branch_network.html</a><div class="ref-desc">中银香港跨境客户服务网络：香港国际机场银行服务中心；圆方分行（九龙柯士甸道西 1 号圆方一楼 1003-1004 号铺）；信德中心分行；中港城中银理财中心；上水分行；屯门市广场分行；开源道分行；中银大厦分行（香港花园道 1 号 3 楼）；铜锣湾分行（轩尼诗道 505 号）</div></li>
         <li><a href="https://www.bochk.com/dam/wm/iFree_Guide_t.pdf" target="_blank" rel="noopener">https://www.bochk.com/dam/wm/iFree_Guide_t.pdf</a><div class="ref-desc">中银香港「自在理财」服务概览：需维持「综合理财总值」<strong>港币 10,000 元或以上</strong>（18 岁以下豁免；全日制学生可豁免在学期间及毕业后首 3 年）</div></li>
         <li><a href="https://www.bochk.com/dam/wm/Enrich_Guide_t.pdf" target="_blank" rel="noopener">https://www.bochk.com/dam/wm/Enrich_Guide_t.pdf</a><div class="ref-desc">中银香港「智盈理财」服务概览：需维持「综合理财总值」<strong>港币 200,000 元或以上</strong></div></li>
@@ -1149,17 +1029,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <li><a href="https://www.hsbc.com.hk/ways-to-bank/branch/" target="_blank" rel="noopener">https://www.hsbc.com.hk/ways-to-bank/branch/</a><div class="ref-desc">汇丰分行服务：官网原话「<strong>Book an appointment for account opening at select branches</strong> prior to your visit and get instant confirmation」（指定分行可预约且即时确认）；「Prefer to visit other branches? ... to request an appointment」（其他分行为「请求预约」）；并说明「<strong>most of our branches open on Saturday</strong>」；提供 eTicketing 实时查看排队人数并取号</div></li>
         <li><a href="https://www.hsbc.com.hk/branch-list/" target="_blank" rel="noopener">https://www.hsbc.com.hk/branch-list/</a><div class="ref-desc">汇丰分行列表（本页逐家抓取营业时间）。关键一条：<strong>MTR 香港西九龙站零售银行中心</strong>（Shop No. WEK G-15, G/F, Hong Kong West Kowloon Station）——周一至周五 09:00–17:00、周六 09:00–17:00、<strong>周日 14:00–17:00</strong>；同页还有该行 2026-10-01 国庆日 14:00–17:00 的特别安排。其他主要分行（中环、尖沙咀、旺角、圆方）均为周一至五 09:00–17:00、周六 09:00–13:00、周日休息</div></li>
         <li><a href="https://www.hangseng.com/en-hk/personal/banking/account-opening/mobile/" target="_blank" rel="noopener">https://www.hangseng.com/en-hk/personal/banking/account-opening/mobile/</a><div class="ref-desc">恒生「Mobile Account Opening」。<strong>官网直接列出两类可手机开户的人：</strong>「Hong Kong residents」需 HKID；「<strong>Mainland China residents</strong>」需年满 18、<strong>Currently in Hong Kong</strong>、<strong>Have a residential address in Mainland China</strong>、持有有效 Exit-Entry Permit。并写明「activate your <strong>investment accounts</strong> easily with Hang Seng Mobile App」——银行与投资账户均在 App 内完成</div></li>
-        <li><a href="https://www.sc.com/hk/deposits/savings-accounts/mobile-account-opening/" target="_blank" rel="noopener">https://www.sc.com/hk/deposits/savings-accounts/mobile-account-opening/</a><div class="ref-desc">渣打 Mobile Account Opening。资格明确要求「Holding a valid <strong>Hong Kong Identity Card (2018 Version)</strong>」——持通行证无法线上开；另有「Residing in Hong Kong or China」。并注明「After internal review, we may invite you to visit branch ... if we require additional information / documentation」，即线上非保证</div></li>
-        <li><a href="https://www.bochk.com/services/xml/generatebranchweb.tc.xml" target="_blank" rel="noopener">https://www.bochk.com/services/xml/generatebranchweb.tc.xml</a><div class="ref-desc">中银香港分行数据接口（官网「分行网络」页面实际调用的数据源，本次逐家解析）。<strong>180 家分行中 172 家为「平日 9:00–17:00 / 周六 9:00–13:00 / 周日及公众假期休息」</strong>；唯一例外是香港国际机场银行服务中心（平日 9:00–19:00、周六日 9:00–15:00，位于离港禁区）。可作为 INVESTMENT_SERVICE 的分行共 146 家，含圆方分行、中银大厦分行、铜锣湾分行、旺角分行、尖沙咀分行、沙田分行、上水分行等；<strong>香港西九龙站银行服务中心</strong>（柯士甸道西 3 号西九龙站售票大堂 WEK B1-14 号铺）服务列表中含 INVESTMENT_SERVICE</div></li>
-        <li><a href="https://www.bochk.com/tc/aboutus/branchnotice.html" target="_blank" rel="noopener">https://www.bochk.com/tc/aboutus/branchnotice.html</a><div class="ref-desc">中银香港「分行服务通知」。两条与行程相关的搬迁公告：<strong>《有关金马伦道中银理财中心服务的通知》（2026-07-17 发布）</strong>——尖沙咀金马伦道 30 号业务已于 <strong>2026-09-18 营业结束后</strong>迁往尖沙咀分行（加拿芬道 24-28 号）；<strong>《有关衙前围道分行服务的通知》（2026-08-14 发布）</strong>——九龙城衙前围道 25 号将于 <strong>2026-10-16</strong> 迁往九龙城太子道分行（太子道 382-384 号），故 9/29 到访时仍在原址</div></li>
-        <li><a href="https://www.hsbc.com.hk/investments/products/stocks/top-trader-club/local-securities-product-fact-sheet.pdf" target="_blank" rel="noopener">https://www.hsbc.com.hk/investments/products/stocks/top-trader-club/local-securities-product-fact-sheet.pdf</a><div class="ref-desc">汇丰《Local Securities Services》POR-LSS(E)/MAY26。<strong>本页汇丰费率来源：</strong>标准佣金 0.25%（最低 HK$100）；专人热线/分行 0.50%；Top Trader Club 按交易量 0.25%→0.01%（最低 HK$100→HK$8）；保管费 HK$25/月（汇丰 One 等）/ HK$30/月（一般证券账户）；买入交收费 HK$5/手（最低 30 最高 200）；代收股息 0.5%（最低 30 最高 2500）；印花税 0.1%、SFC 0.0027%、AFRC 0.00015%、HKEX 0.00565%；Trade25（18–25 岁）月交易额 HK$25 万内 $0 佣金</div></li>
-        <li><a href="https://www.hsbc.com.hk/investments/products/stocks/hk-trading/monthly/" target="_blank" rel="noopener">https://www.hsbc.com.hk/investments/products/stocks/hk-trading/monthly/</a><div class="ref-desc">汇丰「Stocks Monthly Investment Plan (SMIP)」：每月最低 <strong>HKD 1,000</strong>；<strong>经纪费现时全免</strong>（含标准佣金 0.25%、印花税、SFC 交易征费、AFRC 交易征费、HKEX 交易费、买入交收费及 CCASS 费）；改计划/终止免费；<strong>扣款时间表：每月 7 日是截止日（含周末和公众假期）→ 截止后第 2 个工作日确认余额 → 第 3 个交易日买入 → 买入后第 2 个工作日结算扣款</strong>；可选标的含 <strong>Tracker Fund of Hong Kong（盈富基金）</strong>与 ABF 香港债券指数基金，以及一长串港交所上市股票（清单里包含腾讯 700、港交所 388、领展 823 等）</div></li>
-        <li><a href="https://www.sc.com/hk/investment/" target="_blank" rel="noopener">https://www.sc.com/hk/investment/</a><div class="ref-desc">渣打投资服务页。官网原话：<strong>「How to open Investment Account? If you do not have any Investment Account, you can open the Investment Account via SC Mobile App」</strong>，具体在 App 的 <strong>Invest</strong> 标签页点「<strong>Open Full Investment Account</strong>」。这是本页渣打 SOP「先到分行开银行账户、再用 App 开投资账户」两步走的依据</div></li>
-        <li><a href="https://www.hsbc.com.hk/accounts/products/one/" target="_blank" rel="noopener">https://www.hsbc.com.hk/accounts/products/one/</a><div class="ref-desc">汇丰 One 账户：非香港身份证持有人、<strong>2026-01-01 及之后</strong>开立汇丰 One，Below Balance Fee <strong>HK$100/月</strong>，连续 3 个月维持平均总关系余额 HK$10,000 可豁免；2026-01-01 前开户的非港 id 客户或使用香港身份证开户者不受最低 TRB/BBF 限制</div></li>
-        <li><a href="https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf" target="_blank" rel="noopener">https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf</a><div class="ref-desc">汇丰《非香港身份证客户转账及 ATM 提款限额》FAQ。<strong>2026 年新政：</strong>2026-04-26 及之后首次在汇丰开户、提供非香港身份证件、且持有汇丰 One 的客户，受开户当月及随后 6 个月较低限额；默认值中「转账至非登记收款人分项限额 = HK$0」「跨境转账总额 = HK$0」「小额转账 = HK$0」；所有非港 id 新客开户后首 3 个工作日亦受限</div></li>
-        <li><a href="https://www.hsbc.com.hk/zh-cn/international/account-opening/" target="_blank" rel="noopener">https://www.hsbc.com.hk/zh-cn/international/account-opening/</a><div class="ref-desc">汇丰海外开户要求：须年满 18 岁且「有合理理由开立海外账户」；需提供就业、收入及税务详情，身份证明文件，住址证明（如银行结单或水电煤账单）；可在 20 个目的地开户</div></li>
-        <li><a href="https://www.hangseng.com/cms/sec/eng/PDF/secu_char.pdf" target="_blank" rel="noopener">https://www.hangseng.com/cms/sec/eng/PDF/secu_char.pdf</a><div class="ref-desc">恒生银行证券服务收费表：网上/手机/自动化热线佣金 0.25%（最低 HK$100）；专人热线/分行 0.35%（&lt;HK$20 万）或 0.30%（≥HK$20 万）；<strong>月费计划 HK$30 覆盖当月 ≤HK$30 万交易额的 $0 佣金并含交收费与保管费</strong>（不含 IPO 与月供计划）；保管费 Prestige HK$15/月、其他 HK$25/月（无持仓无交易不收费）；买入交收费 HK$2.5–5/手（最低 30 最高 188）；代收股息 0.5%（最低 30 最高 2,000）</div></li>
-        <li><a href="https://av.sc.com/hk/content/docs/hk-service-charges-en.pdf" target="_blank" rel="noopener">https://av.sc.com/hk/content/docs/hk-service-charges-en.pdf</a><div class="ref-desc">渣打香港《Service Charges》收费表：港股网上/SC Equities 佣金 <strong>0.20%（最低 HK$50）</strong>，专人热线 0.50%（最低 HK$150）；美股数字渠道 0.20%（最低 USD 18）；港股通网上 0.20%（最低 RMB 45）；<strong>托管费豁免、账户维护费（半年）豁免</strong>；代收股息 0.5%（最低 HK$30；股息不足 HK$30 则全额收取）；Easy/Premium Banking 免维护费，Priority Banking HK$900/季（需 HK$1,000,000 最低关系余额）</div></li>
+        <li><span class="muted" style="font-family:var(--font-mono);font-size:12px">渣打香港（已排除）</span><div class="ref-desc">渣打 SC Mobile 开户资格明确要求「Holding a valid <strong>Hong Kong Identity Card (2018 Version)</strong>」，持往来港澳通行证无法线上开户；其投资账户虽可在 App 内开，但前提是已持有渣打银行账户，而该账户本身对通行证持有人只能柜台办理、且是否受理取决于分行裁量。因此本页不含渣打 SOP。<strong>如果你后续取得了香港身份证，可以再单独评估渣打</strong>——它的费率结构（佣金 0.20%、最低 HK$50、托管费与账户维护费豁免）在小额交易下确实有竞争力。</div></li>
         <li><a href="https://www.gov.hk/en/about/abouthk/holiday/2026.htm" target="_blank" rel="noopener">https://www.gov.hk/en/about/abouthk/holiday/2026.htm</a><div class="ref-desc">香港 2026 年公众假期（政府官网，供最终核对）</div></li>
         <li><a href="https://publicholidays.hk/2026-dates/" target="_blank" rel="noopener">https://publicholidays.hk/2026-dates/</a><div class="ref-desc">2026 年香港公众假期表（本次界面抓取使用的来源）：<strong>26 Sep (Sat) The Day Following Mid-Autumn Festival</strong>、1 Oct (Thu) National Day、18–19 Oct Chung Yeung、25–26 Dec Christmas。<strong>9/25、9/28、9/29 均为正常营业日。</strong></div></li>
         <li><a href="https://www.irs.gov/pub/irs-trty/china.pdf" target="_blank" rel="noopener">https://www.irs.gov/pub/irs-trty/china.pdf</a><div class="ref-desc">美国国税局公布的中美税收协定全文。<strong>Article 9 (Dividends) 第 2 款：</strong>「if the recipient is the beneficial owner of the dividends the tax so charged shall not exceed <strong>10 percent</strong> of the gross amount of the dividends.」——这是「填 W-8BEN 可把美股股息预扣税从 30% 降到 10%」的法律依据</div></li>
@@ -1168,6 +1038,9 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
         <li><a href="https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international" target="_blank" rel="noopener">https://www.irs.gov/businesses/small-businesses-self-employed/estate-gift-tax-treaties-international</a><div class="ref-desc">IRS「Estate &amp; Gift Tax Treaties (International)」国家名单：Australia, Austria, Canada, Denmark, Finland, France, Germany, Greece, Ireland, Italy, Japan, Netherlands, South Africa, Switzerland, United Kingdom——<strong>中国内地不在其中</strong></div></li>
         <li><a href="https://www.irs.gov/pub/irs-pdf/p901.pdf" target="_blank" rel="noopener">https://www.irs.gov/pub/irs-pdf/p901.pdf</a><div class="ref-desc">IRS Publication 901（2024-09 版）《U.S. Tax Treaties》：逐国协定摘要，含中美协定的适用范围说明</div></li>
         <li><a href="https://www.irs.gov/individuals/international-taxpayers/nra-withholding" target="_blank" rel="noopener">https://www.irs.gov/individuals/international-taxpayers/nra-withholding</a><div class="ref-desc">IRS 非居民预扣税说明（W-8BEN 表格与协定优惠的申请途径）</div></li>
+        <li><a href="https://www.hsbc.com.hk/ways-to-bank/branch/express-banking/" target="_blank" rel="noopener">https://www.hsbc.com.hk/ways-to-bank/branch/express-banking/</a><div class="ref-desc">汇丰 Express Banking。<strong>本页汇丰限额来源：</strong>「<strong>Deposit cash instantly at our Cash Deposit Machines</strong>」；ATM 每日提现上限 <strong>HK$80,000</strong>；「<strong>the overseas ATM daily withdrawal limit (including cash advance) is pre-set to zero</strong>」——海外 ATM 提款预设为 0；转至非登记账户每日上限 HK$400,000；PPS 每日 HK$100,000/卡；EPS/银联每日 HK$50,000/卡。另列出 <strong>Digital Banker 自助服务亭</strong>地点（启德 Kai Tak Mall 2 的 M2-211&amp;212、旺角弥敦道 673 号汇丰大厦 L/G），支持 HKID、通行证（EEP）及合资格海外护照</div></li>
+        <li><a href="https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf" target="_blank" rel="noopener">https://www.hsbc.com.hk/content/dam/hsbc/hk/docs/important-notices/onelimitfaq.pdf</a><div class="ref-desc">汇丰《非香港身份证客户转账及 ATM 提款限额》FAQ。<strong>本页限额表的核心依据：</strong>2026-04-26 及之后首次开户、提供非香港身份证件、且持有汇丰 One 的客户受开户当月及随后 6 个月较低限额；默认值中「转账至非登记收款人分项限额 = <strong>HK$0</strong>」「跨境转账总额 = <strong>HK$0</strong>」「小额转账 = <strong>HK$0</strong>」；官方上限为每日转账总额 HK$1,000,000、跨境转账 HK$1,000,000、非登记收款人 HK$200,000、小额转账 HK$10,000、环球转账至第三方海外汇丰账户 US$50,000</div></li>
+        <li><a href="https://www.customs.gov.hk/tc/about-us/ced-roles/control-and-enforcement/index.html" target="_blank" rel="noopener">https://www.customs.gov.hk/tc/about-us/ced-roles/control-and-enforcement/index.html</a><div class="ref-desc">香港海关「管制及执法」职责页。<strong>确认了现金申报的执法依据：</strong>海关「根據《<strong>實體貨幣及不記名可轉讓票據跨境流動條例</strong>》(第 629 章) 處理有關<strong>大量</strong>實體貨幣及不記名可轉讓票據的申報，以及偵查關於申報及披露規定的違規情況」<br>⚠️ <strong>但本次未能从海关官网找到该条例的具体金额门槛页面</strong>（多个 URL 返回 404，站点已改版）。业内长期执行的口径是「总值超过 <strong>HK$120,000</strong> 须书面申报」。<strong>请打香港海关 +852 2815 7711 或查阅第 629 章原文确认。</strong></div></li>
         <li><a href="https://www.hkex.com.hk/Services/Trading/Securities/Overview/Trading-Mechanism?sc_lang=en" target="_blank" rel="noopener">https://www.hkex.com.hk/Services/Trading/Securities/Overview/Trading-Mechanism?sc_lang=en</a><div class="ref-desc">香港交易所证券交易机制：交易时段、买卖盘类型（增强限价盘/市价盘/竞价盘）、报价规则</div></li>
         <li><a href="https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/Fees/Securities-(Hong-Kong)/Trading?sc_lang=en" target="_blank" rel="noopener">https://www.hkex.com.hk/Services/Rules-and-Fees-and-Fees/Fees/Securities-(Hong-Kong)/Trading?sc_lang=en</a><div class="ref-desc">香港交易所证券交易费用官方页面（交易费、交易系统使用费等，可用来交叉核对各行收费表中转嫁给客户的 HKEX 费用）</div></li>
         <li><a href="https://open.er-api.com/v6/latest/CNY" target="_blank" rel="noopener">https://open.er-api.com/v6/latest/CNY</a><div class="ref-desc">汇率来源（2026-09-21 00:02 UTC 更新）：1 CNY = <strong>1.170289 HKD</strong>，1 CNY = 0.149149 USD（隐含 HKD/USD ≈ 7.846）。文中「5 万人民币 ≈ HK$58,500」即按此折算。<strong>这是参考中间价，不是你实际换汇能拿到的价——银行牌价含点差，通常差 0.3–1%。</strong></div></li>
