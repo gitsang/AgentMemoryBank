@@ -160,7 +160,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#budget">预算</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 31 家特色店铺地图标记）</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 31 家特色店铺及 15 个摄影点地图标记）</div>
 </header>
 
 <main>
@@ -628,14 +628,14 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>行程地图</h2>
-        <p>行程地点按天分色；另加入咖啡、甜品和城市探索/美学空间推荐，可点击图例单独开关。坐标定位到门店或商场入口，无需 API Key；点击标记可查看地址并打开导航。</p>
+        <p>行程地点按天分色；另加入咖啡、甜品、城市探索/美学空间和摄影机位推荐，可点击图例单独开关。坐标定位到门店、空间或观景入口，无需 API Key；点击标记可查看地址并打开导航。</p>
       </div>
       <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
       <div style="position:relative;">
         <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
         <button id="map-fullscreen-btn" type="button" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
       </div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 31 家特色店铺（咖啡 / 甜品 / 城市探索/美学空间）</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 31 家特色店铺（咖啡 / 甜品 / 城市探索/美学空间）+ 15 个摄影点</p>
     </div>
   </section>
 
@@ -1226,6 +1226,24 @@ const SHOP_POIS_ADDITIONS = [
 
 SHOP_POIS.push.apply(SHOP_POIS, SHOP_POIS_ADDITIONS);
 
+const PHOTO_POIS = [
+  { name: '彩虹邨篮球场', hours: '公共屋邨公共空间；现场以开放情况为准', lat: 22.3354, lng: 114.2055, addr: '黄大仙彩虹邨 · 彩色住宅与篮球场', note: '经典彩色几何构图；这里是居民生活空间，请避免长时间占用场地、使用大型脚架或拍摄住户。部分位置可能受维修/重建影响，出发前看现场。' },
+  { name: '怪兽大厦 · 海山楼', hours: '住宅公共空间；请保持安静', lat: 22.2849, lng: 114.2161, addr: '鰂鱼涌英皇道 1026 号一带 · 密集住宅建筑', note: '适合拍垂直仰角和密集楼体；属于住宅，建议白天短暂停留，不要进入住户范围或使用闪光灯。' },
+  { name: '乐华南邨天台机位', hours: '公共空间开放情况以现场为准', lat: 22.3158, lng: 114.2171, addr: '观塘乐华南邨 · 圆环与无穷镜面构图', note: '热门几何摄影点；天台和通道属于居民设施，拍摄前留意告示，不要阻塞通道。' },
+  { name: '南莲园池', hours: '每日 07:00-21:00（以官方公告为准）', lat: 22.3407, lng: 114.2040, addr: '钻石山凤德道 60 号 · 唐式园林与倒影', note: '上午光线柔和，雨后倒影也很适合拍；可和志莲净苑、启德或黄大仙安排在同一天。', link: 'https://www.nanliangarden.org/' },
+  { name: '西环泳棚', hours: '户外地点；日落前到达较安全', lat: 22.2812, lng: 114.1214, addr: '西区西环泳棚 · 海上木栈桥与日落', note: '适合日落和长曝光海景；木桥湿滑，留意潮汐和天气，避免夜间单独走到边缘。' },
+  { name: '坚尼地城西环码头 · Instagram Pier', hours: '户外公共空间；全天可到', lat: 22.2863, lng: 114.1292, addr: '坚尼地城西部海滨 · 货柜、海面与城市天际线', note: '傍晚可拍日落、船只和港岛天际线；风大时注意器材和海边安全。' },
+  { name: '卢吉道观景点', hours: '山径户外；日落前完成回程规划', lat: 22.2781, lng: 114.1485, addr: '太平山卢吉道 · 维港全景与城市夜景', note: '比凌霄阁更适合拍连续城市天际线；建议日落前到达并带小手电，山径照明有限。', link: 'https://www.thepeak.com.hk/en/' },
+  { name: '红香炉峰观景台', hours: '山径户外；按日落时间安排下山', lat: 22.2815, lng: 114.2080, addr: '港岛东北 · 维港东面日落与夜景', note: '适合拍铜锣湾、维港和九龙方向的高位城市景；属于登山路线，穿防滑鞋并预留下山时间。' },
+  { name: '励德邨圆形楼', hours: '住宅公共空间；请保持安静', lat: 22.2818, lng: 114.1928, addr: '大坑励德邨 · 圆形住宅中庭', note: '圆形楼体和中庭很有辨识度；居民区拍摄请勿堵塞出入口，避开住户窗户和私人活动。' },
+  { name: '北角东岸公园', hours: '户外公共空间；全天可到', lat: 22.2925, lng: 114.2059, addr: '北角东岸 · 海滨长廊与维港东景', note: '适合拍城市、船只和日落，空间比热门市中心机位宽松；可和怪兽大厦安排成港岛东半日线。' },
+  { name: '启德海滨观景台', hours: '户外公共空间；全天可到', lat: 22.3214, lng: 114.2147, addr: '启德海滨 · 维港东九龙天际线', note: '适合拍日落、邮轮和九龙东城市线条；可和启德体育园、AIRSIDE或九龙城一起安排。' },
+  { name: '香港理工大学赛马会创新楼', hours: '校园及楼内开放范围以现场安排为准', lat: 22.3043, lng: 114.1823, addr: '红磡香港理工大学 · Zaha Hadid 建筑外观', note: '流线型建筑很适合拍建筑细节；优先在公共道路和校园开放区域拍摄，不要影响教学活动。' },
+  { name: '湾仔蓝屋', hours: '外观全天可看；展览空间以官方公告为准', lat: 22.2774, lng: 114.1726, addr: '湾仔石水渠街 72 号 · 蓝色唐楼与街区建筑', note: '适合拍蓝屋立面、骑楼和湾仔旧区街景；注意不要在住宅门口长时间停留。', link: 'https://www.bluehousehk.com/' },
+  { name: '龙脊观景台', hours: '郊野山径；按日落时间安排下山', lat: 22.2428, lng: 114.2366, addr: '港岛东南龙脊 · 山脊、海湾与远景', note: '晴天适合拍山海层次和航拍感视角；路线需步行，带水、防晒和防滑鞋，不建议夜间摸黑下山。', link: 'https://www.afcd.gov.hk/english/country/cou_vis/cou_vis.html' },
+  { name: '万宜水库东坝', hours: '郊野公园户外地点；交通与开放情况以现场为准', lat: 22.3790, lng: 114.3956, addr: '西贡万宜水库东坝 · 六角柱石与海岸线', note: '香港最有辨识度的地质海岸摄影点之一；距离市区较远，建议预留一整天并确认交通安排。', link: 'https://www.afcd.gov.hk/english/country/cou_vis/cou_vis.html' },
+];
+
 const HOTELS = [
   { name: '香港喜来登酒店', img: 'https://img.alicdn.com/imgextra/i4/6000000006227/O1CN018iT79U1vs1DtOyPvi_!!6000000006227-0-hotel.jpg', hours: '全天24小时', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C', brand: '万豪' },
   { name: '香港万丽海景酒店', img: 'https://img.alicdn.com/imgextra/i3/6000000003829/O1CN01JPVlVJ1e9jfQ9tIlQ_!!6000000003829-0-hotel.jpg', hours: '全天24小时', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK', brand: '万豪' },
@@ -1302,6 +1320,7 @@ makeLegendItem('hotel', '#666', '酒店', 'square');
 makeLegendItem('shop-cafe', '#0f766e', '咖啡店', 'circle');
 makeLegendItem('shop-dessert', '#db2777', '甜品店', 'circle');
 makeLegendItem('shop-artshop', '#b45309', '城市探索/美学空间', 'square');
+makeLegendItem('photo', '#2563eb', '摄影', 'circle');
 
 const allMarkers = [];
 const group = L.featureGroup();
@@ -1435,6 +1454,7 @@ UNSCHEDULED.forEach(function(poi) {
 layerGroups['shop-cafe'] = L.layerGroup();
 layerGroups['shop-dessert'] = L.layerGroup();
 layerGroups['shop-artshop'] = L.layerGroup();
+layerGroups['photo'] = L.layerGroup();
 
 const SHOP_CATEGORIES = {
   cafe: { label: '咖啡店', icon: '☕', color: '#0f766e' },
@@ -1465,6 +1485,30 @@ SHOP_POIS.forEach(function(shop) {
   allMarkers.push(marker);
   spiderfyClick(marker);
   layerGroups['shop-' + shop.category].addLayer(marker);
+});
+
+PHOTO_POIS.forEach(function(photo) {
+  const icon = L.divIcon({
+    html: '<div style="background:#2563eb;color:#fff;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">📷</div>',
+    className: 'photo-marker',
+    iconSize: [27, 27],
+    iconAnchor: [13.5, 13.5],
+    popupAnchor: [0, -13.5],
+  });
+  const marker = L.marker([photo.lat, photo.lng], { icon: icon });
+  marker.bindPopup(buildPopup({
+    icon: '📷',
+    name: photo.name,
+    addr: photo.addr,
+    tags: [{ label: '摄影', bg: '#2563eb22', color: '#2563eb' }],
+    note: photo.note,
+    hours: photo.hours,
+    link: photo.link,
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(photo.name + ' ' + photo.addr),
+  }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
+  layerGroups['photo'].addLayer(marker);
 });
 
 layerGroups['hotel'] = L.layerGroup();
