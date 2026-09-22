@@ -160,7 +160,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#budget">预算</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21）</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 22 家特色店铺地图标记）</div>
 </header>
 
 <main>
@@ -628,14 +628,14 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>行程地图</h2>
-        <p>行程所有地点标注在地图上，按天分色。坐标来自 fly.ai、官方地址与地图核验，无需 API Key。点击标记查看详情。</p>
+        <p>行程地点按天分色；另加入咖啡、甜品和文艺店铺推荐，可点击图例单独开关。坐标定位到门店或商场入口，无需 API Key；点击标记可查看地址并打开导航。</p>
       </div>
       <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
       <div style="position:relative;">
         <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
         <button id="map-fullscreen-btn" type="button" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
       </div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 坐标来自 fly.ai、已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 22 家特色店铺（咖啡 / 甜品 / 文艺好拍）</p>
     </div>
   </section>
 
@@ -1187,6 +1187,31 @@ const UNSCHEDULED = [
   { name: '都爹利街', img: 'https://img.alicdn.com/bao/uploaded/i4/3075347564/O1CN01RU9sWy25kMzDWfSHB_!!3075347564.jpg', hours: '全天开放（煤气灯24小时亮）', lat: 22.2839, lng: 114.1547, addr: '中环都爹利街 · 煤气灯石阶·TVB取景' },
 ];
 
+const SHOP_POIS = [
+  { name: 'Halfway Coffee', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.2849, lng: 114.1501, addr: '上环般咸道 / 普庆坊一带 · 小店窗边位适合拍街景', note: '上环旧楼街区里的小型咖啡店，适合和文武庙、嘉咸街、PMQ串成一段步行路线。' },
+  { name: 'The Cupping Room · 中环店', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.2837, lng: 114.1544, addr: '中环歌赋街 1 号 · 手冲与精品咖啡', note: '离大馆、嘉咸街和镛记较近，适合 D3 上午或午餐前后短暂停留。' },
+  { name: 'NOC Coffee Co. · 西营盘', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.2876, lng: 114.1424, addr: '西营盘高街 34 号 · 工业风咖啡店', note: '如果 D4 港大行程提早结束，可顺路去西营盘拍旧楼街景；前往前确认分店营业状态。' },
+  { name: 'The Coffee Academics · 铜锣湾', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.2788, lng: 114.1838, addr: '铜锣湾耀华街 38 号 · 咖啡与轻食', note: '靠近时代广场、怡和午炮，适合 D6 上午或返程前补一杯咖啡。' },
+  { name: 'Elephant Grounds · 星街', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.2779, lng: 114.1685, addr: '湾仔星街一带 · 室内外座位与街角构图', note: '星街小巷、彩色店面和石阶都很适合拍照；从中环步行或搭电车可达。' },
+  { name: '% Arabica · K11 MUSEA', category: 'cafe', hours: '随 K11 MUSEA 商场时间调整', lat: 22.2948, lng: 114.1785, addr: '尖沙咀梳士巴利道 18 号 K11 MUSEA · 维港一带', note: '适合雨天和海滨行程，买咖啡后可顺便拍 K11 MUSEA 的室内建筑与维港景色。' },
+  { name: 'Knockbox Coffee Company', category: 'cafe', hours: '营业时间以店铺当天公告为准', lat: 22.3191, lng: 114.1695, addr: '旺角黑布街 21 号 · 本地咖啡小店', note: '可和信和中心、女人街、波鞋街放在同一条旺角路线里。' },
+  { name: 'Oddies Foodies', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2842, lng: 114.1519, addr: '中环歌赋街 45 号 · 鸡蛋仔配意式雪糕', note: '造型好拍、适合边走边吃；和大馆、PMQ、嘉咸街在同一片区。' },
+  { name: 'Via Tokyo · 铜锣湾', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2796, lng: 114.1852, addr: '铜锣湾一带 · 京都抹茶甜品', note: '抹茶芭菲和软雪糕适合拍照，离时代广场、SOGO和怡和午炮不远。' },
+  { name: '利强记北角鸡蛋仔', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2912, lng: 114.1942, addr: '北角英皇道一带 · 传统鸡蛋仔', note: '想看更生活化的港岛街景可去北角；距离你们主线较远，适合作为加餐备选。' },
+  { name: '聪嫂星级甜品专科', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.3042, lng: 114.1711, addr: '佐敦宁波街一带 · 芒果与传统糖水', note: '可和白加士街、庙街、油麻地天后庙串联；晚间甜品选择较方便。' },
+  { name: 'Lady M · IFC商场', category: 'dessert', hours: '随 IFC 商场时间调整', lat: 22.2858, lng: 114.1586, addr: '中环金融街 8 号 IFC 商场 · 千层蛋糕', note: '环境整洁、适合拍蛋糕细节；D3 中环路线遇雨时可作室内备选。' },
+  { name: 'Matcha Café Maiko · 尖沙咀', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2968, lng: 114.1737, addr: '尖沙咀商圈 · 日式抹茶芭菲与软雪糕', note: '适合和重庆大厦、尖沙咀海滨、1881 Heritage一起安排。' },
+  { name: 'Shari Shari Kakigori House', category: 'dessert', hours: '营业时间以店铺当天公告为准', lat: 22.2793, lng: 114.1831, addr: '铜锣湾一带 · 日式刨冰', note: '季节性甜品，出发前确认是否营业；适合 D6 铜锣湾逛街中途休息。' },
+  { name: 'PMQ 元创方 · 设计店群', category: 'artshop', hours: '公共空间全天可到；各店约中午后营业', lat: 22.2832, lng: 114.1519, addr: '中环鸭巴甸街 35 号 · 本地设计、家品与文创', note: '旧警察宿舍活化建筑，楼梯、天井和店铺橱窗都好拍；你们 D3 已安排。', link: 'https://www.pmq.org.hk/' },
+  { name: '大馆 Tai Kwun · 文创店群', category: 'artshop', hours: '场地与商户时间以官网当天公告为准', lat: 22.2815, lng: 114.1542, addr: '中环荷李活道 10 号 · 历史建筑与展览商店', note: '红砖建筑、拱廊和监狱空间适合拍建筑与人像；D3 可和中环街市、PMQ连走。', link: 'https://www.taikwun.hk/en/' },
+  { name: 'G.O.D. · 中环街市店', category: 'artshop', hours: '随中环街市商场时间调整', lat: 22.2840, lng: 114.1555, addr: '中环皇后大道中 93 号中环街市 · 香港风格家品与礼物', note: '适合买带有香港视觉元素的纪念品，建筑内部也适合拍照。' },
+  { name: 'M+ Shop', category: 'artshop', hours: '随 M+ 博物馆开放时间调整', lat: 22.3007, lng: 114.1603, addr: '西九文化区 M+ 博物馆内 · 设计书、海报与展览周边', note: '和 M+ 看展一起安排，适合买设计类纪念品；你们 D2 已安排。', link: 'https://www.mplus.org.hk/en/plan-your-visit/' },
+  { name: 'K11 MUSEA · 艺术商场', category: 'artshop', hours: '每日约10:00-22:00，各店不同', lat: 22.2948, lng: 114.1785, addr: '尖沙咀梳士巴利道 18 号 · 艺术装置、设计店与海景', note: '室内艺术装置、楼梯和中庭很适合雨天出片，也方便和星光大道连走。' },
+  { name: 'The Mills 南丰纱厂', category: 'artshop', hours: '场地与店铺时间以官网当天公告为准', lat: 22.3709, lng: 114.1136, addr: '荃湾白田坝街 45 号 · 工业建筑、设计店与展览', note: '旧纺织厂活化空间，适合喜欢工业风和设计小店的人；从市区前往需预留半天。', link: 'https://www.themills.com.hk/' },
+  { name: 'JCCAC 赛马会创意艺术中心', category: 'artshop', hours: '各工作室和展览时间不同', lat: 22.3378, lng: 114.1635, addr: '石硖尾白田街 30 号 · 艺术工作室与展览', note: '适合看本地艺术家工作室、楼梯和旧校舍空间；前往前查看当日开放工作室。', link: 'https://www.jccac.org.hk/' },
+  { name: 'Kubrick · 油麻地', category: 'artshop', hours: '随百老汇电影中心及书店时间调整', lat: 22.3121, lng: 114.1691, addr: '油麻地众坊街 3 号百老汇电影中心 · 书店与电影周边', note: '电影书、独立出版物和影院空间适合慢逛，可和油麻地戏院、果栏放在一条线上。' },
+];
+
 const HOTELS = [
   { name: '香港喜来登酒店', img: 'https://img.alicdn.com/imgextra/i4/6000000006227/O1CN018iT79U1vs1DtOyPvi_!!6000000006227-0-hotel.jpg', hours: '全天24小时', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C', brand: '万豪' },
   { name: '香港万丽海景酒店', img: 'https://img.alicdn.com/imgextra/i3/6000000003829/O1CN01JPVlVJ1e9jfQ9tIlQ_!!6000000003829-0-hotel.jpg', hours: '全天24小时', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK', brand: '万豪' },
@@ -1260,6 +1285,9 @@ for (let d = 1; d <= 6; d++) {
 }
 makeLegendItem('unscheduled', '#999', '备用景点', 'dashed');
 makeLegendItem('hotel', '#666', '酒店', 'square');
+makeLegendItem('shop-cafe', '#0f766e', '咖啡店', 'circle');
+makeLegendItem('shop-dessert', '#db2777', '甜品店', 'circle');
+makeLegendItem('shop-artshop', '#b45309', '文艺好拍 / 设计店', 'square');
 
 const allMarkers = [];
 const group = L.featureGroup();
@@ -1325,7 +1353,10 @@ function buildPopup(d) {
     h += '<div style="margin-top:6px;padding-top:6px;border-top:1px solid #eee;font-size:12px;color:#888;font-style:italic;">💡 ' + d.note + '</div>';
   }
   if (d.link) {
-    h += '<a href="' + d.link + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:12px;color:#2f6feb;text-decoration:none;">查看 / 预订 »</a>';
+    h += '<a href="' + d.link + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-size:12px;color:#2f6feb;text-decoration:none;">查看官网 »</a>';
+  }
+  if (d.mapLink) {
+    h += '<a href="' + d.mapLink + '" target="_blank" rel="noopener" style="display:inline-block;margin:8px 0 0 10px;font-size:12px;color:#2f6feb;text-decoration:none;">打开导航 »</a>';
   }
   h += '</div>';
   return h;
@@ -1385,6 +1416,41 @@ UNSCHEDULED.forEach(function(poi) {
   allMarkers.push(marker);
   spiderfyClick(marker);
   layerGroups['unscheduled'].addLayer(marker);
+});
+
+layerGroups['shop-cafe'] = L.layerGroup();
+layerGroups['shop-dessert'] = L.layerGroup();
+layerGroups['shop-artshop'] = L.layerGroup();
+
+const SHOP_CATEGORIES = {
+  cafe: { label: '咖啡店', icon: '☕', color: '#0f766e' },
+  dessert: { label: '甜品店', icon: '🍧', color: '#db2777' },
+  artshop: { label: '文艺好拍 / 设计店', icon: '🎨', color: '#b45309' },
+};
+
+SHOP_POIS.forEach(function(shop) {
+  const category = SHOP_CATEGORIES[shop.category];
+  const icon = L.divIcon({
+    html: '<div style="background:' + category.color + ';color:#fff;width:27px;height:27px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">' + category.icon + '</div>',
+    className: 'shop-marker',
+    iconSize: [27, 27],
+    iconAnchor: [13.5, 13.5],
+    popupAnchor: [0, -13.5],
+  });
+  const marker = L.marker([shop.lat, shop.lng], { icon: icon });
+  marker.bindPopup(buildPopup({
+    icon: category.icon,
+    name: shop.name,
+    addr: shop.addr,
+    tags: [{ label: category.label, bg: category.color + '22', color: category.color }],
+    note: shop.note || '营业时间、分店和菜单可能调整，出发前请打开导航页面确认。',
+    hours: shop.hours,
+    link: shop.link,
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(shop.name + ' ' + shop.addr),
+  }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
+  layerGroups['shop-' + shop.category].addLayer(marker);
 });
 
 layerGroups['hotel'] = L.layerGroup();
