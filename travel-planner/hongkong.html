@@ -160,7 +160,7 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
       <a href="#budget">预算</a>
     </nav>
   </div>
-  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 31 家特色店铺及 15 个摄影点地图标记）</div>
+  <div id="last-updated" style="text-align:center;font-size:11px;color:var(--muted);padding:2px 0;background:color-mix(in oklch,var(--surface) 50%,transparent);">最后更新：2026-09-21 · 出发前 3 天核验（天气按天文台 9/21 00:00 更新；价格核对于 2026-09-18；App 分组与 Play 链接、路线与地图精简于 9/21；新增 31 家特色店铺、15 个摄影点及 6 个药房点地图标记）</div>
 </header>
 
 <main>
@@ -556,9 +556,15 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
 </div>
     <div class="tl-node">
   <div class="tl-dot tl-dot-attraction">★</div>
-  <div class="tl-header"><span class="tl-time">11:05</span><span class="tl-title">S · 崇光百货 · 时代广场</span><span class="tl-duration">约 35 分钟</span></div>
-  <div class="tl-body"><p>铜锣湾双核心购物，集中补齐伴手礼；11:40 准时离开，午炮不等人。</p></div>
-  <div class="tl-tags"><span class="pill pill-attraction">购物</span><span class="tag">11:40离开</span></div>
+  <div class="tl-header"><span class="tl-time">11:05</span><span class="tl-title">S · 崇光百货 · 时代广场</span><span class="tl-duration">约 20 分钟</span></div>
+  <div class="tl-body"><p>铜锣湾双核心购物，先集中补齐伴手礼；11:25 前转到时代广场内的万宁，11:40 准时离开，午炮不等人。</p></div>
+  <div class="tl-tags"><span class="pill pill-attraction">购物</span><span class="tag">11:25转药房</span></div>
+</div>
+    <div class="tl-node">
+  <div class="tl-dot tl-dot-transport">💊</div>
+  <div class="tl-header"><span class="tl-time">11:25</span><span class="tl-title">S · 购药 · 万宁时代广场</span><span class="tl-duration">约 10 分钟</span></div>
+  <div class="tl-body"><p>本次行程选定的购药点。优先购买常用非处方药、创可贴、防蚊或个人护理用品；购买前向药剂师说明症状、过敏史和正在服用的药。抗生素、类固醇和其他处方药不要自行购买。</p></div>
+  <div class="tl-tags"><span class="pill pill-transport">药房</span><span class="tag">确认成分</span><span class="tag">11:35离开</span></div>
 </div>
     <div class="tl-move"><span class="tl-move-icon">🚶 S：时代广场/崇光→告士打道午炮观赏区 · 11:40 出发</span><span class="tl-move-time">约 10–15 分钟 · 11:50 前就位</span></div>
     <div class="tl-node">
@@ -628,14 +634,14 @@ details.day-section[open]>summary::after{transform:rotate(45deg)}
     <div class="container">
       <div class="section-header">
         <h2>行程地图</h2>
-        <p>行程地点按天分色；另加入咖啡、甜品、城市探索/美学空间和摄影机位推荐，可点击图例单独开关。坐标定位到门店、空间或观景入口，无需 API Key；点击标记可查看地址并打开导航。</p>
+        <p>行程地点按天分色；另加入咖啡、甜品、城市探索/美学空间、摄影机位和药房推荐，可点击图例单独开关。坐标定位到门店、空间或观景入口，无需 API Key；点击标记可查看地址并打开导航。</p>
       </div>
       <div id="map-legend" style="display:flex;margin-bottom:12px;flex-wrap:wrap;gap:12px;font-size:13px;"></div>
       <div style="position:relative;">
         <div id="leaflet-map" style="height:600px;border-radius:var(--radius-md);border:1px solid var(--border);"></div>
         <button id="map-fullscreen-btn" type="button" style="position:absolute;top:10px;right:10px;z-index:1000;background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);">⛶ 全屏</button>
       </div>
-      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 31 家特色店铺（咖啡 / 甜品 / 城市探索/美学空间）+ 15 个摄影点</p>
+      <p style="margin-top:16px;font-size:12px;color:var(--muted);">地图：OpenStreetMap · 已标注 38 个行程地点 + 65 个备用景点 + 18 家酒店 + 31 家特色店铺（咖啡 / 甜品 / 城市探索/美学空间）+ 15 个摄影点 + 6 个药房点</p>
     </div>
   </section>
 
@@ -1244,6 +1250,15 @@ const PHOTO_POIS = [
   { name: '万宜水库东坝', hours: '郊野公园户外地点；交通与开放情况以现场为准', lat: 22.3790, lng: 114.3956, addr: '西贡万宜水库东坝 · 六角柱石与海岸线', note: '香港最有辨识度的地质海岸摄影点之一；距离市区较远，建议预留一整天并确认交通安排。', link: 'https://www.afcd.gov.hk/english/country/cou_vis/cou_vis.html' },
 ];
 
+const PHARMACY_POIS = [
+  { name: '万宁 · 圆方 Elements', hours: '随圆方商场营业时间调整；药房柜台以当天安排为准', lat: 22.3048, lng: 114.1619, addr: '九龙站圆方 Elements · 近 W 酒店、圆方 L1', note: '适合买常用非处方药、旅行用品和个人护理用品；如需处方药，先向注册药剂师确认。坐标定位到商场入口，出发前在导航中确认具体店位。', link: 'https://www.mannings.com.hk/' },
+  { name: '屈臣氏 · 朗豪坊', hours: '随朗豪坊商场营业时间调整', lat: 22.3186, lng: 114.1684, addr: '旺角朗豪坊 · 近亚皆老街与砵兰街', note: '适合接在信和中心、波鞋街和女人街路线中购买常用药；需要处方或特殊药物时找店内药剂师。', link: 'https://www.watsons.com.hk/' },
+  { name: '万宁 · 尖沙咀海港城', hours: '随海港城商场营业时间调整', lat: 22.2945, lng: 114.1668, addr: '尖沙咀海港城一带 · 广东道', note: 'D2 去维园前或回程时可作备用购药点；大型商场分店适合一次补齐药品和旅行用品。', link: 'https://www.mannings.com.hk/' },
+  { name: '屈臣氏 · IFC 商场', hours: '随 IFC 商场营业时间调整', lat: 22.2858, lng: 114.1586, addr: '中环金融街 8 号 IFC 商场 · 近中环码头', note: 'D3 中环主线附近的备用点；若买的是处方药、儿童药或有慢性病用药，带上原包装和药名。', link: 'https://www.watsons.com.hk/' },
+  { name: '万宁 · 时代广场', hours: '随时代广场营业时间调整', lat: 22.2808, lng: 114.1852, addr: '铜锣湾时代广场 · 轩尼诗道一带', note: '本次行程选定的购药点，靠近 D6 上午的 SOGO/时代广场购物；先确认成分，避免重复服用含扑热息痛的感冒药。', link: 'https://www.mannings.com.hk/' },
+  { name: '屈臣氏 · 新城市广场', hours: '随新城市广场商场营业时间调整', lat: 22.3824, lng: 114.1882, addr: '沙田新城市广场 · 近沙田站', note: 'D4 沙田马场方向的备用点；若当天需要补药，可在前往马场前安排，不要错过入场时间。', link: 'https://www.watsons.com.hk/' },
+];
+
 const HOTELS = [
   { name: '香港喜来登酒店', img: 'https://img.alicdn.com/imgextra/i4/6000000006227/O1CN018iT79U1vs1DtOyPvi_!!6000000006227-0-hotel.jpg', hours: '全天24小时', price: '¥2818', lat: 22.2988, lng: 114.1720, addr: '尖沙咀弥敦道20号', dist: '0.5km', url: 'https://a.feizhu.com/4R852C', brand: '万豪' },
   { name: '香港万丽海景酒店', img: 'https://img.alicdn.com/imgextra/i3/6000000003829/O1CN01JPVlVJ1e9jfQ9tIlQ_!!6000000003829-0-hotel.jpg', hours: '全天24小时', price: '¥2104', lat: 22.2823, lng: 114.1717, addr: '湾仔港湾道1号', dist: '1.4km', url: 'https://a.feizhu.com/2YeCgK', brand: '万豪' },
@@ -1321,6 +1336,7 @@ makeLegendItem('shop-cafe', '#0f766e', '咖啡店', 'circle');
 makeLegendItem('shop-dessert', '#db2777', '甜品店', 'circle');
 makeLegendItem('shop-artshop', '#b45309', '城市探索/美学空间', 'square');
 makeLegendItem('photo', '#2563eb', '摄影', 'circle');
+makeLegendItem('pharmacy', '#059669', '药房', 'square');
 
 const allMarkers = [];
 const group = L.featureGroup();
@@ -1455,6 +1471,7 @@ layerGroups['shop-cafe'] = L.layerGroup();
 layerGroups['shop-dessert'] = L.layerGroup();
 layerGroups['shop-artshop'] = L.layerGroup();
 layerGroups['photo'] = L.layerGroup();
+layerGroups['pharmacy'] = L.layerGroup();
 
 const SHOP_CATEGORIES = {
   cafe: { label: '咖啡店', icon: '☕', color: '#0f766e' },
@@ -1509,6 +1526,30 @@ PHOTO_POIS.forEach(function(photo) {
   allMarkers.push(marker);
   spiderfyClick(marker);
   layerGroups['photo'].addLayer(marker);
+});
+
+PHARMACY_POIS.forEach(function(pharmacy) {
+  const icon = L.divIcon({
+    html: '<div style="background:#059669;color:#fff;width:27px;height:27px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);">💊</div>',
+    className: 'pharmacy-marker',
+    iconSize: [27, 27],
+    iconAnchor: [13.5, 13.5],
+    popupAnchor: [0, -13.5],
+  });
+  const marker = L.marker([pharmacy.lat, pharmacy.lng], { icon: icon });
+  marker.bindPopup(buildPopup({
+    icon: '💊',
+    name: pharmacy.name,
+    addr: pharmacy.addr,
+    tags: [{ label: '药房', bg: '#05966922', color: '#059669' }],
+    note: pharmacy.note,
+    hours: pharmacy.hours,
+    link: pharmacy.link,
+    mapLink: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(pharmacy.name + ' ' + pharmacy.addr),
+  }));
+  allMarkers.push(marker);
+  spiderfyClick(marker);
+  layerGroups['pharmacy'].addLayer(marker);
 });
 
 layerGroups['hotel'] = L.layerGroup();
