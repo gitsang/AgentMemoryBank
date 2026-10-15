@@ -31,17 +31,26 @@
 
   /* ------------------------------------------------ chapter rail ------ */
   var rail = document.getElementById('rail');
-  if (rail && 'IntersectionObserver' in window) {
-    var links = {};
+  var railWide = window.matchMedia('(min-width: 1400px)');
+  if (rail && railWide.matches) {
+    var railLinks = {};
+    var railSections = [];
     Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a) {
-      links[a.getAttribute('href').slice(1)] = a;
+      var id = a.getAttribute('href').slice(1);
+      var sec = document.getElementById(id);
+      if (!sec) return;
+      railLinks[id] = a;
+      railSections.push(sec);
     });
-    var active = null;
+
+    var activeId = null;
     function activate(id) {
-      var a = links[id];
-      if (!a || a === active) return;
-      if (active) active.classList.remove('is-active');
-      active = a;
+      if (id === activeId || !railLinks[id]) return;
+      if (activeId && railLinks[activeId]) {
+        railLinks[activeId].classList.remove('is-active');
+      }
+      activeId = id;
+      var a = railLinks[id];
       a.classList.add('is-active');
       var top = a.offsetTop;
       if (top < rail.scrollTop ||
@@ -49,15 +58,33 @@
         rail.scrollTop = top - rail.clientHeight / 2;
       }
     }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) activate(en.target.id);
-      });
-    }, { rootMargin: '-12% 0px -72% 0px' });
-    Object.keys(links).forEach(function (id) {
-      var sec = document.getElementById(id);
-      if (sec) observer.observe(sec);
-    });
+
+    // The current section is the last one whose top has crossed the reading
+    // line. Recomputed from position on every scroll rather than latched when
+    // an observer fires, so a jumped-to or previously-visited chapter cannot
+    // keep the highlight.
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var line = window.innerHeight * 0.28;
+      var found = railSections[0];
+      for (var i = 0; i < railSections.length; i++) {
+        if (railSections[i].getBoundingClientRect().top <= line) {
+          found = railSections[i];
+        } else {
+          break;
+        }
+      }
+      if (found) activate(found.id);
+    }
+    function request() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request);
+    update();
   }
 
   /* --------------------------------------------------------- glossary --- */
