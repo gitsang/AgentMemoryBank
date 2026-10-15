@@ -17,7 +17,6 @@ build_book.py       EPUB  -> sections JSON (text + figures)
 build_html.py       sections JSON -> index.html (translations, notes, glossary)
 extract_paragraphs.py      sections JSON -> translatable-paragraph work queue
 translations.example.json  worked example of the translation sidecar
-reading-guide.json  condensed Chinese paragraph guide for Chapter 1
 glossary.json       terminology glossary (en / zh / explanation)
 annotations.json    Chinese margin annotations, keyed by section + paragraph
 page.js             reader-side JS: glossary popovers and visibility toggles
@@ -79,11 +78,6 @@ Notes on fidelity:
 The page can carry a second language interleaved under each paragraph. The
 translation text is kept in a sidecar file rather than baked into the HTML, so
 the page can be rebuilt at any time and partial work is fine.
-
-`reading-guide.json` uses the same sidecar format but a `label` field, so the
-toggle reads 导读 rather than 中文. Its content is a **condensed paragraph-by-
-paragraph guide** — my own abridgement of the argument each paragraph advances,
-not a sentence-by-sentence translation of the chapter.
 
 Workflow:
 
@@ -169,8 +163,8 @@ are my own reading notes on the argument — context, caveats and where Bogle's
 framing is doing rhetorical work rather than measurement — not a rendering of
 the original text.
 
-A `label` field in the sidecar (as in `reading-guide.json`) renames the toggle,
-which keeps a guide from being presented as a translation.
+An optional `label` field in the sidecar renames the floating toggle, so a
+sidecar that is not a straight translation is not presented as one.
 
 ### Floating toolbar
 
