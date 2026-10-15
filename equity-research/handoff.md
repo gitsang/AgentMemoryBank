@@ -1,22 +1,46 @@
 # Equity Research · 交接文档（handoff）
 
-> **交接时间：** 2026-10-15
-> **交接人：** 上一轮 agent（会话主题：安装股票分析 skill → MiniMax 深度研究 → 投资入门教学）
+> **交接时间：** 2026-10-15（第二轮交接）
+> **交接人：** 上一轮 agent（会话主题：安装股票分析 skill → MiniMax 深度研究 → 投资入门教学 → 小米教学切片）
 > **接收人：** 新 agent，请完整读完本文件再动手
 > **用户画像：** 投资新手，资金量小，"闲钱试水"级别；会问"你推荐买哪个"。**不要给买卖建议**，要给可验证的分析和决策纪律。
 
 ---
 
+## 〇、第二轮交接摘要（先读这一段）
+
+**用户选择了方案 B（教学切片），已完成。**
+
+| 本轮新增 | 状态 | 产出 |
+|---|---|---|
+| `uv.lock` 固化工具链（用户点名要求） | ✅ | `tools/quote.py` + `quote.py.lock`，`uv run --script` 即用 |
+| 小米一手财务数据 | ✅ | 两个子代理并行采集（各 ~230–290k token） |
+| 小米估值（DCF/EPV/EVA/MC/SOTP/仓位） | ✅ | `xiaomi/work/assumptions.json`，检查器 P0=0 P1=0 P2=0 |
+| **小米教学切片（交付物）** | ✅ | `xiaomi/teaching-slice-20261015.md`（693 行） |
+
+**小米结论（非投资建议）：内在价值"合理" | 未来 1–3 个月方向偏下 | 动作观望**
+- 综合区间 **15.0–26.8 RMB/股 = 17.6–31.4 HKD**，现价 27.08 HKD 落在区间内
+- 情景加权 21.6 RMB（−6.3%）｜蒙特卡洛 P25–P75 = 16.4–33.3 HKD｜P(loss) = 62%
+- 反向 DCF：现价隐含 5 年营收 CAGR **14%@5% FCF 率**（约第 80 分位）
+- PVGO = **45%**（对比 MiniMax 的 166%）
+- 反向 SOTP：现价给硬件业务 **1.06x EV/收入 = 1.7 倍于联想**；或要求互联网服务给 **5.9x**（腾讯水平）——而它只增长 +1.9%
+- 财报可信度 **B**（M-Score −2.29 未越限；但现金转化率 82.1%→14.4%）
+
+**已验证的 uv lock 方案**（见 3.2 节）——用户提的"能不能直接用 uv.lock 固化"，**能，且已做好**。
+
+**本轮踩坑（已写入报告作为教学素材）**：净债符号写反（EV 682 vs 509）、CAGR 口径不一致、P/E 三种口径混用。**教训：跨期/跨口径比较前先固定口径，且所有数字必须脚本复核。**
+
+---
+
 ## 一、这份交接要解决什么
 
-用户的目标已经**从"帮我找个能涨的票"转变为"我想学习投资经验"**。这是本次会话最重要的转折，新 agent 必须理解：
+用户的目标已经**从"帮我找个能涨的票"转变为"我想学习投资经验"**。这是最重要的事实：
 
-- 用户最初想做 MiniMax（00100.HK）的股票分析 → 已完成，结论是"无法估值，不碰"
-- 用户随后问"20 股闲钱试水，什么价格买" → 被引导到"决策质量 ≠ 结果质量"的讨论
-- 用户问"小米/阿里怎么样，我认识的公司不多" → 已拉取基础数据（见第二章），**分析未开始**
-- 用户明确表达了学习意图 → 建议以小米为首个练习标的
+- MiniMax（00100.HK）分析 → 完成，结论"无法估值，不碰"
+- 小米教学切片 → **完成**（本轮），结论"合理，观望"
+- 用户明确表达了学习意图 → 已给出 90 天练习路径
 
-**当前状态：小米的分析尚未开始。这是新 agent 的主要工作。**
+**当前状态：小米教学切片已交付。下一步待用户选择（见附录 D）。**
 
 ---
 
@@ -26,23 +50,21 @@
 
 | 项目 | 状态 | 产出位置 |
 |---|---|---|
-| 安装 equity-research skill | ✅ 完成 | `~/.agents/skills/equity-research/` |
-| MiniMax（00100.HK）深度研究报告 | ✅ 完成（九章，检查器 P0=0 P1=0） | `./minimax-00100/report/` |
-| MiniMax 估值假设与脚本输出 | ✅ 完成（内部留档） | `./minimax-00100/work/` |
-| 小米 / 阿里的基础数据采集 | ✅ 完成（仅数据，无分析） | `./xiaomi/screening-data-20261015.md` |
-| 投资入门方法论讨论 | ✅ 完成 | 见本文件第六章 |
+| 安装 equity-research skill | ✅ | `~/.agents/skills/equity-research/` |
+| MiniMax（00100.HK）深度研究报告 | ✅（九章，检查器 P0=0 P1=0） | `./minimax-00100/report/` |
+| MiniMax 估值假设与脚本输出 | ✅ | `./minimax-00100/work/` |
+| `uv.lock` 工具链固化 | ✅ **本轮新增** | `./tools/quote.py` |
+| 小米一手财务数据（子代理） | ✅ **本轮新增** | `./xiaomi/market-data-20261015.md` |
+| 小米估值全流程 | ✅ **本轮新增** | `./xiaomi/work/` |
+| **小米教学切片** | ✅ **本轮新增** | `./xiaomi/teaching-slice-20261015.md` |
+| 阿里基础数据 | ✅（仅数据） | `./xiaomi/screening-data-20261015.md` |
 
-### 2.2 下一步（建议按顺序）
+### 2.2 下一步（待用户确认，三个选项）
 
-1. **对小米做完整九章研究**（用 `equity-research` skill）
-   - 行业附录应为 `hardware`（硬件/消费电子/AI 服务器），次附录 `autos-ev`（汽车）
-   - 注意：小米是**多分部公司**，`industry-routing.md` 要求控股公司/三分部以上按 SOTP 拆分
-2. **然后对阿里做同样的事**（工业附录应为 `internet-platform` + `capital-markets`）
-3. 小米完成后，**带用户逐段读报告**，重点讲解：
-   - "事实" vs "我的判断" 的标注分离
-   - 哪些结论因数据不足只能写"未获取到"
-   - DCF 为什么与现价差很远
-   - **口径一致性**（见第五章的踩坑记录）
+1. **方案 A：小米完整九章报告**（补齐附录 C 的 7 个章节，30–60 分钟）
+2. **方案 B2：只补做第九章反方论证 / Pre-mortem**（15 分钟，专练批判性思维）
+3. **方案 C：带用户开始 90 天练习第一周**（只做"找三个数"，不看股价）
+4. 阿里分析（用户此前提过"小米/阿里怎么样"，**阿里仍未开始**）
 
 ---
 
@@ -76,20 +98,34 @@
 - 自然语言："分析一下 1810.HK" / "小米值不值得买"
 - 强制调用：`/skill:equity-research 分析小米集团`
 
-### 3.2 Python 环境（有坑）
+### 3.2 Python 环境（有坑，本轮已解决）
 
 | 项目 | 状态 | 说明 |
 |---|---|---|
 | 系统 Python | **3.13.5** | PEP 668 锁定，`pip install` 直接失败 |
 | 标准库 / pandas / numpy / requests / scipy / openpyxl / matplotlib | ✅ 已装 | `dcf.py` 与检查器**只用标准库**，无需额外依赖 |
-| akshare / yfinance / tushare / efinance | ❌ **未装** | 需要时用 `uv venv` 绕过 PEP 668 |
-| pypdf / pdftotext | ❌ 未装 | PDF 只能靠 `tvly extract` 转文本 |
+| akshare / tushare / efinance | ❌ 未装 | 本轮改用了下面的 uv 方案，不再需要 |
+| **uv** | ✅ **0.12.24** | `/home/sang/.local/bin/uv` |
 
-**绕过 PEP 668 的可用方式**（本会话验证过）：
+**✅ 已固化的方案（用户点名要求，本轮完成）**
+
+`tools/quote.py` 用 **PEP 723 内联依赖声明** + `uv lock --script`：
+
 ```bash
-uv venv /path/to/.venv --quiet
-uv pip install --python /path/to/.venv/bin/python yfinance
+cd tools
+uv lock --script quote.py          # 生成 quote.py.lock（265KB，已落盘，应提交）
+uv run --script quote.py hk01810 hk09988              # 腾讯行情（主源，GBK）
+uv run --script quote.py --kline hk01810 --limit 400  # 历史日线（前复权）
+uv run --script quote.py --yahoo 1810.HK              # yfinance 兜底
 ```
+
+**为什么比上一轮的 `uv venv` 手流程好：**
+- **不污染任何 venv**，自动建隔离环境
+- **单文件自带依赖声明**（`# /// script` 块），无需 requirements.txt
+- **lock 锁死版本**，可复现
+- 腾讯行情（稳定）+ yfinance（兜底）已验证
+
+**其他脚本**：`tools/fin.py`（yfinance 三表）—— ⚠ **本轮实测被 Yahoo 限流（Too Many Requests），一手数据靠 `tvly` 更可靠**。
 
 ### 3.3 网络环境（重要，影响采集策略）
 
@@ -341,23 +377,84 @@ curl -s "https://web.ifzq.gtimg.cn/appstock/app/hkfqkline/get?param=hk01810,day,
 ```
 ~/src/github.com/gitsang/AgentMemoryBank/equity-research/
 ├── handoff.md                                ← 本文件
+├── tools/                                    ← ★ 本轮新增：uv 固化的数据工具
+│   ├── quote.py                              ← PEP 723 内联依赖，腾讯行情 + yfinance 兜底
+│   ├── quote.py.lock                         ← uv lock 产物（265KB）
+│   └── fin.py / fin.py.lock                  ← yfinance 三表（⚠ 被 Yahoo 限流，不可靠）
 ├── minimax-00100/
 │   ├── report/MiniMax_00100_个股投资研究报告_20261015.md   ← 九章完整报告（已勘误）
 │   └── work/                                 ← 估值留档（内部文件，不对外交付）
 │       ├── assumptions.json                  ← dcf.py config，可复算
-│       ├── dcf_output.txt                    ← 脚本原始输出
-│       ├── checker_output.txt                ← 检查器结果
-│       ├── financials.csv                    ← 财报对账 CSV
-│       ├── fy2025_annual.txt                 ← 经审计 FY2025 年报（tvly 转文本）
-│       ├── h1_2026_interim.txt               ← 2026 中期报告全文
-│       ├── h1_2026_pr.txt                    ← 中期业绩公告
+│       ├── dcf_output.txt / checker_output.txt / financials.csv
+│       ├── fy2025_annual.txt / h1_2026_interim.txt / h1_2026_pr.txt
 │       └── hk00100_qfqday.json               ← 189 根日线
 └── xiaomi/
-    └── screening-data-20261015.md            ← 小米/阿里原始数据（含来源 URL）
+    ├── teaching-slice-20261015.md            ← ★★ 本轮交付物（教学切片，693 行）
+    ├── market-data-20261015.md               ← ★ 本轮新增：市场预期/行业 KPI/可比倍数（514 行）
+    ├── screening-data-20261015.md            ← 上一轮的小米/阿里快照（部分已被上面替代）
+    ├── sotp.py                               ← ★ 本轮新增：SOTP 正向+反向（可复算）
+    └── work/
+        ├── assumptions.json                  ← ★ 小米 dcf.py config（WACC 9.5%，区间 15.0–26.8）
+        ├── dcf_output.txt                    ← ★ dcf.py 全部模块原始输出
+        ├── checker_output.txt                ← ★ 检查器结果（P0=0 P1=0 P2=0）
+        ├── financials.csv                    ← ★ 真实年报数据（FY2023–FY2025）
+        ├── sotp_output.txt / .json           ← ★ SOTP 原始输出
+        └── hk01810_weekly.json               ← 400 根周线
+```
+
+**小米估值一键复算：**
+```bash
+cd ~/src/github.com/gitsang/AgentMemoryBank/equity-research
+python3 ~/.agents/skills/equity-research/scripts/dcf.py --config xiaomi/work/assumptions.json
+python3 xiaomi/sotp.py
+python3 ~/.agents/skills/equity-research/scripts/check_research_output.py \
+  --report xiaomi/teaching-slice-20261015.md \
+  --assumptions xiaomi/work/assumptions.json \
+  --financials xiaomi/work/financials.csv \
+  --industry hardware --industry autos-ev --language zh
 ```
 
 ## 附录 C · 待用户确认的事项
 
-1. MiniMax 报告目前是 **.md**，skill 默认应交付 **PDF**。用户当时说"用 MD 跑"，PDF 未生成。若需要，注意中文字体渲染问题。
-2. 是否把 `uv venv` 装行情库的流程固化成脚本（用户提过，未决定）。
-3. 小米分析尚未启动——**这是最优先的下一步**。
+1. **下一步选哪个**：A（完整九章） / B2（只做 Pre-mortem） / C（开始 90 天练习） / 或阿里
+2. MiniMax 报告与小米教学切片均为 **.md**（用户本轮已明确**不需要 PDF**）。
+3. **阿里分析尚未开始**（用户此前提过"我认识的公司不多"，阿里是候选；附录应选 `internet-platform` + `capital-markets`）。
+4. `tools/quote.py` 已支持 `hk`/`sh`/`sz`/`us` 前缀，但**仅港股实测过**。
+
+## 附录 D · 本轮已验证的工具链（供下一个 agent 直接用）
+
+| 需求 | 命令 |
+|---|---|
+| 港股实时行情 | `uv run --script tools/quote.py hk01810`（输出含 52 周高低、总股本） |
+| 历史日线/周线 | `curl -s "https://web.ifzq.gtimg.cn/appstock/app/hkfqkline/get?param=hk01810,week,,,400,qfq"` |
+| 汇率 | `curl -s "https://qt.gtimg.cn/q=whHKDCNY"`（GBK） |
+| 搜网页/取 PDF | `tvly search "..." --max-results 8` / `tvly extract <url> -o out.txt` |
+| 一手财报 PDF | 必须走 `tvly extract`（直连 TLS reset）；披露易 `www1.hkexnews.hk` |
+| DCF/EPV/EVA/MC | `python3 ~/.agents/skills/equity-research/scripts/dcf.py --config <json>` |
+
+**腾讯行情关键字段下标（实测验证，2026-10-15）：**
+
+| 下标 | 含义 | 01810 实例 |
+|---|---|---|
+| 1 | 名称 | 小米集团-W |
+| 3 | 现价 | 27.080 |
+| 4 | 昨收 | 26.380 |
+| 5 | 今开 | 26.000 |
+| 6 | 成交量（股） | 266,494,588 |
+| 30 | 时间 | 2026/10/15 16:08:40 |
+| 31 | 涨跌额 | 0.700 |
+| 32 | 涨跌幅 % | 2.65 |
+| 33 | 最高 | 27.260 |
+| 34 | 最低 | 25.980 |
+| 39 | **P/E (TTM)** | 15.15 |
+| 45 | **总市值（亿 HKD）** | 6,985.31 |
+| 48 | **52 周高** | 49.700 |
+| 49 | **52 周低** | 21.300 |
+| 69 | **已发行总股本（含 A+B）** | 25,795,090,957 |
+| 70 | **其中 B 类股** | 21,365,854,329 |
+
+（共 78 个字段；单位：价格 HKD，市值 亿 HKD。）
+
+**★ 本项解决了一个历史遗留疑点：** 旧版 handoff 第 1.1 节曾记录"小米总股本有两个来源不一致（25.74B vs 21.366B）"，并将其列为待核实项。**真相是：25.79B 是已发行总股本（A 类 + B 类），21.366B 只有 B 类股。**
+验证：A 类 4,429,236,628 + B 类 21,365,475,889 = **25,794,712,517**（HKEX 9-30 月报）≈ 腾讯 f[69]。
+**做市值/每股计算时一律用总数（≈25.79B），不得用 21.366B。** 旧 handoff 里"已发行股份不含库存股 213.66 亿股"的表述也是 B 类股口径，当时被误当成总数。
