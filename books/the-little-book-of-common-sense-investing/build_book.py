@@ -31,11 +31,10 @@ MIN_FIG_PX = 150            # smaller images are chapter ornaments / stray glyph
 SECTIONS_JSON = os.environ.get('SECTIONS_JSON', '/tmp/sections.json')
 
 # ------------------------------------------------------------------ structure
+# Front matter is kept minimal: the series blurb, copyright page and
+# dedication are dropped, the title page still supplies the cover image.
 FRONT = [
-    ('part0001.html', 'Little Book Big Profits Series'),
     ('part0002.html', 'Title Page'),
-    ('part0003.html', 'Copyright'),
-    ('part0004.html', 'Dedication'),
     ('part0005.html', 'Introduction'),
 ]
 BACK = [

@@ -25,7 +25,9 @@ SECTIONS_PATH = os.environ.get('SECTIONS_JSON', '/tmp/sections.json')
 OUT_PATH = sys.argv[1] if len(sys.argv) > 1 else 'paragraphs.json'
 
 # sections that are pure legal boilerplate and not worth translating
-SKIP_SECTIONS = {'fm-copyright'}
+# sections to leave out of the translatable work queue (the copyright page used
+# to be listed here; front matter is now dropped in build_book.py instead)
+SKIP_SECTIONS = set()
 # a paragraph shorter than this (in characters) is a fragment, not prose
 MIN_CHARS = 2
 

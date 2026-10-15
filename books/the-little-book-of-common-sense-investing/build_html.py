@@ -47,9 +47,6 @@ TITLE = 'The Little Book of Common Sense Investing'
 SUBTITLE = 'The Only Way to Guarantee Your Fair Share of Stock Market Returns'
 AUTHOR = 'John C. Bogle'
 
-FRONT_IDS = [s['id'] for s in SECTIONS if s['kind'] == 'front']
-BODY = [s for s in SECTIONS if s['kind'] == 'chapter']
-BACK = [s for s in SECTIONS if s['kind'] == 'back']
 
 CSS = """
 :root {
@@ -90,22 +87,12 @@ header.book .sub { color: var(--muted); font-style: italic; margin: 0 0 1rem; }
 header.book .by { font: 600 .8rem/1 ui-sans-serif, system-ui, sans-serif;
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0; }
 
-nav.toc { margin: 2.5rem 0 3rem; padding: 1.5rem 1.75rem; background: var(--paper);
-  border: 1px solid var(--rule); border-radius: .5rem; }
-nav.toc h2 { font: 600 .72rem/1 ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
-  margin: 0 0 1rem; }
-nav.toc ol { margin: 0; padding-left: 1.4rem; }
-nav.toc li { margin: .35rem 0; }
-nav.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; }
-nav.toc a:hover { border-bottom-color: var(--accent); }
-nav.toc .grp { margin-top: 1.1rem; color: var(--muted);
-  font: 600 .68rem/1 ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: .14em; text-transform: uppercase; }
-
 section { padding-top: 1.5rem; }
 section.chapter { border-top: 1px solid var(--rule); margin-top: 3.5rem; }
 section.front, section.back { margin-top: 3rem; border-top: 1px solid var(--rule); }
+/* the heading block already ends on a rule, so the first section does not
+   need a second one above it */
+header.book + section { border-top: 0; margin-top: 0; padding-top: 2rem; }
 
 .chapter-label { font: 600 .72rem/1 ui-sans-serif, system-ui, sans-serif;
   letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
@@ -300,7 +287,7 @@ body.no-notes .sidenote { display: none; }
 
 @media print {
   :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
-  .back-to-top, nav.toc, .toolbar, .glossary-pop, .rail { display: none; }
+  .toolbar, .glossary-pop, .rail { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
   p.tr, .tr, .sidenote { break-inside: avoid; }
@@ -496,30 +483,6 @@ def chapter_rail():
             + ''.join(items) + '</ol></nav>')
 
 
-def body_or_face():
-    pre = []
-
-    pre.append('<div class="grp">Front Matter</div><ol>')
-    for s in SECTIONS:
-        if s['kind'] == 'front' and s['id'] != 'fm-title-page':
-            pre.append(f'<li><a href="#{s["id"]}">{html_mod.escape(s["title"])}</a></li>')
-    pre.append('</ol>')
-
-    pre.append('<div class="grp">Chapters</div><ol>')
-    for s in BODY:
-        label = html_mod.escape(s['title'])
-        pre.append(f'<li><a href="#{s["id"]}">{label}</a></li>')
-    pre.append('</ol>')
-
-    if BACK:
-        pre.append('<div class="grp">Back Matter</div><ol>')
-        for s in BACK:
-            pre.append(f'<li><a href="#{s["id"]}">{html_mod.escape(s["title"])}</a></li>')
-        pre.append('</ol>')
-
-    return ''.join(pre)
-
-
 def main():
     tr_doc = load_optional(TRANSLATIONS_PATH, {})
     translations = tr_doc.get('sections', {})
@@ -592,11 +555,6 @@ def main():
   <p class="sub">{SUBTITLE}</p>
   <p class="by">{AUTHOR}</p>
 </header>
-
-<nav class="toc">
-  <h2>Contents</h2>
-  {body_or_face()}
-</nav>
 
 {body}
 

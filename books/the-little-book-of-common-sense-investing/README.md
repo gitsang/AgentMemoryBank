@@ -5,8 +5,9 @@ Sense Investing: The Only Way to Guarantee Your Fair Share of Stock Market
 Returns* (John Wiley & Sons, 2007 — ISBN 978-0-470-10210-7).
 
 Open [`index.html`](index.html) in a browser. It is one self-contained page with
-a linked table of contents, chapter anchors, the 28 original exhibit figures and
-the endnotes; light/dark themes follow your system preference.
+chapter anchors, the 28 original exhibit figures and the endnotes; light/dark
+themes follow your system preference, and on wide screens a fixed left rail
+navigates the chapters.
 
 ## Layout
 
@@ -205,9 +206,9 @@ last, which is not the same thing.
 
 ## Coverage
 
-Front matter (series page, copyright, dedication), Introduction, all 18
-chapters, Acknowledgments, and the 24 endnotes. The EPUB's own table-of-contents
-page and title-page image are replaced by the generated navigation and header.
+Introduction, all 18 chapters, Acknowledgments, and the 24 endnotes. The EPUB's
+own table-of-contents page, title page, series blurb, copyright page and
+dedication are not carried over.
 
 ## Copyright
 
