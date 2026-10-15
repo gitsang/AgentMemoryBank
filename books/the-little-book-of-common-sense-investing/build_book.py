@@ -420,6 +420,26 @@ def build():
     return sections, r
 
 
+# Exhibits stored sideways in the source EPUB, keyed by image file. Rotating
+# them here rather than editing images/ keeps the pipeline reproducible.
+ROTATE_CLOCKWISE = {
+    '00082.gif',   # Exhibit 11.1 — scatter chart, stored portrait at 204x564
+}
+
+
+def copy_figure(imgdir, name):
+    """Copy a figure into the output, turning it upright if it needs it."""
+    src = os.path.join(IMAGES, name)
+    dst = os.path.join(imgdir, name)
+    if name not in ROTATE_CLOCKWISE:
+        shutil.copy2(src, dst)
+        return
+    with Image.open(src) as im:
+        fmt = im.format
+        im.rotate(-90, expand=True).save(dst, format=fmt)
+    print(f'  rotated {name} 90° clockwise')
+
+
 def main():
     if len(sys.argv) < 2:
         raise SystemExit(__doc__)
@@ -433,7 +453,7 @@ def main():
         shutil.rmtree(imgdir)
     os.makedirs(imgdir, exist_ok=True)
     for name, _ in r.figures:
-        shutil.copy2(os.path.join(IMAGES, name), os.path.join(imgdir, name))
+        copy_figure(imgdir, name)
 
     total = 0
     print(f'{"id":22s} {"words":>7s}  title')

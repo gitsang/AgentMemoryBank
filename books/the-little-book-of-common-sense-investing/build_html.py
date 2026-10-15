@@ -232,6 +232,40 @@ body.no-tr .tr { display: none; }
   .rail .rail-sep { margin: .45rem 0; border-top: 1px solid var(--rule); }
 }
 
+/* ---------- chapter menu for narrow screens ---------- */
+/* Shown exactly when .rail is not, so there is always a way to navigate. */
+.toc-drop { display: none; }
+@media (max-width: 1529.98px) {
+  .toc-drop { display: block; position: sticky; top: 0; z-index: 25;
+    margin: 0 0 1.75rem; background: var(--bg);
+    border: 1px solid var(--rule); border-radius: .5rem; }
+  .toc-drop > summary { cursor: pointer; list-style: none;
+    display: flex; align-items: center; gap: .5rem;
+    padding: .7rem .95rem; color: var(--accent);
+    font: 600 .72rem/1 ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: .12em; text-transform: uppercase; }
+  .toc-drop > summary::-webkit-details-marker { display: none; }
+  .toc-drop > summary::after { content: "\\25be"; margin-left: auto;
+    font-size: .75rem; }
+  .toc-drop[open] > summary::after { content: "\\25b4"; }
+  .toc-drop > ol { margin: 0; padding: 0 .55rem .6rem; list-style: none;
+    max-height: 62vh; overflow-y: auto; }
+  .toc-drop li { margin: 0; }
+  .toc-drop .rail-sep { margin: .4rem 0; border-top: 1px solid var(--rule); }
+  .toc-drop a { display: flex; gap: .55rem; align-items: baseline;
+    padding: .34rem .5rem; border-radius: .28rem;
+    text-align: left; text-decoration: none; color: var(--muted);
+    font-size: .84rem; line-height: 1.35;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  .toc-drop a:hover { color: var(--accent); background: var(--paper); }
+  .toc-drop a .n { flex: 0 0 1.4rem; text-align: right; color: var(--rule);
+    font-size: .72rem; font-variant-numeric: tabular-nums; }
+  .toc-drop a .t { min-width: 0; }
+  .toc-drop a.is-active { color: var(--accent); font-weight: 700;
+    background: var(--paper); }
+  .toc-drop a.is-active .n { color: var(--accent); }
+}
+
 /* ---------- glossary terms + popover ---------- */
 .term { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   margin: 0; cursor: help; text-align: inherit;
@@ -260,13 +294,36 @@ body.no-tr .tr { display: none; }
 .sidenote p { margin: 0; text-align: left; }
 body.no-notes .sidenote { display: none; }
 
-/* ---------- glossary appendix ---------- */
-.glossary-appendix { margin: 3rem 0 1rem; padding: 1rem 1.25rem;
-  background: var(--paper); border: 1px solid var(--rule); border-radius: .5rem; }
-.glossary-appendix > summary { cursor: pointer; font: 600 .78rem/1.6
-  ui-sans-serif, system-ui, sans-serif; letter-spacing: .1em;
-  text-transform: uppercase; color: var(--accent); }
-.glossary-appendix dl { margin: 1rem 0 0; }
+/* ---------- glossary dialog ---------- */
+.glossary-modal { position: fixed; inset: 0; z-index: 50; display: flex;
+  align-items: center; justify-content: center; padding: 1.25rem; }
+.glossary-modal[hidden] { display: none; }
+body.gm-open { overflow: hidden; }
+.gm-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+.gm-panel { position: relative; z-index: 1; display: flex;
+  flex-direction: column; width: min(46rem, 100%);
+  max-height: min(85vh, 48rem); background: var(--paper);
+  border: 1px solid var(--rule); border-radius: .6rem;
+  box-shadow: 0 18px 50px rgba(0,0,0,.3); overflow: hidden; }
+.gm-head { display: flex; align-items: center; gap: .7rem;
+  padding: .8rem 1rem; border-bottom: 1px solid var(--rule); }
+.gm-head h2 { margin: 0; font-size: .92rem; letter-spacing: .02em;
+  white-space: nowrap; }
+.gm-count { margin-left: .4rem; color: var(--muted); font-weight: 400;
+  font-size: .78rem; }
+.gm-filter { flex: 1; min-width: 0; padding: .44rem .6rem;
+  border: 1px solid var(--rule); border-radius: .35rem;
+  background: var(--bg); color: var(--ink); font: inherit;
+  font-size: .82rem; }
+.gm-filter:focus { outline: none; border-color: var(--accent); }
+.gm-close { flex: 0 0 auto; width: 1.9rem; height: 1.9rem; padding: 0;
+  border-radius: 50%; border: 1px solid var(--rule); background: var(--bg);
+  color: var(--muted); cursor: pointer; font-size: 1.05rem; line-height: 1; }
+.gm-close:hover { color: var(--accent); border-color: var(--accent); }
+.gm-list { margin: 0; padding: 1rem 1.2rem 1.5rem; overflow-y: auto; }
+.gm-empty { margin: 0; padding: 0 1.2rem 1.5rem; color: var(--muted);
+  font-family: var(--cjk); font-size: .85rem; }
+.glossary-modal dl { margin: 0; }
 .gl-entry { margin: 0 0 .9rem; }
 .gl-entry dt { font-weight: 700; font-size: .88rem; }
 .gl-entry dt .gl-zh { font-family: var(--cjk); font-weight: 700;
@@ -282,12 +339,11 @@ body.no-notes .sidenote { display: none; }
     background: transparent; border-left: 2px solid var(--rule);
     border-radius: 0; font-size: .8rem; line-height: 1.62; }
   .sidenote .sn-title { font-size: .74rem; }
-  .glossary-appendix { max-width: 44rem; }
 }
 
 @media print {
   :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
-  .toolbar, .glossary-pop, .rail { display: none; }
+  .toolbar, .glossary-pop, .rail, .toc-drop { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
   p.tr, .tr, .sidenote { break-inside: avoid; }
@@ -295,6 +351,13 @@ body.no-notes .sidenote { display: none; }
     padding: .5rem .7rem; background: #f4f2ee;
     border-left: 2px solid #999; }
   .term { border-bottom: 0; }
+  .glossary-modal { position: static; display: block; padding: 0; }
+  .glossary-modal[hidden] { display: block; }
+  .gm-backdrop, .gm-filter, .gm-close { display: none; }
+  .gm-panel { width: auto; max-height: none; border: 0;
+    box-shadow: none; overflow: visible; }
+  .gm-list { overflow: visible; padding: 0; }
+  .gm-empty { display: none; }
 }
 """
 
@@ -427,16 +490,38 @@ def add_sidenotes(section_html, entries):
     return ''.join(str(c) for c in root.children), added, mismatched
 
 
-def glossary_appendix(terms):
+def glossary_modal(terms):
+    """The full glossary as a dialog opened from the floating toolbar.
+
+    Rendered once and reused: a popup on screen, and unhidden as a plain
+    list when printing, so the entries are not duplicated in the markup.
+    """
     rows = []
     for t in terms:
+        hay = html_mod.escape(f'{t["en"]} {t["zh"]}'.lower())
         rows.append(
-            f'<div class="gl-entry"><dt>{html_mod.escape(t["en"])}'
+            f'<div class="gl-entry" data-term="{hay}">'
+            f'<dt>{html_mod.escape(t["en"])}'
             f'<span class="gl-zh">{html_mod.escape(t["zh"])}</span></dt>'
             f'<dd>{md_inline(t["note"])}</dd></div>')
-    return ('<details class="glossary-appendix" id="glossary">'
-            f'<summary>\u672f\u8bed\u5bf9\u7167\u8868\uff08{len(terms)} \u6761\uff09</summary>'
-            f'<dl>{"".join(rows)}</dl></details>')
+    return (
+        '<div class="glossary-modal" id="glossaryModal" role="dialog" '
+        'aria-modal="true" aria-labelledby="glossaryModalTitle" hidden>'
+        '<div class="gm-backdrop" data-gm-close></div>'
+        '<div class="gm-panel">'
+        '<div class="gm-head">'
+        '<h2 id="glossaryModalTitle">\u672f\u8bed\u5bf9\u7167\u8868'
+        f'<span class="gm-count">{len(terms)}</span></h2>'
+        '<input type="search" id="gmFilter" class="gm-filter" '
+        'placeholder="\u7b5b\u9009\u672f\u8bed\u2026" '
+        'aria-label="\u7b5b\u9009\u672f\u8bed" autocomplete="off"/>'
+        '<button class="gm-close" type="button" data-gm-close '
+        'aria-label="\u5173\u95ed">\u00d7</button>'
+        '</div>'
+        '<dl class="gm-list">' + ''.join(rows) + '</dl>'
+        '<p class="gm-empty" id="gmEmpty" hidden>'
+        '\u6ca1\u6709\u5339\u914d\u7684\u672f\u8bed\u3002</p>'
+        '</div></div>')
 
 
 # Inline SVG icons, kept in the same 24x24 / 1.7 stroke idiom so the floating
@@ -452,20 +537,22 @@ IC_GUIDE = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColo
             'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
             'aria-hidden="true"><path d="M4 5h8v14H4z"/><path d="M12 9h8v10h-8z"/>'
             '<path d="M6.5 9h3M6.5 12h3M14.5 12.5h3"/></svg>')
+IC_GLOSS = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+            'aria-hidden="true"><path d="M12 7a4 4 0 0 0-4-4H4v13h4a4 4 0 0 1 4 4"/>'
+            '<path d="M12 7a4 4 0 0 1 4-4h4v13h-4a4 4 0 0 0-4 4"/></svg>')
 
-def tool_button(btn_id, label, icon):
+def tool_button(btn_id, label, icon, extra='', pressed=True):
+    """A round toolbar button; `pressed=False` for one that opens a dialog."""
     esc = html_mod.escape(label)
+    state = ' aria-pressed="true"' if pressed else ''
     return (f'<button class="tool-btn" id="{btn_id}" type="button" '
-            f'data-label="{esc}" aria-pressed="true" aria-label="{esc}">'
+            f'data-label="{esc}"{state} aria-label="{esc}"{extra}>'
             f'{icon}<span class="tool-tip">{esc}</span></button>')
 
 
-def chapter_rail():
-    """Fixed left-hand rail listing the sections, for quick chapter jumps.
-
-    Labels are the section titles as published (English); the `title`
-    attribute carries the same text so long entries stay readable on hover.
-    """
+def rail_items():
+    """The chapter list, shared by the side rail and the narrow-screen menu."""
     items, sep_done = [], False
     for s in SECTIONS:
         if s['id'].startswith('fm-'):
@@ -478,9 +565,25 @@ def chapter_rail():
         items.append(
             f'<li><a href="#{s["id"]}" title="{label}">'
             f'<span class="n">{num}</span><span class="t">{label}</span></a></li>')
+    return ''.join(items)
+
+
+def chapter_rail():
+    """Fixed left-hand rail, for viewports wide enough to spare the gutter."""
     return ('<nav class="rail" id="rail" aria-label="Chapters">'
             '<p class="rail-title">Contents</p><ol>'
-            + ''.join(items) + '</ol></nav>')
+            + rail_items() + '</ol></nav>')
+
+
+def toc_dropdown():
+    """Collapsible chapter menu, standing in for the rail on narrow screens.
+
+    A plain <details> so it works without JS; page.js only adds the
+    close-on-navigate behaviour.
+    """
+    return ('<details class="toc-drop" id="tocDrop">'
+            '<summary>\u76ee\u5f55 \u00b7 Contents</summary>'
+            '<ol>' + rail_items() + '</ol></details>')
 
 
 def main():
@@ -518,6 +621,10 @@ def main():
         buttons.append(tool_button('trToggle', tr_label, IC_GUIDE))
     if ANNOTATIONS:
         buttons.append(tool_button('noteToggle', '\u6279\u6ce8', IC_NOTE))
+    if GLOSSARY:
+        buttons.append(tool_button(
+            'glossToggle', '\u672f\u8bed', IC_GLOSS,
+            ' aria-haspopup="dialog" aria-expanded="false"', pressed=False))
     to_top = ('<a class="tool-btn" id="toTop" href="#top" '
               'aria-label="\u56de\u5230\u9876\u90e8">' + IC_TOP +
               '<span class="tool-tip">\u56de\u5230\u9876\u90e8</span></a>')
@@ -525,13 +632,13 @@ def main():
     toolbar = ('<div class="toolbar" role="group">'
                + to_top + ''.join(buttons) + '</div>')
 
-    glossary_data = appendix = ''
+    glossary_data = glossary_html = ''
     if GLOSSARY:
         payload = json.dumps({'terms': GLOSSARY}, ensure_ascii=False)
         payload = payload.replace('<', '\\u003c')
         glossary_data = ('<script type="application/json" id="glossary-data">'
                          + payload + '</script>')
-        appendix = glossary_appendix(GLOSSARY)
+        glossary_html = glossary_modal(GLOSSARY)
 
     script = f'<script>{page_script()}</script>'
 
@@ -556,9 +663,11 @@ def main():
   <p class="by">{AUTHOR}</p>
 </header>
 
+{toc_dropdown()}
+
 {body}
 
-{appendix}
+{glossary_html}
 
 <footer class="book">
   <p><strong>{TITLE}: {SUBTITLE}</strong><br/>

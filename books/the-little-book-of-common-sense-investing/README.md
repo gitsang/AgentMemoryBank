@@ -129,7 +129,13 @@ inlined as JSON and `page.js` wraps the **first occurrence of each term per
 section** — so every chapter gets its own hints without turning the page into a
 wall of dotted underlines. Clicking a term opens a popover with the English
 term, the Chinese name and the explanation; `Esc` or a click outside dismisses
-it. A full glossary is also appended at the end of the book.
+it.
+
+The full list is also available as a dialog opened from the 术语 button in the
+floating toolbar — a filter box narrows it by English term or Chinese name, and
+an empty-state line appears when nothing matches. The dialog is rendered once
+and reused: a popup on screen, and unhidden as a plain list at the end of the
+document when printing, so the entries are not duplicated in the markup.
 
 Matching is word-boundary aware and longest-first, so `classic index fund` wins
 over `index fund`, and aliases can be declared per term (`S&P 500`,
@@ -170,7 +176,8 @@ sidecar that is not a straight translation is not presented as one.
 ### Floating toolbar
 
 Three round icon buttons sit bottom-right, stacked: back-to-top, the language
-toggle, and the annotation toggle. They share one `.toolbar` flex container
+toggle, and the annotation toggle — plus a 术语 button when a glossary is
+present. They share one `.toolbar` flex container
 (`column-reverse`, so the first child renders at the bottom) and one `.tool-btn`
 style. Hovering or focusing one reveals `.tool-tip` to its **left**; the tip text
 tracks state (`隐藏批注` / `显示批注`) and `aria-label` / `aria-pressed` update with
@@ -195,7 +202,18 @@ fit inside the *gutter*, which costs roughly 400px of viewport for nothing.
 breakpoint is where `--rail-w` + 1.25rem + 1.5rem + 68rem still fits, currently
 24rem + 70.75rem ≈ 95rem → 1530px. The same value is duplicated in `page.js`'s
 `matchMedia`; change both together. Narrower viewports keep the in-page table of
-contents.
+contents, and the same list is rendered as the narrow-screen menu below.
+
+### Narrow screens
+
+Below that width the rail is replaced by a `<details>` menu rendered from the
+same `rail_items()`, pinned with `position: sticky` so it stays reachable while
+scrolling. Using `<details>` means it works without JS; `page.js` only adds the
+close-on-navigate behaviour and the shared highlight.
+
+The rail and the menu carry the same links and are driven by one mechanism: the
+highlight code collects `linksById` across both, so whichever is on screen shows
+the current chapter.
 
 `page.js` marks the current section by **position, not by event**: on each
 scroll (rAF-throttled) it takes the last section whose top has crossed a reading

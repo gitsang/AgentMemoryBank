@@ -29,35 +29,50 @@
   setupToggle('trToggle', 'no-tr', 'tlb-csi-translation', '\u4e2d\u6587');
   setupToggle('noteToggle', 'no-notes', 'tlb-csi-notes', '\u6279\u6ce8');
 
-  /* ------------------------------------------------ chapter rail ------ */
-  var rail = document.getElementById('rail');
-  // keep in sync with the .rail media query in build_html.py
-  var railWide = window.matchMedia('(min-width: 1530px)');
-  if (rail) {
-    var railLinks = {};
-    var railSections = [];
-    Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a) {
-      var id = a.getAttribute('href').slice(1);
-      var sec = document.getElementById(id);
-      if (!sec) return;
-      railLinks[id] = a;
-      railSections.push(sec);
+  /* ------------------------------------------ chapter navigation ------ */
+  // The fixed rail (wide screens) and the <details> menu (narrow screens)
+  // carry the same links, so the highlight is driven through one mechanism
+  // for whichever of them is present.
+  var menus = ['rail', 'tocDrop'].map(function (id) {
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  if (menus.length) {
+    var linksById = {};
+    menus.forEach(function (menu) {
+      Array.prototype.forEach.call(
+        menu.querySelectorAll('a[href^="#"]'), function (a) {
+          var id = a.getAttribute('href').slice(1);
+          if (!document.getElementById(id)) return;
+          (linksById[id] = linksById[id] || []).push(a);
+        });
     });
+
+    // document order, so the scan can stop at the first section still below
+    // the reading line
+    var sections = Array.prototype.filter.call(
+      document.querySelectorAll('section'),
+      function (sec) { return linksById[sec.id]; });
 
     var activeId = null;
     function activate(id) {
-      if (id === activeId || !railLinks[id]) return;
-      if (activeId && railLinks[activeId]) {
-        railLinks[activeId].classList.remove('is-active');
+      if (id === activeId || !linksById[id]) return;
+      if (activeId && linksById[activeId]) {
+        linksById[activeId].forEach(function (a) {
+          a.classList.remove('is-active');
+        });
       }
       activeId = id;
-      var a = railLinks[id];
-      a.classList.add('is-active');
-      var top = a.offsetTop;
-      if (top < rail.scrollTop ||
-          top > rail.scrollTop + rail.clientHeight - 32) {
-        rail.scrollTop = top - rail.clientHeight / 2;
-      }
+      linksById[id].forEach(function (a) {
+        a.classList.add('is-active');
+        var box = a.closest('.rail');
+        if (!box) return;
+        var top = a.offsetTop;
+        if (top < box.scrollTop ||
+            top > box.scrollTop + box.clientHeight - 32) {
+          box.scrollTop = top - box.clientHeight / 2;
+        }
+      });
     }
 
     // The current section is the last one whose top has crossed the reading
@@ -68,10 +83,10 @@
     function update() {
       ticking = false;
       var line = window.innerHeight * 0.28;
-      var found = railSections[0];
-      for (var i = 0; i < railSections.length; i++) {
-        if (railSections[i].getBoundingClientRect().top <= line) {
-          found = railSections[i];
+      var found = sections[0];
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= line) {
+          found = sections[i];
         } else {
           break;
         }
@@ -79,14 +94,70 @@
       if (found) activate(found.id);
     }
     function request() {
-      if (!railWide.matches || ticking) return;
+      if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(update);
     }
     window.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
-    if (railWide.addEventListener) railWide.addEventListener('change', request);
     update();
+
+    // navigating from the menu should not leave it hanging open
+    var drop = document.getElementById('tocDrop');
+    if (drop) {
+      drop.addEventListener('click', function (ev) {
+        if (ev.target.closest && ev.target.closest('a')) drop.open = false;
+      });
+    }
+  }
+
+  /* ------------------------------------------------- glossary dialog --- */
+  var glossBtn = document.getElementById('glossToggle');
+  var glossModal = document.getElementById('glossaryModal');
+  if (glossBtn && glossModal) {
+    var glossFilter = document.getElementById('gmFilter');
+    var glossEmpty = document.getElementById('gmEmpty');
+    var glossEntries = Array.prototype.slice.call(
+      glossModal.querySelectorAll('.gl-entry'));
+
+    function filterGlossary() {
+      if (!glossFilter) return;
+      var q = glossFilter.value.trim().toLowerCase();
+      var shown = 0;
+      glossEntries.forEach(function (el) {
+        var hay = el.getAttribute('data-term') || '';
+        var hit = !q || hay.indexOf(q) >= 0;
+        el.hidden = !hit;
+        if (hit) shown++;
+      });
+      if (glossEmpty) glossEmpty.hidden = shown > 0;
+    }
+
+    function setGlossary(open) {
+      glossModal.hidden = !open;
+      glossBtn.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('gm-open', open);
+      if (open) {
+        if (glossFilter) { glossFilter.value = ''; filterGlossary(); }
+        if (glossFilter) glossFilter.focus();
+      } else {
+        glossBtn.focus();
+      }
+    }
+
+    glossBtn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      setGlossary(glossModal.hidden);
+    });
+    glossModal.addEventListener('click', function (ev) {
+      if (ev.target.closest && ev.target.closest('[data-gm-close]')) {
+        setGlossary(false);
+      }
+    });
+    if (glossFilter) glossFilter.addEventListener('input', filterGlossary);
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !glossModal.hidden) setGlossary(false);
+    });
   }
 
   /* --------------------------------------------------------- glossary --- */
