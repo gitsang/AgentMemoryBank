@@ -6,6 +6,9 @@
   function setupToggle(btnId, hideClass, storageKey, label) {
     var btn = document.getElementById(btnId);
     if (!btn) return;
+    // build_html.py renders the label into the button; prefer it so a
+    // reading guide is not mislabelled as a translation
+    label = (btn.textContent || '').trim() || label;
     function apply(hidden) {
       document.body.classList.toggle(hideClass, hidden);
       btn.setAttribute('aria-pressed', String(!hidden));

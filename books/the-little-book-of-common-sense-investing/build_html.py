@@ -431,7 +431,9 @@ def body_or_face():
 
 
 def main():
-    translations = load_optional(TRANSLATIONS_PATH, {}).get('sections', {})
+    tr_doc = load_optional(TRANSLATIONS_PATH, {})
+    translations = tr_doc.get('sections', {})
+    tr_label = tr_doc.get('label', '\u4e2d\u6587')
 
     parts, inserted, mismatched, notes, note_mismatch = [], 0, 0, 0, 0
     for s in SECTIONS:
@@ -461,7 +463,7 @@ def main():
     toggles = []
     if translations:
         toggles.append('<button class="tr-toggle" id="trToggle" type="button" '
-                       'aria-pressed="true">\u4e2d\u6587</button>')
+                       f'aria-pressed="true">{tr_label}</button>')
     if ANNOTATIONS:
         toggles.append('<button class="tr-toggle note-toggle" id="noteToggle" '
                        'type="button" aria-pressed="true">\u6279\u6ce8</button>')
