@@ -167,10 +167,11 @@ body.no-tr .tr { display: none; }
 
 /* ---------- chapter rail (wide screens) ---------- */
 .rail { display: none; }
-@media (min-width: 1400px) {
-  .rail { display: block; position: fixed; left: 1.5rem; top: 50%;
-    transform: translateY(-50%); width: 10.5rem; max-height: 78vh;
-    overflow-y: auto; z-index: 10; font-family: var(--cjk);
+@media (min-width: 1500px) {
+  .rail { display: block; position: fixed; left: 1.25rem; top: 50%;
+    transform: translateY(-50%); width: 11.5rem; max-height: 86vh;
+    overflow-y: auto; z-index: 10;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     scrollbar-width: thin; }
   .rail-title { margin: 0 0 .5rem; padding-left: .5rem; color: var(--accent);
     font: 600 .66rem/1 ui-sans-serif, system-ui, sans-serif;
@@ -178,13 +179,14 @@ body.no-tr .tr { display: none; }
   .rail ol { margin: 0; padding: 0; list-style: none; }
   .rail li { margin: .05rem 0; }
   .rail a { display: flex; gap: .45rem; align-items: baseline;
-    padding: .24rem .5rem; border-radius: .28rem;
+    padding: .26rem .5rem; border-radius: .28rem;
+    text-align: left; hyphens: none;
     text-decoration: none; color: var(--muted);
-    font-size: .76rem; line-height: 1.35; }
+    font-size: .73rem; line-height: 1.32; }
   .rail a:hover { color: var(--accent); background: var(--paper); }
-  .rail a .n { flex: 0 0 1.3rem; text-align: right; color: var(--rule);
-    font-family: ui-sans-serif, system-ui, sans-serif; font-size: .67rem;
-    font-variant-numeric: tabular-nums; }
+  .rail a .n { flex: 0 0 1.25rem; text-align: right; color: var(--rule);
+    font-size: .66rem; font-variant-numeric: tabular-nums; }
+  .rail a .t { min-width: 0; }
   .rail a.is-active { color: var(--accent); font-weight: 700;
     background: var(--paper); }
   .rail a.is-active .n { color: var(--accent); }
@@ -258,7 +260,7 @@ body.no-notes .sidenote { display: none; }
 </style>
 </head>
 <body>
-<nav class="rail" id="rail" aria-label="章节导航"><p class="rail-title">目录</p><ol><li><a href="#intro" title="Introduction"><span class="n">·</span>引言</a></li><li><a href="#ch01" title="A Parable"><span class="n">1</span>寓言</a></li><li><a href="#ch02" title="Rational Exuberance"><span class="n">2</span>理性繁荣</a></li><li><a href="#ch03" title="Cast Your Lot with Business"><span class="n">3</span>押注企业</a></li><li><a href="#ch04" title="How Most Investors Turn a Winner’s Game into a Loser’s Game"><span class="n">4</span>赢家变输家</a></li><li><a href="#ch05" title="The Grand Illusion"><span class="n">5</span>大幻觉</a></li><li><a href="#ch06" title="Taxes Are Costs, Too"><span class="n">6</span>税也是成本</a></li><li><a href="#ch07" title="When the Good Times No Longer Roll"><span class="n">7</span>好日子不再</a></li><li><a href="#ch08" title="Selecting Long-Term Winners"><span class="n">8</span>挑选赢家</a></li><li><a href="#ch09" title="Yesterday’s Winners, Tomorrow’s Losers"><span class="n">9</span>昨天的赢家</a></li><li><a href="#ch10" title="Seeking Advice to Select Funds?"><span class="n">10</span>找人挑基金</a></li><li><a href="#ch11" title="Focus on the Lowest-Cost Funds"><span class="n">11</span>最低费率</a></li><li><a href="#ch12" title="Profit from the Majesty of Simplicity"><span class="n">12</span>简朴的尊严</a></li><li><a href="#ch13" title="Bond Funds and Money Market Funds"><span class="n">13</span>债券与货基</a></li><li><a href="#ch14" title="Index Funds That Promise to Beat the Market"><span class="n">14</span>承诺超额收益</a></li><li><a href="#ch15" title="The Exchange Traded Fund"><span class="n">15</span>ETF 与交易</a></li><li><a href="#ch16" title="What Would Benjamin Graham Have Thought about Indexing?"><span class="n">16</span>格雷厄姆之问</a></li><li><a href="#ch17" title="“The Relentless Rules of Humble Arithmetic”"><span class="n">17</span>无情算术</a></li><li><a href="#ch18" title="What Should I Do Now?"><span class="n">18</span>我该做什么</a></li><li class="rail-sep"></li><li><a href="#back-acknowledgments" title="Acknowledgments"><span class="n">·</span>致谢</a></li><li><a href="#back-notes" title="Notes"><span class="n">·</span>注释</a></li></ol></nav>
+<nav class="rail" id="rail" aria-label="Chapters"><p class="rail-title">Contents</p><ol><li><a href="#intro" title="Introduction"><span class="n">·</span><span class="t">Introduction</span></a></li><li><a href="#ch01" title="A Parable"><span class="n">1</span><span class="t">A Parable</span></a></li><li><a href="#ch02" title="Rational Exuberance"><span class="n">2</span><span class="t">Rational Exuberance</span></a></li><li><a href="#ch03" title="Cast Your Lot with Business"><span class="n">3</span><span class="t">Cast Your Lot with Business</span></a></li><li><a href="#ch04" title="How Most Investors Turn a Winner’s Game into a Loser’s Game"><span class="n">4</span><span class="t">How Most Investors Turn a Winner’s Game into a Loser’s Game</span></a></li><li><a href="#ch05" title="The Grand Illusion"><span class="n">5</span><span class="t">The Grand Illusion</span></a></li><li><a href="#ch06" title="Taxes Are Costs, Too"><span class="n">6</span><span class="t">Taxes Are Costs, Too</span></a></li><li><a href="#ch07" title="When the Good Times No Longer Roll"><span class="n">7</span><span class="t">When the Good Times No Longer Roll</span></a></li><li><a href="#ch08" title="Selecting Long-Term Winners"><span class="n">8</span><span class="t">Selecting Long-Term Winners</span></a></li><li><a href="#ch09" title="Yesterday’s Winners, Tomorrow’s Losers"><span class="n">9</span><span class="t">Yesterday’s Winners, Tomorrow’s Losers</span></a></li><li><a href="#ch10" title="Seeking Advice to Select Funds?"><span class="n">10</span><span class="t">Seeking Advice to Select Funds?</span></a></li><li><a href="#ch11" title="Focus on the Lowest-Cost Funds"><span class="n">11</span><span class="t">Focus on the Lowest-Cost Funds</span></a></li><li><a href="#ch12" title="Profit from the Majesty of Simplicity"><span class="n">12</span><span class="t">Profit from the Majesty of Simplicity</span></a></li><li><a href="#ch13" title="Bond Funds and Money Market Funds"><span class="n">13</span><span class="t">Bond Funds and Money Market Funds</span></a></li><li><a href="#ch14" title="Index Funds That Promise to Beat the Market"><span class="n">14</span><span class="t">Index Funds That Promise to Beat the Market</span></a></li><li><a href="#ch15" title="The Exchange Traded Fund"><span class="n">15</span><span class="t">The Exchange Traded Fund</span></a></li><li><a href="#ch16" title="What Would Benjamin Graham Have Thought about Indexing?"><span class="n">16</span><span class="t">What Would Benjamin Graham Have Thought about Indexing?</span></a></li><li><a href="#ch17" title="“The Relentless Rules of Humble Arithmetic”"><span class="n">17</span><span class="t">“The Relentless Rules of Humble Arithmetic”</span></a></li><li><a href="#ch18" title="What Should I Do Now?"><span class="n">18</span><span class="t">What Should I Do Now?</span></a></li><li class="rail-sep"></li><li><a href="#back-acknowledgments" title="Acknowledgments"><span class="n">·</span><span class="t">Acknowledgments</span></a></li><li><a href="#back-notes" title="Notes"><span class="n">·</span><span class="t">Notes</span></a></li></ol></nav>
 <div class="wrap">
 
 <header class="book" id="top">
@@ -391,8 +393,9 @@ body.no-notes .sidenote { display: none; }
 
   /* ------------------------------------------------ chapter rail ------ */
   var rail = document.getElementById('rail');
-  var railWide = window.matchMedia('(min-width: 1400px)');
-  if (rail && railWide.matches) {
+  // keep in sync with the .rail media query in build_html.py
+  var railWide = window.matchMedia('(min-width: 1500px)');
+  if (rail) {
     var railLinks = {};
     var railSections = [];
     Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a) {
@@ -438,12 +441,13 @@ body.no-notes .sidenote { display: none; }
       if (found) activate(found.id);
     }
     function request() {
-      if (ticking) return;
+      if (!railWide.matches || ticking) return;
       ticking = true;
       window.requestAnimationFrame(update);
     }
     window.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
+    if (railWide.addEventListener) railWide.addEventListener('change', request);
     update();
   }
 

@@ -31,8 +31,9 @@
 
   /* ------------------------------------------------ chapter rail ------ */
   var rail = document.getElementById('rail');
-  var railWide = window.matchMedia('(min-width: 1400px)');
-  if (rail && railWide.matches) {
+  // keep in sync with the .rail media query in build_html.py
+  var railWide = window.matchMedia('(min-width: 1500px)');
+  if (rail) {
     var railLinks = {};
     var railSections = [];
     Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a) {
@@ -78,12 +79,13 @@
       if (found) activate(found.id);
     }
     function request() {
-      if (ticking) return;
+      if (!railWide.matches || ticking) return;
       ticking = true;
       window.requestAnimationFrame(update);
     }
     window.addEventListener('scroll', request, { passive: true });
     window.addEventListener('resize', request);
+    if (railWide.addEventListener) railWide.addEventListener('change', request);
     update();
   }
 

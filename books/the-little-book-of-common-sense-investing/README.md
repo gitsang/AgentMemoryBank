@@ -179,13 +179,21 @@ print.
 ### Chapter rail
 
 A fixed left rail (`#rail`) lists the Introduction, the 18 chapters and the back
-matter, numbered, with short Chinese labels written for navigation — the
-publisher's own chapter titles stay on the section headings and appear as the
-link's `title` attribute. It appears at ≥1400px, where there is room beside the
-reading column without overlapping it; narrower viewports keep the in-page table
-of contents. `page.js` highlights the current section with an
-`IntersectionObserver` (`rootMargin: -12% 0px -72% 0px`) and scrolls the rail to
-keep the active item in view.
+matter, numbered, using the section titles as published. Long entries wrap to
+two or three lines and the rail scrolls internally past 86vh. It appears at
+≥1500px — the width at which the rail plus a gap still clears the reading
+column, given the wrap is a centred 68rem box with 23rem reserved on the right.
+Narrower viewports keep the in-page table of contents.
+
+`page.js` marks the current section by **position, not by event**: on each
+scroll (rAF-throttled) it takes the last section whose top has crossed a reading
+line at 28% viewport height. Deriving the answer from where the reader is means
+exactly one entry is ever highlighted and it stays correct when jumping
+backwards — an `IntersectionObserver` latch instead keeps whatever was visited
+last, which is not the same thing.
+
+The breakpoint is duplicated in the CSS and in `page.js`'s `matchMedia`; keep
+them in sync if you change it.
 
 ## Coverage
 

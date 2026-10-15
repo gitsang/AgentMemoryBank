@@ -212,10 +212,11 @@ body.no-tr .tr { display: none; }
 
 /* ---------- chapter rail (wide screens) ---------- */
 .rail { display: none; }
-@media (min-width: 1400px) {
-  .rail { display: block; position: fixed; left: 1.5rem; top: 50%;
-    transform: translateY(-50%); width: 10.5rem; max-height: 78vh;
-    overflow-y: auto; z-index: 10; font-family: var(--cjk);
+@media (min-width: 1500px) {
+  .rail { display: block; position: fixed; left: 1.25rem; top: 50%;
+    transform: translateY(-50%); width: 11.5rem; max-height: 86vh;
+    overflow-y: auto; z-index: 10;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     scrollbar-width: thin; }
   .rail-title { margin: 0 0 .5rem; padding-left: .5rem; color: var(--accent);
     font: 600 .66rem/1 ui-sans-serif, system-ui, sans-serif;
@@ -223,13 +224,14 @@ body.no-tr .tr { display: none; }
   .rail ol { margin: 0; padding: 0; list-style: none; }
   .rail li { margin: .05rem 0; }
   .rail a { display: flex; gap: .45rem; align-items: baseline;
-    padding: .24rem .5rem; border-radius: .28rem;
+    padding: .26rem .5rem; border-radius: .28rem;
+    text-align: left; hyphens: none;
     text-decoration: none; color: var(--muted);
-    font-size: .76rem; line-height: 1.35; }
+    font-size: .73rem; line-height: 1.32; }
   .rail a:hover { color: var(--accent); background: var(--paper); }
-  .rail a .n { flex: 0 0 1.3rem; text-align: right; color: var(--rule);
-    font-family: ui-sans-serif, system-ui, sans-serif; font-size: .67rem;
-    font-variant-numeric: tabular-nums; }
+  .rail a .n { flex: 0 0 1.25rem; text-align: right; color: var(--rule);
+    font-size: .66rem; font-variant-numeric: tabular-nums; }
+  .rail a .t { min-width: 0; }
   .rail a.is-active { color: var(--accent); font-weight: 700;
     background: var(--paper); }
   .rail a.is-active .n { color: var(--accent); }
@@ -457,33 +459,6 @@ IC_GUIDE = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColo
             'aria-hidden="true"><path d="M4 5h8v14H4z"/><path d="M12 9h8v10h-8z"/>'
             '<path d="M6.5 9h3M6.5 12h3M14.5 12.5h3"/></svg>')
 
-# Short Chinese labels for the chapter rail. These are my own descriptive
-# labels, not the publisher's chapter titles (which stay on the section heads).
-RAIL_LABELS = {
-    'intro': '\u5f15\u8a00',
-    'ch01': '\u5bd3\u8a00',
-    'ch02': '\u7406\u6027\u7e41\u8363',
-    'ch03': '\u62bc\u6ce8\u4f01\u4e1a',
-    'ch04': '\u8d62\u5bb6\u53d8\u8f93\u5bb6',
-    'ch05': '\u5927\u5e7b\u89c9',
-    'ch06': '\u7a0e\u4e5f\u662f\u6210\u672c',
-    'ch07': '\u597d\u65e5\u5b50\u4e0d\u518d',
-    'ch08': '\u6311\u9009\u8d62\u5bb6',
-    'ch09': '\u6628\u5929\u7684\u8d62\u5bb6',
-    'ch10': '\u627e\u4eba\u6311\u57fa\u91d1',
-    'ch11': '\u6700\u4f4e\u8d39\u7387',
-    'ch12': '\u7b80\u6734\u7684\u5c0a\u4e25',
-    'ch13': '\u503a\u5238\u4e0e\u8d27\u57fa',
-    'ch14': '\u627f\u8bfa\u8d85\u989d\u6536\u76ca',
-    'ch15': 'ETF \u4e0e\u4ea4\u6613',
-    'ch16': '\u683c\u96f7\u5384\u59c6\u4e4b\u95ee',
-    'ch17': '\u65e0\u60c5\u7b97\u672f',
-    'ch18': '\u6211\u8be5\u505a\u4ec0\u4e48',
-    'back-acknowledgments': '\u81f4\u8c22',
-    'back-notes': '\u6ce8\u91ca',
-}
-
-
 def tool_button(btn_id, label, icon):
     esc = html_mod.escape(label)
     return (f'<button class="tool-btn" id="{btn_id}" type="button" '
@@ -492,7 +467,11 @@ def tool_button(btn_id, label, icon):
 
 
 def chapter_rail():
-    """Fixed left-hand rail listing the sections, for quick chapter jumps."""
+    """Fixed left-hand rail listing the sections, for quick chapter jumps.
+
+    Labels are the section titles as published (English); the `title`
+    attribute carries the same text so long entries stay readable on hover.
+    """
     items, sep_done = [], False
     for s in SECTIONS:
         if s['id'].startswith('fm-'):
@@ -500,13 +479,13 @@ def chapter_rail():
         if s['kind'] == 'back' and not sep_done:
             items.append('<li class="rail-sep"></li>')
             sep_done = True
-        label = RAIL_LABELS.get(s['id'], s['title'])
         num = s['id'][2:].lstrip('0') if s['id'].startswith('ch') else '\u00b7'
+        label = html_mod.escape(s['title'])
         items.append(
-            f'<li><a href="#{s["id"]}" title="{html_mod.escape(s["title"])}">'
-            f'<span class="n">{num}</span>{html_mod.escape(label)}</a></li>')
-    return ('<nav class="rail" id="rail" aria-label="\u7ae0\u8282\u5bfc\u822a">'
-            '<p class="rail-title">\u76ee\u5f55</p><ol>'
+            f'<li><a href="#{s["id"]}" title="{label}">'
+            f'<span class="n">{num}</span><span class="t">{label}</span></a></li>')
+    return ('<nav class="rail" id="rail" aria-label="Chapters">'
+            '<p class="rail-title">Contents</p><ol>'
             + ''.join(items) + '</ol></nav>')
 
 
