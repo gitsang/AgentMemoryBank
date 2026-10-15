@@ -172,6 +172,27 @@ the original text.
 A `label` field in the sidecar (as in `reading-guide.json`) renames the toggle,
 which keeps a guide from being presented as a translation.
 
+### Floating toolbar
+
+Three round icon buttons sit bottom-right, stacked: back-to-top, the language
+toggle, and the annotation toggle. They share one `.toolbar` flex container
+(`column-reverse`, so the first child renders at the bottom) and one `.tool-btn`
+style. Hovering or focusing one reveals `.tool-tip` to its **left**; the tip text
+tracks state (`隐藏批注` / `显示批注`) and `aria-label` / `aria-pressed` update with
+it. A disabled layer is dimmed via `.is-off`. The whole toolbar is hidden in
+print.
+
+### Chapter rail
+
+A fixed left rail (`#rail`) lists the Introduction, the 18 chapters and the back
+matter, numbered, with short Chinese labels written for navigation — the
+publisher's own chapter titles stay on the section headings and appear as the
+link's `title` attribute. It appears at ≥1400px, where there is room beside the
+reading column without overlapping it; narrower viewports keep the in-page table
+of contents. `page.js` highlights the current section with an
+`IntersectionObserver` (`rootMargin: -12% 0px -72% 0px`) and scrolls the rail to
+keep the active item in view.
+
 ## Coverage
 
 Front matter (series page, copyright, dedication), Introduction, all 18

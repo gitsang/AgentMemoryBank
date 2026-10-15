@@ -164,11 +164,29 @@ section:target { animation: flash 1.6s ease-out; }
 footer.book { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--rule);
   font-size: .8rem; line-height: 1.7; color: var(--muted); text-align: center; }
 
-.back-to-top { position: fixed; right: 1rem; bottom: 1rem; z-index: 20;
-  width: 2.5rem; height: 2.5rem; display: grid; place-items: center;
+/* ---------- floating icon toolbar ---------- */
+.toolbar { position: fixed; right: 1rem; bottom: 1rem; z-index: 30;
+  display: flex; flex-direction: column-reverse; gap: .55rem;
+  align-items: center; }
+.tool-btn { position: relative; width: 2.5rem; height: 2.5rem; padding: 0;
+  display: grid; place-items: center;
   background: var(--paper); color: var(--accent); border: 1px solid var(--rule);
-  border-radius: 50%; text-decoration: none; font-size: 1rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+  border-radius: 50%; text-decoration: none; cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,.12);
+  transition: color .15s, border-color .15s, opacity .15s; }
+.tool-btn:hover, .tool-btn:focus-visible { color: var(--accent);
+  border-color: var(--accent); }
+.tool-btn .ic { width: 1.15rem; height: 1.15rem; display: block; }
+.tool-btn.is-off { color: var(--muted); opacity: .68; }
+.tool-btn .tool-tip { position: absolute; right: calc(100% + .6rem); top: 50%;
+  transform: translateY(-50%) translateX(.3rem);
+  white-space: nowrap; opacity: 0; pointer-events: none;
+  background: var(--ink); color: var(--bg);
+  font-family: var(--cjk); font-size: .7rem; line-height: 1; font-weight: 700;
+  padding: .38rem .6rem; border-radius: .32rem;
+  transition: opacity .15s, transform .15s; }
+.tool-btn:hover .tool-tip, .tool-btn:focus-visible .tool-tip {
+  opacity: 1; transform: translateY(-50%) translateX(0); }
 
 /* ---------- parallel Chinese translation (对照翻译) ---------- */
 p.tr, .tr {
@@ -190,14 +208,33 @@ li > .tr { margin: .3rem 0 .65rem; }
 .note .tr { margin: 0 0 .7rem; }
 body.no-tr .tr { display: none; }
 
-.tr-toggle { position: fixed; right: 1rem; bottom: 4.1rem; z-index: 20;
-  display: flex; align-items: center; gap: .4rem;
-  background: var(--paper); color: var(--muted); border: 1px solid var(--rule);
-  border-radius: 999px; padding: .45rem .85rem; cursor: pointer;
-  font: 600 .7rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em;
-  box-shadow: 0 2px 10px rgba(0,0,0,.12); }
-.tr-toggle:hover { color: var(--accent); }
-.note-toggle { bottom: 7.2rem; }
+.tr-toggle-note { display: none; }
+
+/* ---------- chapter rail (wide screens) ---------- */
+.rail { display: none; }
+@media (min-width: 1400px) {
+  .rail { display: block; position: fixed; left: 1.5rem; top: 50%;
+    transform: translateY(-50%); width: 10.5rem; max-height: 78vh;
+    overflow-y: auto; z-index: 10; font-family: var(--cjk);
+    scrollbar-width: thin; }
+  .rail-title { margin: 0 0 .5rem; padding-left: .5rem; color: var(--accent);
+    font: 600 .66rem/1 ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: .16em; text-transform: uppercase; }
+  .rail ol { margin: 0; padding: 0; list-style: none; }
+  .rail li { margin: .05rem 0; }
+  .rail a { display: flex; gap: .45rem; align-items: baseline;
+    padding: .24rem .5rem; border-radius: .28rem;
+    text-decoration: none; color: var(--muted);
+    font-size: .76rem; line-height: 1.35; }
+  .rail a:hover { color: var(--accent); background: var(--paper); }
+  .rail a .n { flex: 0 0 1.3rem; text-align: right; color: var(--rule);
+    font-family: ui-sans-serif, system-ui, sans-serif; font-size: .67rem;
+    font-variant-numeric: tabular-nums; }
+  .rail a.is-active { color: var(--accent); font-weight: 700;
+    background: var(--paper); }
+  .rail a.is-active .n { color: var(--accent); }
+  .rail .rail-sep { margin: .45rem 0; border-top: 1px solid var(--rule); }
+}
 
 /* ---------- glossary terms + popover ---------- */
 .term { font: inherit; color: inherit; background: none; border: 0; padding: 0;
@@ -254,7 +291,7 @@ body.no-notes .sidenote { display: none; }
 
 @media print {
   :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
-  .back-to-top, nav.toc, .tr-toggle, .glossary-pop { display: none; }
+  .back-to-top, nav.toc, .toolbar, .glossary-pop, .rail { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
   p.tr, .tr, .sidenote { break-inside: avoid; }
@@ -406,6 +443,73 @@ def glossary_appendix(terms):
             f'<dl>{"".join(rows)}</dl></details>')
 
 
+# Inline SVG icons, kept in the same 24x24 / 1.7 stroke idiom so the floating
+# buttons read as one set.
+IC_TOP = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+          'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" '
+          'aria-hidden="true"><path d="M12 19V6"/><path d="M6 12l6-6 6 6"/></svg>')
+IC_NOTE = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+           'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+           'aria-hidden="true"><path d="M4 6h11M4 11h11M4 16h6"/>'
+           '<path d="M15 14h5v6l-3-2.4h-2z"/></svg>')
+IC_GUIDE = ('<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" '
+            'aria-hidden="true"><path d="M4 5h8v14H4z"/><path d="M12 9h8v10h-8z"/>'
+            '<path d="M6.5 9h3M6.5 12h3M14.5 12.5h3"/></svg>')
+
+# Short Chinese labels for the chapter rail. These are my own descriptive
+# labels, not the publisher's chapter titles (which stay on the section heads).
+RAIL_LABELS = {
+    'intro': '\u5f15\u8a00',
+    'ch01': '\u5bd3\u8a00',
+    'ch02': '\u7406\u6027\u7e41\u8363',
+    'ch03': '\u62bc\u6ce8\u4f01\u4e1a',
+    'ch04': '\u8d62\u5bb6\u53d8\u8f93\u5bb6',
+    'ch05': '\u5927\u5e7b\u89c9',
+    'ch06': '\u7a0e\u4e5f\u662f\u6210\u672c',
+    'ch07': '\u597d\u65e5\u5b50\u4e0d\u518d',
+    'ch08': '\u6311\u9009\u8d62\u5bb6',
+    'ch09': '\u6628\u5929\u7684\u8d62\u5bb6',
+    'ch10': '\u627e\u4eba\u6311\u57fa\u91d1',
+    'ch11': '\u6700\u4f4e\u8d39\u7387',
+    'ch12': '\u7b80\u6734\u7684\u5c0a\u4e25',
+    'ch13': '\u503a\u5238\u4e0e\u8d27\u57fa',
+    'ch14': '\u627f\u8bfa\u8d85\u989d\u6536\u76ca',
+    'ch15': 'ETF \u4e0e\u4ea4\u6613',
+    'ch16': '\u683c\u96f7\u5384\u59c6\u4e4b\u95ee',
+    'ch17': '\u65e0\u60c5\u7b97\u672f',
+    'ch18': '\u6211\u8be5\u505a\u4ec0\u4e48',
+    'back-acknowledgments': '\u81f4\u8c22',
+    'back-notes': '\u6ce8\u91ca',
+}
+
+
+def tool_button(btn_id, label, icon):
+    esc = html_mod.escape(label)
+    return (f'<button class="tool-btn" id="{btn_id}" type="button" '
+            f'data-label="{esc}" aria-pressed="true" aria-label="{esc}">'
+            f'{icon}<span class="tool-tip">{esc}</span></button>')
+
+
+def chapter_rail():
+    """Fixed left-hand rail listing the sections, for quick chapter jumps."""
+    items, sep_done = [], False
+    for s in SECTIONS:
+        if s['id'].startswith('fm-'):
+            continue
+        if s['kind'] == 'back' and not sep_done:
+            items.append('<li class="rail-sep"></li>')
+            sep_done = True
+        label = RAIL_LABELS.get(s['id'], s['title'])
+        num = s['id'][2:].lstrip('0') if s['id'].startswith('ch') else '\u00b7'
+        items.append(
+            f'<li><a href="#{s["id"]}" title="{html_mod.escape(s["title"])}">'
+            f'<span class="n">{num}</span>{html_mod.escape(label)}</a></li>')
+    return ('<nav class="rail" id="rail" aria-label="\u7ae0\u8282\u5bfc\u822a">'
+            '<p class="rail-title">\u76ee\u5f55</p><ol>'
+            + ''.join(items) + '</ol></nav>')
+
+
 def body_or_face():
     pre = []
 
@@ -460,13 +564,17 @@ def main():
         print(f'annotations: {notes} notes across {len(ANNOTATIONS)} sections, '
               f'mismatched {note_mismatch}')
 
-    toggles = []
+    buttons = []
     if translations:
-        toggles.append('<button class="tr-toggle" id="trToggle" type="button" '
-                       f'aria-pressed="true">{tr_label}</button>')
+        buttons.append(tool_button('trToggle', tr_label, IC_GUIDE))
     if ANNOTATIONS:
-        toggles.append('<button class="tr-toggle note-toggle" id="noteToggle" '
-                       'type="button" aria-pressed="true">\u6279\u6ce8</button>')
+        buttons.append(tool_button('noteToggle', '\u6279\u6ce8', IC_NOTE))
+    to_top = ('<a class="tool-btn" id="toTop" href="#top" '
+              'aria-label="\u56de\u5230\u9876\u90e8">' + IC_TOP +
+              '<span class="tool-tip">\u56de\u5230\u9876\u90e8</span></a>')
+    # column-reverse renders the first child at the bottom of the stack
+    toolbar = ('<div class="toolbar" role="group">'
+               + to_top + ''.join(buttons) + '</div>')
 
     glossary_data = appendix = ''
     if GLOSSARY:
@@ -476,7 +584,7 @@ def main():
                          + payload + '</script>')
         appendix = glossary_appendix(GLOSSARY)
 
-    script = f'<script>{page_script()}</script>' if (toggles or GLOSSARY) else ''
+    script = f'<script>{page_script()}</script>'
 
     doc = f"""<!DOCTYPE html>
 <html lang="en">
@@ -489,6 +597,7 @@ def main():
 <style>{CSS}</style>
 </head>
 <body>
+{chapter_rail()}
 <div class="wrap">
 
 <header class="book" id="top">
@@ -515,8 +624,7 @@ def main():
 </footer>
 
 </div>
-<a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
-{''.join(toggles)}
+{toolbar}
 {glossary_data}
 {script}
 </body>

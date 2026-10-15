@@ -3,16 +3,18 @@
   'use strict';
 
   /* ---------------------------------------------------------- toggles --- */
-  function setupToggle(btnId, hideClass, storageKey, label) {
+  function setupToggle(btnId, hideClass, storageKey, fallback) {
     var btn = document.getElementById(btnId);
     if (!btn) return;
-    // build_html.py renders the label into the button; prefer it so a
-    // reading guide is not mislabelled as a translation
-    label = (btn.textContent || '').trim() || label;
+    var label = btn.getAttribute('data-label') || fallback;
+    var tip = btn.querySelector('.tool-tip');
     function apply(hidden) {
       document.body.classList.toggle(hideClass, hidden);
+      btn.classList.toggle('is-off', hidden);
       btn.setAttribute('aria-pressed', String(!hidden));
-      btn.textContent = label + (hidden ? '\uff1a\u9690\u85cf' : '\uff1a\u663e\u793a');
+      var state = hidden ? '\u663e\u793a' : '\u9690\u85cf';
+      btn.setAttribute('aria-label', label + '\uff1a' + state);
+      if (tip) tip.textContent = state + label;
     }
     var hidden = false;
     try { hidden = localStorage.getItem(storageKey) === 'off'; } catch (e) {}
@@ -26,6 +28,37 @@
 
   setupToggle('trToggle', 'no-tr', 'tlb-csi-translation', '\u4e2d\u6587');
   setupToggle('noteToggle', 'no-notes', 'tlb-csi-notes', '\u6279\u6ce8');
+
+  /* ------------------------------------------------ chapter rail ------ */
+  var rail = document.getElementById('rail');
+  if (rail && 'IntersectionObserver' in window) {
+    var links = {};
+    Array.prototype.forEach.call(rail.querySelectorAll('a'), function (a) {
+      links[a.getAttribute('href').slice(1)] = a;
+    });
+    var active = null;
+    function activate(id) {
+      var a = links[id];
+      if (!a || a === active) return;
+      if (active) active.classList.remove('is-active');
+      active = a;
+      a.classList.add('is-active');
+      var top = a.offsetTop;
+      if (top < rail.scrollTop ||
+          top > rail.scrollTop + rail.clientHeight - 32) {
+        rail.scrollTop = top - rail.clientHeight / 2;
+      }
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) activate(en.target.id);
+      });
+    }, { rootMargin: '-12% 0px -72% 0px' });
+    Object.keys(links).forEach(function (id) {
+      var sec = document.getElementById(id);
+      if (sec) observer.observe(sec);
+    });
+  }
 
   /* --------------------------------------------------------- glossary --- */
   var holder = document.getElementById('glossary-data');
