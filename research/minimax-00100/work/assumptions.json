@@ -1,0 +1,144 @@
+{
+  "price": 23.08,
+  "shares": 352.48,
+  "net_debt": -2389.4,
+  "wacc": 0.125,
+  "terminal_g": 0.03,
+  "scenarios": [
+    {
+      "name": "bear",
+      "prob": 0.35,
+      "evidence_strength": "中强",
+      "revenue": [
+        300,
+        400,
+        450,
+        480,
+        480
+      ],
+      "fcf_margin": [
+        -1.2,
+        -0.5,
+        -0.15,
+        0.02,
+        0.05
+      ],
+      "fade_years": 5,
+      "fade_g_start": 0.03,
+      "annual_dilution": 0.02
+    },
+    {
+      "name": "base",
+      "prob": 0.45,
+      "evidence_strength": "中",
+      "revenue": [
+        360,
+        700,
+        1050,
+        1350,
+        1600
+      ],
+      "fcf_margin": [
+        -1.39,
+        -0.55,
+        -0.15,
+        0.05,
+        0.18
+      ],
+      "fade_years": 5,
+      "fade_g_start": 0.15,
+      "annual_dilution": 0.015
+    },
+    {
+      "name": "bull",
+      "prob": 0.2,
+      "evidence_strength": "弱",
+      "revenue": [
+        420,
+        950,
+        1700,
+        2500,
+        3300
+      ],
+      "fcf_margin": [
+        -1.0,
+        -0.3,
+        0.0,
+        0.15,
+        0.28
+      ],
+      "fade_years": 5,
+      "fade_g_start": 0.25,
+      "annual_dilution": 0.01
+    }
+  ],
+  "sensitivity": {
+    "scenario": "base",
+    "wacc": [
+      0.115,
+      0.125,
+      0.135
+    ],
+    "g": [
+      0.025,
+      0.03,
+      0.035
+    ]
+  },
+  "reverse": {
+    "base_revenue": 165.2,
+    "interim_fcf": [
+      -160.0,
+      -110.0,
+      -30.0,
+      60.0,
+      190.0
+    ],
+    "steady_margins": [
+      0.2,
+      0.25,
+      0.3
+    ]
+  },
+  "pvgo": {
+    "earnings_ps": -1.9,
+    "r": 0.125,
+    "price": 23.08
+  },
+  "epv": {
+    "earnings_basis": "NOPAT",
+    "normalized_earnings": -400.0,
+    "coc": 0.125,
+    "net_debt": -2389.4,
+    "excess_cash": 0.0,
+    "shares": 352.48,
+    "asset_value": 1346.7,
+    "price": 23.08
+  },
+  "eva": {
+    "invested_capital": 420.0,
+    "nopat": -560.0,
+    "wacc": 0.125,
+    "fade_years": 10,
+    "nopat_growth": 0.0,
+    "reinvestment_rate": 0.35,
+    "roiic": 0.18
+  },
+  "montecarlo": {
+    "n": 4000,
+    "seed": 20261015,
+    "base_revenue": 165.2,
+    "years": 5,
+    "growth_mean": 0.42,
+    "growth_std": 0.2,
+    "margin_low": 0.02,
+    "margin_mode": 0.2,
+    "margin_high": 0.33,
+    "wacc_low": 0.115,
+    "wacc_high": 0.145,
+    "terminal_g": 0.03,
+    "fade_years": 5
+  },
+  "range_low": 9.0,
+  "range_high": 22.0
+}
