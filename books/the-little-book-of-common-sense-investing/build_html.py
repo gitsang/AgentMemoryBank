@@ -2,9 +2,12 @@
 """Assemble index.html from the sections JSON produced by build_book.py.
 
 Usage:
-    SECTIONS_JSON=sections.json python3 build_html.py <out.html>
+    SECTIONS_JSON=sections.json TRANSLATIONS_JSON=translations.json \
+        python3 build_html.py <out.html>
 
 SECTIONS_JSON defaults to /tmp/sections.json (build_book.py's default output).
+When TRANSLATIONS_JSON points at a translations file, each translated paragraph
+is followed by its Chinese rendering in a muted grey style.
 """
 
 import html as html_mod
@@ -12,8 +15,17 @@ import json
 import os
 import re
 import sys
+import warnings
+
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+
+from extract_paragraphs import (SKIP_SECTIONS, iter_paragraphs, plain,
+                                selection, soup_of, src_key)
+
+warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 
 SECTIONS_PATH = os.environ.get('SECTIONS_JSON', '/tmp/sections.json')
+TRANSLATIONS_PATH = os.environ.get('TRANSLATIONS_JSON', '')
 SECTIONS = json.load(open(SECTIONS_PATH))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '/tmp/book_out/index.html'
 
@@ -139,13 +151,121 @@ footer.book { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(-
   background: var(--paper); color: var(--accent); border: 1px solid var(--rule);
   border-radius: 50%; text-decoration: none; font-size: 1rem;
   box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+
+/* ---------- parallel Chinese translation (对照翻译) ---------- */
+p.tr, .tr {
+  color: var(--muted);
+  font-size: .9em;
+  line-height: 1.62;
+  text-align: left;
+  hyphens: none;
+  padding-left: .85rem;
+  border-left: 2px solid var(--rule);
+  margin: -.45rem 0 1.15rem;
+  font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC",
+    "SimSun", ui-serif, Georgia, serif;
+}
+p.tr.q { font-style: normal; }
+p.tr.pull { font-weight: 400; text-align: center; max-width: 30rem;
+  margin: 1.1rem auto .2rem; border-left: 0; padding-left: 0; }
+blockquote .tr, aside.box .tr { border-left-color: var(--muted); }
+li > .tr { margin: .3rem 0 .65rem; }
+.note .tr { margin: 0 0 .7rem; }
+body.no-tr .tr { display: none; }
+
+.tr-toggle { position: fixed; right: 1rem; bottom: 4.1rem; z-index: 20;
+  display: flex; align-items: center; gap: .4rem;
+  background: var(--paper); color: var(--muted); border: 1px solid var(--rule);
+  border-radius: 999px; padding: .45rem .85rem; cursor: pointer;
+  font: 600 .7rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em;
+  box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+.tr-toggle:hover { color: var(--accent); }
 @media print {
-  :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #444; }
-  .back-to-top, nav.toc { display: none; }
+  :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
+  .back-to-top, nav.toc, .tr-toggle { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
+  p.tr, .tr { break-inside: avoid; }
 }
 """
+
+
+SCRIPT = """
+(function () {
+  var btn = document.getElementById('trToggle');
+  if (!btn) return;
+  var KEY = 'tlb-csi-translation';
+  function apply(hidden) {
+    document.body.classList.toggle('no-tr', hidden);
+    btn.textContent = hidden ? '\u4e2d\u6587\uff1a\u9690\u85cf' : '\u4e2d\u6587\uff1a\u663e\u793a';
+    btn.setAttribute('aria-pressed', String(!hidden));
+  }
+  var hidden = false;
+  try { hidden = localStorage.getItem(KEY) === 'off'; } catch (e) {}
+  apply(hidden);
+  btn.addEventListener('click', function () {
+    hidden = !document.body.classList.contains('no-tr');
+    apply(hidden);
+    try { localStorage.setItem(KEY, hidden ? 'off' : 'on'); } catch (e) {}
+  });
+})();
+"""
+
+
+def normalise_entries(entries):
+    """Accept either {index: entry} or a positional list of entries."""
+    out = {}
+    if isinstance(entries, dict):
+        for k, v in entries.items():
+            try:
+                out[int(k)] = v
+            except (TypeError, ValueError):
+                continue
+    elif isinstance(entries, list):
+        out = dict(enumerate(entries))
+    return out
+
+
+def interleave(section_html, entries):
+    """Insert each paragraph's translation directly after it.
+
+    Entries are keyed by paragraph index (a list is accepted too, and treated
+    as positional). The translation mirrors the source paragraph's classes so
+    that quoted or indented paragraphs keep the same shape, plus a `tr` marker
+    for styling. Each entry carries a `src` fingerprint of the paragraph it
+    belongs to; if the fingerprint does not match, the correct paragraph is
+    looked up by fingerprint rather than being silently misplaced.
+    """
+    soup = soup_of(section_html)
+    root = soup.find(id='__root__')
+    els = list(selection(root))
+    inserted = mismatched = 0
+
+    for i, entry in sorted(normalise_entries(entries).items()):
+        zh = (entry.get('zh') or '').strip()
+        if not zh:
+            continue
+        want = (entry.get('src') or '').strip()[:60]
+        el = els[i] if 0 <= i < len(els) else None
+        if el is None or (want and not plain(el).startswith(want)):
+            el = next((e for e in els if want and plain(e).startswith(want)), None)
+            if el is None:
+                mismatched += 1
+                continue
+        cls = ['tr'] + list(el.get('class') or [])
+        if el.name == 'li':
+            node = soup.new_tag('div')
+            node['class'] = cls
+            node.string = zh
+            el.append(node)
+        else:
+            node = soup.new_tag('p')
+            node['class'] = cls
+            node.string = zh
+            el.insert_after(node)
+        inserted += 1
+
+    return ''.join(str(c) for c in root.children), inserted, mismatched
 
 
 def body_or_face():
@@ -173,8 +293,31 @@ def body_or_face():
 
 
 def main():
-    parts = [s['html'] for s in SECTIONS if s['id'] != 'fm-title-page']
+    translations = {}
+    if TRANSLATIONS_PATH and os.path.exists(TRANSLATIONS_PATH):
+        translations = json.load(open(TRANSLATIONS_PATH)).get('sections', {})
+
+    parts, inserted, mismatched = [], 0, 0
+    for s in SECTIONS:
+        html = s['html']
+        if s['id'] in translations:
+            html, ins, mis = interleave(html, translations[s['id']])
+            inserted += ins
+            mismatched += mis
+        if s['id'] != 'fm-title-page':
+            parts.append(html)
     body = '\n'.join(parts)
+
+    total_paras = sum(1 for s in SECTIONS if s['id'] not in SKIP_SECTIONS
+                      for _ in iter_paragraphs(s['html']))
+    if translations:
+        pct = inserted / max(total_paras, 1)
+        print(f'translation coverage: {inserted}/{total_paras} paragraphs ({pct:.0%}), '
+              f'mismatched: {mismatched}')
+
+    toggle = ('<button class="tr-toggle" id="trToggle" type="button" '
+              'aria-pressed="true">\u4e2d\u6587</button>' if translations else '')
+    script = f'<script>{SCRIPT}</script>' if translations else ''
 
     doc = f"""<!DOCTYPE html>
 <html lang="en">
@@ -212,6 +355,8 @@ def main():
 
 </div>
 <a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+{toggle}
+{script}
 </body>
 </html>
 """

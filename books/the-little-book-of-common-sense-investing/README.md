@@ -14,7 +14,9 @@ the endnotes; light/dark themes follow your system preference.
 index.html          the book (chapters as anchored <section>s)
 images/             exhibit figures referenced by index.html
 build_book.py       EPUB  -> sections JSON (text + figures)
-build_html.py       sections JSON -> index.html
+build_html.py       sections JSON -> index.html (optional translations)
+extract_paragraphs.py  sections JSON -> translatable-paragraph work queue
+translations.example.json  worked example of the translation sidecar
 ```
 
 ## Rebuilding
@@ -65,6 +67,54 @@ Notes on fidelity:
   document. The only differences are captions moving into `<figcaption>`,
   generated note numbers, and whitespace/punctuation normalisation — no body
   text is lost.
+
+## Parallel translation (对照翻译)
+
+The page can carry a second language interleaved under each paragraph. The
+translation text is kept in a sidecar file rather than baked into the HTML, so
+the page can be rebuilt at any time and partial work is fine.
+
+Workflow:
+
+```bash
+# 1. dump the translatable paragraphs of every section
+SECTIONS_JSON=sections.json python3 extract_paragraphs.py paragraphs.json
+
+# 2. fill in paragraphs.json -> translations.json (see the format below)
+
+# 3. rebuild with the translations interleaved
+SECTIONS_JSON=sections.json TRANSLATIONS_JSON=translations.json \
+    python3 build_html.py out/index.html
+```
+
+[`translations.example.json`](translations.example.json) is a short worked
+example. The format is keyed by paragraph index, which makes sparse and
+partial translations safe:
+
+```json
+{
+  "sections": {
+    "intro": {
+      "2": { "src": "SUCCESSFUL INVESTING IS ALL about common sense.",
+             "zh": "成功的投资全靠常识。……" }
+    }
+  }
+}
+```
+
+- `src` is a fingerprint of the paragraph's opening words. The interleaver
+  checks it against the paragraph it is about to attach the translation to; if
+  it does not match, it locates the right paragraph by fingerprint instead of
+  silently attaching the translation to the wrong place. Leftover mismatches are
+  reported as `mismatched: N` at build time.
+- Extracted paragraphs cover prose only (`<p>` and `<li>`): headings, figure
+  captions and the copyright boilerplate are excluded.
+- The translation mirrors the source paragraph's classes, so an indented, quoted
+  or pull-quote paragraph keeps the same shape, plus a `tr` marker:
+  `<p class="tr q">`. `build_html.py` reports the resulting coverage, e.g.
+  `translation coverage: 6/611 paragraphs (1%)`.
+- When translations are present the page gains a 中文 show/hide toggle
+  (persisted in `localStorage`), and the translation styles collapse for print.
 
 ## Coverage
 

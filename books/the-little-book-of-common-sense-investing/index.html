@@ -120,11 +120,41 @@ footer.book { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(-
   background: var(--paper); color: var(--accent); border: 1px solid var(--rule);
   border-radius: 50%; text-decoration: none; font-size: 1rem;
   box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+
+/* ---------- parallel Chinese translation (对照翻译) ---------- */
+p.tr, .tr {
+  color: var(--muted);
+  font-size: .9em;
+  line-height: 1.62;
+  text-align: left;
+  hyphens: none;
+  padding-left: .85rem;
+  border-left: 2px solid var(--rule);
+  margin: -.45rem 0 1.15rem;
+  font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC",
+    "SimSun", ui-serif, Georgia, serif;
+}
+p.tr.q { font-style: normal; }
+p.tr.pull { font-weight: 400; text-align: center; max-width: 30rem;
+  margin: 1.1rem auto .2rem; border-left: 0; padding-left: 0; }
+blockquote .tr, aside.box .tr { border-left-color: var(--muted); }
+li > .tr { margin: .3rem 0 .65rem; }
+.note .tr { margin: 0 0 .7rem; }
+body.no-tr .tr { display: none; }
+
+.tr-toggle { position: fixed; right: 1rem; bottom: 4.1rem; z-index: 20;
+  display: flex; align-items: center; gap: .4rem;
+  background: var(--paper); color: var(--muted); border: 1px solid var(--rule);
+  border-radius: 999px; padding: .45rem .85rem; cursor: pointer;
+  font: 600 .7rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em;
+  box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+.tr-toggle:hover { color: var(--accent); }
 @media print {
-  :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #444; }
-  .back-to-top, nav.toc { display: none; }
+  :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
+  .back-to-top, nav.toc, .tr-toggle { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
+  p.tr, .tr { break-inside: avoid; }
 }
 </style>
 </head>
@@ -225,5 +255,7 @@ footer.book { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(-
 
 </div>
 <a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
+
+
 </body>
 </html>
