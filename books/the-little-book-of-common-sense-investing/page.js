@@ -32,7 +32,7 @@
   /* ------------------------------------------------ chapter rail ------ */
   var rail = document.getElementById('rail');
   // keep in sync with the .rail media query in build_html.py
-  var railWide = window.matchMedia('(min-width: 1500px)');
+  var railWide = window.matchMedia('(min-width: 1530px)');
   if (rail) {
     var railLinks = {};
     var railSections = [];

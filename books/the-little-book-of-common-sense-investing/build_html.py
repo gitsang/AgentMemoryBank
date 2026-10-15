@@ -211,27 +211,34 @@ body.no-tr .tr { display: none; }
 .tr-toggle-note { display: none; }
 
 /* ---------- chapter rail (wide screens) ---------- */
+/* --rail-w is the rail's own width; .wrap reserves exactly that much on the
+   left, so the two must change together. The breakpoint is the viewport at
+   which --rail-w + 1.25rem + 1.5rem + the 68rem wrap still fits. */
 .rail { display: none; }
-@media (min-width: 1500px) {
+@media (min-width: 1530px) {
+  :root { --rail-w: 24rem; --rail-gap: 1.5rem; }
+  .wrap { margin-left: max(calc(1.25rem + var(--rail-w) + var(--rail-gap)),
+                           calc(50% - 34rem));
+          margin-right: auto; }
   .rail { display: block; position: fixed; left: 1.25rem; top: 50%;
-    transform: translateY(-50%); width: 11.5rem; max-height: 86vh;
+    transform: translateY(-50%); width: var(--rail-w); max-height: 86vh;
     overflow-y: auto; z-index: 10;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     scrollbar-width: thin; }
-  .rail-title { margin: 0 0 .5rem; padding-left: .5rem; color: var(--accent);
+  .rail-title { margin: 0 0 .5rem; padding-left: .45rem; color: var(--accent);
     font: 600 .66rem/1 ui-sans-serif, system-ui, sans-serif;
     letter-spacing: .16em; text-transform: uppercase; }
   .rail ol { margin: 0; padding: 0; list-style: none; }
   .rail li { margin: .05rem 0; }
-  .rail a { display: flex; gap: .45rem; align-items: baseline;
-    padding: .26rem .5rem; border-radius: .28rem;
-    text-align: left; hyphens: none;
+  .rail a { display: flex; gap: .4rem; align-items: baseline;
+    padding: .26rem .45rem; border-radius: .28rem;
+    text-align: left; hyphens: none; white-space: nowrap;
     text-decoration: none; color: var(--muted);
-    font-size: .73rem; line-height: 1.32; }
+    font-size: .67rem; line-height: 1.32; }
   .rail a:hover { color: var(--accent); background: var(--paper); }
-  .rail a .n { flex: 0 0 1.25rem; text-align: right; color: var(--rule);
-    font-size: .66rem; font-variant-numeric: tabular-nums; }
-  .rail a .t { min-width: 0; }
+  .rail a .n { flex: 0 0 1.15rem; text-align: right; color: var(--rule);
+    font-size: .63rem; font-variant-numeric: tabular-nums; }
+  .rail a .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   .rail a.is-active { color: var(--accent); font-weight: 700;
     background: var(--paper); }
   .rail a.is-active .n { color: var(--accent); }

@@ -179,11 +179,22 @@ print.
 ### Chapter rail
 
 A fixed left rail (`#rail`) lists the Introduction, the 18 chapters and the back
-matter, numbered, using the section titles as published. Long entries wrap to
-two or three lines and the rail scrolls internally past 86vh. It appears at
-≥1500px — the width at which the rail plus a gap still clears the reading
-column, given the wrap is a centred 68rem box with 23rem reserved on the right.
-Narrower viewports keep the in-page table of contents.
+matter, numbered, using the section titles as published. Titles are set
+`nowrap` so none of them wrap; the width is sized for the longest one measured
+at the *active* (bold) weight, which is wider than the resting state.
+
+Sizing this needs care, because the wrap is a 68rem box and the rail has to fit
+in the space left over. Reserving that space on the left —
+`margin-left: max(1.25rem + var(--rail-w) + var(--rail-gap), 50% - 34rem)` —
+keeps the column centred when the viewport is roomy and shifts it right only
+when the rail needs the room. Centring alone would instead require the rail to
+fit inside the *gutter*, which costs roughly 400px of viewport for nothing.
+
+`--rail-w`, the 68rem wrap and the media-query width are one calculation: the
+breakpoint is where `--rail-w` + 1.25rem + 1.5rem + 68rem still fits, currently
+24rem + 70.75rem ≈ 95rem → 1530px. The same value is duplicated in `page.js`'s
+`matchMedia`; change both together. Narrower viewports keep the in-page table of
+contents.
 
 `page.js` marks the current section by **position, not by event**: on each
 scroll (rAF-throttled) it takes the last section whose top has crossed a reading
@@ -191,9 +202,6 @@ line at 28% viewport height. Deriving the answer from where the reader is means
 exactly one entry is ever highlighted and it stays correct when jumping
 backwards — an `IntersectionObserver` latch instead keeps whatever was visited
 last, which is not the same thing.
-
-The breakpoint is duplicated in the CSS and in `page.js`'s `matchMedia`; keep
-them in sync if you change it.
 
 ## Coverage
 
