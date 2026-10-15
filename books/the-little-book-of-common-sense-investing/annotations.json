@@ -1,0 +1,67 @@
+{
+  "_comment": "中文批注（编注）。按 section -> 段号 对齐，渲染在正文右侧页边。内容是对原文的解读与补充，不是译文。",
+  "sections": {
+    "ch01": {
+      "2": {
+        "title": "寓言不是原创",
+        "zh": "这个「Gotrocks 家族」的故事不是博格写的，出自巴菲特 2005 年致股东信，博格在信里那版的基础上做了改写。读的时候要记住它的性质：这是一个思想实验，不是经济史。它刻意假设家族「整体」拥有美国全部股票，用来说明「投资者作为一个整体」的处境——这个整体概念是全书的支点，后面每一章的算术都建立在它上面。",
+        "src": "EVEN BEFORE YOU THINK about “index funds”—in their most basic form, mutual funds that simp"
+      },
+      "4": {
+        "title": "为什么一开始是赢家游戏",
+        "zh": "家族 100% 持有全部股票，所以企业创造的每一分钱——全部盈利增长、全部股息——都归他们。这里没有任何人跟谁竞争，财富增长只来自企业真实经营。博格用「赢家的游戏」指的就是这种状态：不交易、不竞争，只分享企业创造的价值。",
+        "src": "A wealthy family named the Gotrocks, grown over the generations to include thousands of br"
+      },
+      "5": {
+        "title": "关键：所有权没变，钱却少了",
+        "zh": "这一段的机关很容易被读漏。Helpers 做的事情只是把股份在家族内部换来换去——**美国的工厂、利润、股息一样没变**。变化只有一件事：交易发生了，佣金被抽走了。所以后面家族份额的下降，不是因为企业变差，而是因为中介开始从这条流水线上收费。全书对主动管理的批评，逻辑起点就在这里。",
+        "src": "But after a while, a few fast-talking Helpers arrive on the scene, and they persuade some "
+      },
+      "6": {
+        "title": "一个重要但常被忽略的细节",
+        "zh": "注意博格的措辞是财富「增长得更慢」，而不是财富减少。家族依然在变富，只是变富的速度被成本拉低了。这个区分很要紧：指数化的主张不是「主动投资会让你亏钱」，而是「它会稳定地、按复利地少给你一块」。很多人把博格读成危言耸听，是因为跳过了这个区分。",
+        "src": "To their surprise, however, the family wealth begins to grow at a slower pace. Why? Becaus"
+      },
+      "7": {
+        "title": "税也是成本",
+        "zh": "博格把税和佣金并列，而不是当作既定外部条件。原因是：**税收是被交易行为触发的**。频繁换仓会不断实现资本利得，把未实现的浮盈变成当年就要缴税的所得。所以「税负效率」在他的框架里不是财务规划的细节，而是投资策略本身的一部分。",
+        "src": "To make matters worse, while the family had always paid taxes on their dividends, some of "
+      },
+      "12": {
+        "title": "60% 是个修辞数字",
+        "zh": "「100% 缩到 60%」不是测算结果，博格没有给出这个数怎么算出来的，它在书里是示意性的。真正要带走的是它的**方向**和**结构**：成本不是一次性折扣，而是按复利逐年扣减的百分比，所以四十年下来会吃掉可观的一块。把它当成精确数字去引用会误用博格——他真正提供论证的是第 4 章的算术。",
+        "src": "Alarmed at last, the family sits down together and takes stock of the events that have tra"
+      },
+      "13": {
+        "title": "寓言的落点",
+        "zh": "老叔叔开的方子是「回到被动但有效的策略，持有美国全部股票，然后什么都不做」。博格紧接着说，这正是指数基金所做的事。所以第 1 章其实已经把全书结论讲完了——剩下十七章是在拆解「为什么你做不到」以及「谁在阻止你」。",
+        "src": "They followed the old uncle’s wise advice, returning to their original passive but product"
+      },
+      "15": {
+        "title": "「牛顿第四定律」",
+        "zh": "巴菲特的原话大意是：对投资者整体而言，回报随「运动量」的增加而减少。这是全章最凝练的一句。它同时解释了两件事——为什么频繁交易有害，以及为什么这种有害是**结构性的**而非某次操作失误。它借牛顿三大运动定律开个玩笑，但结论一点不轻。",
+        "src": "Adding a fourth law to Sir Isaac Newton’s three laws of motion, the inimitable Warren Buff"
+      },
+      "16": {
+        "title": "利益冲突才是主线",
+        "zh": "这一段是第 1 章真正的重心，也是全书的政治经济学。做投资生意的人致富方式是劝客户「别光站着，做点什么」；而客户整体致富的方式恰恰相反——「别做什么，就站着别动」。两句话方向相反，意味着**这个行业的收入建立在客户整体的损失之上**。博格说这种生意撑不了太久，但他在 2007 年写下的这句话，到今天的现实是：它撑得比他预想的久。",
+        "src": "Accurate as that cryptic statement is, I would add that the parable reflects the profound "
+      },
+      "17": {
+        "title": "全书的论点浓缩",
+        "zh": "这段把第 1 章收成一句话：把金融中介成本压到最低，是长期拿到企业回报的唯一办法。注意「that's what indexing is all about」这个等式——在博格这里，指数化不是一个产品类别，而是「成本最小化」这个原则的自然推论。",
+        "src": "The moral of the story, then, is that successful investing is about owning businesses and "
+      },
+      "19": {
+        "title": "为什么引 Meyer 的话",
+        "zh": "Jack Meyer 执掌哈佛捐赠基金期间业绩卓著，是极少数确实长期跑赢市场的机构投资者。**正因如此他的话才有分量**：一个赢家说「这个行业里 85%~90% 的管理人跑不赢基准」，比一个输家说同样的话可信得多。他 2005 年离开哈佛创办了自己的对冲基金——这个后续本身也值得留意，是「知道道理」与「靠这个道理谋生」之间的张力。",
+        "src": "Listen to Jack R. Meyer, former president of Harvard Management Company, the remarkably su"
+      },
+      "20": {
+        "title": "「at par」是什么意思",
+        "zh": "Malkiel 用打高尔夫的比喻：指数基金让你每一轮都以标准杆完成，从不低于标准杆，也从不高于。这个说法值得琢磨——它承认指数基金**永远赢不了市场**,因为你就是市场。争论的焦点因此不是「能不能超额」，而是「为什么绝大多数人连市场平均都拿不到」。这是全书最重要的框架转换。",
+        "src": "In terms that are a bit more academic, Princeton professor Burton G. Malkiel, author of A "
+      }
+    }
+  }
+}

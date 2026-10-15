@@ -14,9 +14,12 @@ the endnotes; light/dark themes follow your system preference.
 index.html          the book (chapters as anchored <section>s)
 images/             exhibit figures referenced by index.html
 build_book.py       EPUB  -> sections JSON (text + figures)
-build_html.py       sections JSON -> index.html (optional translations)
-extract_paragraphs.py  sections JSON -> translatable-paragraph work queue
+build_html.py       sections JSON -> index.html (translations, notes, glossary)
+extract_paragraphs.py      sections JSON -> translatable-paragraph work queue
 translations.example.json  worked example of the translation sidecar
+glossary.json       terminology glossary (en / zh / explanation)
+annotations.json    Chinese margin annotations, keyed by section + paragraph
+page.js             reader-side JS: glossary popovers and visibility toggles
 ```
 
 ## Rebuilding
@@ -26,7 +29,9 @@ The two scripts are a small, dependency-light pipeline (`beautifulsoup4`,
 
 ```bash
 SECTIONS_JSON=sections.json python3 build_book.py book.epub out/
-SECTIONS_JSON=sections.json python3 build_html.py out/index.html
+SECTIONS_JSON=sections.json TRANSLATIONS_JSON=translations.json \
+    ANNOTATIONS_JSON=annotations.json GLOSSARY_JSON=glossary.json \
+    python3 build_html.py out/index.html
 ```
 
 `SECTIONS_JSON` is the hand-off file between the two stages and defaults to
@@ -115,6 +120,48 @@ partial translations safe:
   `translation coverage: 6/611 paragraphs (1%)`.
 - When translations are present the page gains a 中文 show/hide toggle
   (persisted in `localStorage`), and the translation styles collapse for print.
+
+## Terminology glossary
+
+`glossary.json` holds `{id, en, zh, note}` entries. At build time the list is
+inlined as JSON and `page.js` wraps the **first occurrence of each term per
+section** — so every chapter gets its own hints without turning the page into a
+wall of dotted underlines. Clicking a term opens a popover with the English
+term, the Chinese name and the explanation; `Esc` or a click outside dismisses
+it. A full glossary is also appended at the end of the book.
+
+Matching is word-boundary aware and longest-first, so `classic index fund` wins
+over `index fund`, and aliases can be declared per term (`S&P 500`,
+`price/earnings`, `ETF`). Terms are never wrapped inside links, footnote
+markers, translations, margin notes or figure captions.
+
+## Margin annotations
+
+`annotations.json` holds Chinese commentary keyed by section and paragraph
+index, with the same `src` fingerprint guard as translations:
+
+```json
+{
+  "sections": {
+    "ch01": {
+      "5": { "src": "But after a while, a few fast-talking Helpers…",
+             "title": "关键：所有权没变，钱却少了",
+             "zh": "这一段的机关很容易被读漏。…" }
+    }
+  }
+}
+```
+
+On viewports 1150px and wider the notes float into a right-hand margin column
+beside the paragraph they discuss (the note is emitted *before* its paragraph so
+the float starts at that paragraph's top). Below that width they collapse into
+inline callouts above the paragraph, and a floating 批注 button hides or shows
+them all. In print they stay inline and never split across pages.
+
+Notes and glossary entries accept `**bold**` inline markup. The annotations here
+are my own reading notes on the argument — context, caveats and where Bogle's
+framing is doing rhetorical work rather than measurement — not a rendering of
+the original text.
 
 ## Coverage
 

@@ -17,7 +17,7 @@ import re
 import sys
 import warnings
 
-from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from bs4 import BeautifulSoup, NavigableString, XMLParsedAsHTMLWarning
 
 from extract_paragraphs import (SKIP_SECTIONS, iter_paragraphs, plain,
                                 selection, soup_of, src_key)
@@ -26,8 +26,22 @@ warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 
 SECTIONS_PATH = os.environ.get('SECTIONS_JSON', '/tmp/sections.json')
 TRANSLATIONS_PATH = os.environ.get('TRANSLATIONS_JSON', '')
+ANNOTATIONS_PATH = os.environ.get('ANNOTATIONS_JSON', '')
+GLOSSARY_PATH = os.environ.get('GLOSSARY_JSON', '')
+HERE = os.path.dirname(os.path.abspath(__file__))
+
 SECTIONS = json.load(open(SECTIONS_PATH))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '/tmp/book_out/index.html'
+
+
+def load_optional(path, default):
+    if path and os.path.exists(path):
+        return json.load(open(path))
+    return default
+
+
+ANNOTATIONS = load_optional(ANNOTATIONS_PATH, {}).get('sections', {})
+GLOSSARY = load_optional(GLOSSARY_PATH, {}).get('terms', [])
 
 TITLE = 'The Little Book of Common Sense Investing'
 SUBTITLE = 'The Only Way to Guarantee Your Fair Share of Stock Market Returns'
@@ -47,12 +61,16 @@ CSS = """
   --accent: #7a5c2e;
   --quote-bg: #f2ede3;
   --aside-bg: #f0ece2;
+  --note-bg: #f0ece2;
   --maxw: 44rem;
+  --cjk: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC", "SimSun",
+    ui-serif, Georgia, serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #17181a; --paper: #1e2023; --ink: #e6e2da; --muted: #9c958a;
     --rule: #33363a; --accent: #cbb083; --quote-bg: #24262a; --aside-bg: #24262a;
+    --note-bg: #24262a;
   }
 }
 * { box-sizing: border-box; }
@@ -162,8 +180,7 @@ p.tr, .tr {
   padding-left: .85rem;
   border-left: 2px solid var(--rule);
   margin: -.45rem 0 1.15rem;
-  font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Songti SC",
-    "SimSun", ui-serif, Georgia, serif;
+  font-family: var(--cjk);
 }
 p.tr.q { font-style: normal; }
 p.tr.pull { font-weight: 400; text-align: center; max-width: 30rem;
@@ -180,36 +197,80 @@ body.no-tr .tr { display: none; }
   font: 600 .7rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em;
   box-shadow: 0 2px 10px rgba(0,0,0,.12); }
 .tr-toggle:hover { color: var(--accent); }
+.note-toggle { bottom: 7.2rem; }
+
+/* ---------- glossary terms + popover ---------- */
+.term { font: inherit; color: inherit; background: none; border: 0; padding: 0;
+  margin: 0; cursor: help; text-align: inherit;
+  border-bottom: 1px dotted var(--accent); }
+.term:hover, .term.is-open { color: var(--accent); border-bottom-style: solid; }
+.glossary-pop { position: absolute; z-index: 40;
+  width: min(22rem, calc(100vw - 24px));
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: .5rem;
+  padding: .85rem 1rem; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  font-size: .85rem; line-height: 1.62; }
+.gp-en { font: 600 .72rem/1.3 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .05em; color: var(--muted); }
+.gp-zh { font-family: var(--cjk); font-size: 1.02rem; font-weight: 700;
+  margin: .2rem 0 .5rem; }
+.gp-note { font-family: var(--cjk); }
+
+/* ---------- margin annotations (批注) ---------- */
+.sidenote { display: block; margin: .5rem 0 1.3rem; padding: .7rem .95rem;
+  background: var(--note-bg); border-left: 3px solid var(--accent);
+  border-radius: 0 .3rem .3rem 0;
+  font-family: var(--cjk); font-size: .85rem; line-height: 1.7;
+  color: var(--muted); }
+.sidenote .sn-title { margin: 0 0 .35rem; font-size: .78rem; font-weight: 700;
+  color: var(--accent); letter-spacing: .02em; }
+.sidenote p { margin: 0; text-align: left; }
+body.no-notes .sidenote { display: none; }
+
+/* ---------- glossary appendix ---------- */
+.glossary-appendix { margin: 3rem 0 1rem; padding: 1rem 1.25rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: .5rem; }
+.glossary-appendix > summary { cursor: pointer; font: 600 .78rem/1.6
+  ui-sans-serif, system-ui, sans-serif; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--accent); }
+.glossary-appendix dl { margin: 1rem 0 0; }
+.gl-entry { margin: 0 0 .9rem; }
+.gl-entry dt { font-weight: 700; font-size: .88rem; }
+.gl-entry dt .gl-zh { font-family: var(--cjk); font-weight: 700;
+  color: var(--accent); margin-left: .5rem; }
+.gl-entry dd { margin: .2rem 0 0; font-family: var(--cjk);
+  font-size: .82rem; line-height: 1.65; color: var(--muted); }
+
+/* ---------- wide screens: annotations in the right margin ---------- */
+@media (min-width: 1150px) {
+  .wrap { max-width: 68rem; padding-right: 23rem; }
+  .sidenote { float: right; clear: right; width: 20rem;
+    margin: .1rem -21.5rem 1.7rem 0; padding: 0 0 0 .85rem;
+    background: transparent; border-left: 2px solid var(--rule);
+    border-radius: 0; font-size: .8rem; line-height: 1.62; }
+  .sidenote .sn-title { font-size: .74rem; }
+  .glossary-appendix { max-width: 44rem; }
+}
+
 @media print {
   :root { --bg: #fff; --paper: #fff; --ink: #000; --rule: #bbb; --muted: #555; }
-  .back-to-top, nav.toc, .tr-toggle { display: none; }
+  .back-to-top, nav.toc, .tr-toggle, .glossary-pop { display: none; }
   section { break-before: page; }
   body { font-size: 11pt; }
-  p.tr, .tr { break-inside: avoid; }
+  p.tr, .tr, .sidenote { break-inside: avoid; }
+  .sidenote { float: none; clear: none; width: auto; margin: .5rem 0 1rem;
+    padding: .5rem .7rem; background: #f4f2ee;
+    border-left: 2px solid #999; }
+  .term { border-bottom: 0; }
 }
 """
 
 
-SCRIPT = """
-(function () {
-  var btn = document.getElementById('trToggle');
-  if (!btn) return;
-  var KEY = 'tlb-csi-translation';
-  function apply(hidden) {
-    document.body.classList.toggle('no-tr', hidden);
-    btn.textContent = hidden ? '\u4e2d\u6587\uff1a\u9690\u85cf' : '\u4e2d\u6587\uff1a\u663e\u793a';
-    btn.setAttribute('aria-pressed', String(!hidden));
-  }
-  var hidden = false;
-  try { hidden = localStorage.getItem(KEY) === 'off'; } catch (e) {}
-  apply(hidden);
-  btn.addEventListener('click', function () {
-    hidden = !document.body.classList.contains('no-tr');
-    apply(hidden);
-    try { localStorage.setItem(KEY, hidden ? 'off' : 'on'); } catch (e) {}
-  });
-})();
-"""
+def page_script():
+    """Reader-side JS (glossary popovers, toggles), inlined into the page."""
+    with open(os.path.join(HERE, 'page.js'), encoding='utf-8') as fh:
+        return fh.read()
+
 
 
 def normalise_entries(entries):
@@ -268,6 +329,83 @@ def interleave(section_html, entries):
     return ''.join(str(c) for c in root.children), inserted, mismatched
 
 
+def md_inline(text):
+    """Render the small subset of inline markup used in the notes (**bold**)."""
+    parts = text.split('**')
+    return ''.join(
+        html_mod.escape(p) if i % 2 == 0
+        else f'<strong>{html_mod.escape(p)}</strong>'
+        for i, p in enumerate(parts))
+
+
+def rich_nodes(soup, text):
+    """Same as md_inline, but built as nodes for parsing-created elements."""
+    nodes = []
+    for i, part in enumerate(text.split('**')):
+        if not part:
+            continue
+        if i % 2:
+            node = soup.new_tag('strong')
+            node.string = part
+        else:
+            node = NavigableString(part)
+        nodes.append(node)
+    return nodes
+
+
+def add_sidenotes(section_html, entries):
+    """Insert Chinese margin annotations before the paragraphs they discuss.
+
+    Placement is deliberate: the note is emitted *before* its paragraph so the
+    right float starts at that paragraph's top rather than beside whatever
+    follows it. Entries accept the same index + `src` fingerprint pairing as
+    translations, so a drifted index relocates instead of mis-attaching.
+    """
+    soup = soup_of(section_html)
+    root = soup.find(id='__root__')
+    els = list(selection(root))
+    added = mismatched = 0
+
+    for i, entry in sorted(normalise_entries(entries).items()):
+        body = (entry.get('zh') or '').strip()
+        if not body:
+            continue
+        want = (entry.get('src') or '').strip()[:60]
+        el = els[i] if 0 <= i < len(els) else None
+        if el is None or (want and not plain(el).startswith(want)):
+            el = next((e for e in els if want and plain(e).startswith(want)), None)
+            if el is None:
+                mismatched += 1
+                continue
+        note = soup.new_tag('aside')
+        note['class'] = 'sidenote'
+        if entry.get('title'):
+            head = soup.new_tag('p')
+            head['class'] = 'sn-title'
+            head.string = entry['title']
+            note.append(head)
+        para = soup.new_tag('p')
+        for node in rich_nodes(soup, body):
+            para.append(node)
+        note.append(para)
+        el.insert_before(note)
+        added += 1
+
+    return ''.join(str(c) for c in root.children), added, mismatched
+
+
+def glossary_appendix(terms):
+    rows = []
+    for t in terms:
+        rows.append(
+            f'<div class="gl-entry"><dt>{html_mod.escape(t["en"])}'
+            f'<span class="gl-zh">{html_mod.escape(t["zh"])}</span></dt>'
+            f'<dd>{md_inline(t["note"])}</dd></div>')
+    return ('<details class="glossary-appendix" id="glossary">'
+            f'<summary>\u672f\u8bed\u5bf9\u7167\u8868\uff08{len(terms)} \u6761\uff09</summary>'
+            f'<dl>{"".join(rows)}</dl></details>')
+
+
 def body_or_face():
     pre = []
 
@@ -293,17 +431,19 @@ def body_or_face():
 
 
 def main():
-    translations = {}
-    if TRANSLATIONS_PATH and os.path.exists(TRANSLATIONS_PATH):
-        translations = json.load(open(TRANSLATIONS_PATH)).get('sections', {})
+    translations = load_optional(TRANSLATIONS_PATH, {}).get('sections', {})
 
-    parts, inserted, mismatched = [], 0, 0
+    parts, inserted, mismatched, notes, note_mismatch = [], 0, 0, 0, 0
     for s in SECTIONS:
         html = s['html']
         if s['id'] in translations:
             html, ins, mis = interleave(html, translations[s['id']])
             inserted += ins
             mismatched += mis
+        if s['id'] in ANNOTATIONS:
+            html, add, mis2 = add_sidenotes(html, ANNOTATIONS[s['id']])
+            notes += add
+            note_mismatch += mis2
         if s['id'] != 'fm-title-page':
             parts.append(html)
     body = '\n'.join(parts)
@@ -312,12 +452,29 @@ def main():
                       for _ in iter_paragraphs(s['html']))
     if translations:
         pct = inserted / max(total_paras, 1)
-        print(f'translation coverage: {inserted}/{total_paras} paragraphs ({pct:.0%}), '
-              f'mismatched: {mismatched}')
+        print(f'translation: {inserted}/{total_paras} paragraphs '
+              f'({pct:.0%}), mismatched {mismatched}')
+    if ANNOTATIONS:
+        print(f'annotations: {notes} notes across {len(ANNOTATIONS)} sections, '
+              f'mismatched {note_mismatch}')
 
-    toggle = ('<button class="tr-toggle" id="trToggle" type="button" '
-              'aria-pressed="true">\u4e2d\u6587</button>' if translations else '')
-    script = f'<script>{SCRIPT}</script>' if translations else ''
+    toggles = []
+    if translations:
+        toggles.append('<button class="tr-toggle" id="trToggle" type="button" '
+                       'aria-pressed="true">\u4e2d\u6587</button>')
+    if ANNOTATIONS:
+        toggles.append('<button class="tr-toggle note-toggle" id="noteToggle" '
+                       'type="button" aria-pressed="true">\u6279\u6ce8</button>')
+
+    glossary_data = appendix = ''
+    if GLOSSARY:
+        payload = json.dumps({'terms': GLOSSARY}, ensure_ascii=False)
+        payload = payload.replace('<', '\\u003c')
+        glossary_data = ('<script type="application/json" id="glossary-data">'
+                         + payload + '</script>')
+        appendix = glossary_appendix(GLOSSARY)
+
+    script = f'<script>{page_script()}</script>' if (toggles or GLOSSARY) else ''
 
     doc = f"""<!DOCTYPE html>
 <html lang="en">
@@ -346,6 +503,8 @@ def main():
 
 {body}
 
+{appendix}
+
 <footer class="book">
   <p><strong>{TITLE}: {SUBTITLE}</strong><br/>
   by {AUTHOR} — John Wiley &amp; Sons, 2007. ISBN 978-0-470-10210-7.</p>
@@ -355,14 +514,14 @@ def main():
 
 </div>
 <a class="back-to-top" href="#top" aria-label="Back to top">↑</a>
-{toggle}
+{''.join(toggles)}
+{glossary_data}
 {script}
 </body>
 </html>
 """
     open(OUT, 'w', encoding='utf-8').write(doc)
     print('wrote', OUT, len(doc), 'bytes')
-
 
 if __name__ == '__main__':
     main()
