@@ -9,7 +9,9 @@
 
 依赖：pandoc（用于 Markdown → HTML 片段）。不依赖任何 Python 第三方包。
 """
+import argparse
 import html as html_mod
+import json
 import os
 import re
 import subprocess
@@ -18,6 +20,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_IN = os.path.join(HERE, "teaching-slice-20261015.md")
 DEFAULT_OUT = os.path.join(HERE, "teaching-slice.html")
+DEFAULT_GLOSSARY = os.path.join(HERE, "glossary.json")
 
 CSS = """
 :root {
@@ -142,6 +145,49 @@ strong { font-weight: 700; }
 footer.doc { margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule);
   font-size: .82rem; line-height: 1.7; color: var(--muted); text-align: center; }
 
+/* ---------- 术语高亮 + 点击弹窗 ---------- */
+.term { font: inherit; color: inherit; background: none; border: 0; padding: 0;
+  margin: 0; cursor: help; text-align: inherit;
+  border-bottom: 1px dotted var(--accent); }
+.term:hover, .term.is-open { color: var(--accent); border-bottom-style: solid; }
+.glossary-pop { position: absolute; z-index: 40;
+  width: min(23rem, calc(100vw - 24px));
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: .5rem;
+  padding: .8rem 1rem; box-shadow: 0 8px 28px rgba(0,0,0,.2);
+  font-size: .85rem; line-height: 1.65; }
+.glossary-pop .gp-en { font: 600 .7rem/1.3 var(--sans); letter-spacing: .05em;
+  color: var(--muted); }
+.glossary-pop .gp-zh { font-family: var(--cjk); font-size: 1.02rem; font-weight: 700;
+  margin: .2rem 0 .5rem; color: var(--accent); }
+.glossary-pop .gp-note { font-family: var(--cjk); text-wrap: pretty; }
+.glossary-pop .gp-hint { margin-top: .55rem; padding-top: .45rem;
+  border-top: 1px solid var(--rule); font: 400 .68rem/1.4 var(--sans);
+  color: var(--muted); }
+
+/* 页头提示条 */
+.gl-hint { margin: 1.6rem 0 0; padding: .7rem .95rem; background: var(--aside-bg);
+  border: 1px solid var(--rule); border-radius: .5rem;
+  font: 400 .82rem/1.6 var(--sans); color: var(--muted); }
+.gl-hint b { color: var(--accent); }
+.gl-hint .gl-demo { border-bottom: 1px dotted var(--accent); color: var(--accent);
+  cursor: help; }
+
+/* ---------- 文末完整术语表 ---------- */
+.glossary-appendix { margin: 3.5rem 0 0; padding: 1.1rem 1.4rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: .5rem; }
+.glossary-appendix > summary { cursor: pointer; font: 600 .78rem/1.6 var(--sans);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.glossary-appendix .gl-cat { margin: 1.4rem 0 .5rem; font: 700 .82rem/1 var(--sans);
+  color: var(--accent); }
+.glossary-appendix dl { margin: 0; }
+.gl-entry { margin: 0 0 .95rem; }
+.gl-entry dt { font: 700 .88rem/1.5 var(--sans); }
+.gl-entry dt .gl-zh { font-family: var(--cjk); font-weight: 700;
+  color: var(--accent); margin-left: .5rem; }
+.gl-entry dd { margin: .25rem 0 0; font-family: var(--cjk);
+  font-size: .84rem; line-height: 1.7; color: var(--muted); text-wrap: pretty; }
+
 @media (max-width: 640px) {
   body { font-size: 16px; }
   .wrap { padding: 1.5rem .9rem 6rem; }
@@ -154,8 +200,233 @@ footer.doc { margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid var(
   h2 { break-before: page; }
   .table-scroll { overflow: visible; }
   table { font-size: 9pt; }
+  .term { border-bottom: 0; }
+  .glossary-pop { display: none; }
+  .glossary-appendix { break-before: page; }
+  .glossary-appendix > summary { display: none; }
+  .glossary-appendix details { display: block; }
 }
 """
+
+
+# 注意：必须是 raw string。JS 里的 \b（正则词边界）与 \u3400 这类序列
+# 在普通 Python 字符串里会被吃掉（\b 变退格符、\u3400 变真 CJK 字符），
+# 生成出来的 JS 会静默出错。
+GLOSSARY_JS = r"""
+(function () {
+  var holder = document.getElementById('glossary-data');
+  var main = document.querySelector('main');
+  if (!holder || !main) return;
+
+  var terms;
+  try { terms = JSON.parse(holder.textContent).terms; } catch (e) { return; }
+  if (!terms || !terms.length) return;
+
+  var byId = {};
+  terms.forEach(function (t) { byId[t.id] = t; });
+
+  var CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+
+  function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  // 每个术语一个正则：英文用词边界，中文按字面（\b 对 CJK 无效）。
+  // 长词优先，避免「毛利率」被「毛利」先吃掉。
+  var patterns = terms.map(function (t) {
+    var forms = [t.en].concat(t.aliases || [])
+      .filter(function (f) { return f && f.length; });
+    var alts = forms.map(function (f) {
+      var lit = escapeRe(f);
+      return CJK.test(f) ? lit : '\\b' + lit + '\\b';
+    });
+    var weight = Math.max.apply(null, forms.map(function (f) { return f.length; }));
+    return { id: t.id, weight: weight, re: new RegExp('(?:' + alts.join('|') + ')') };
+  }).sort(function (a, b) { return b.weight - a.weight; });
+
+  var SKIP = 'a,button,code,pre,sup,nav,header,footer,script,style,' +
+             'h1,h2,h3,h4,h5,h6,.table-scroll th,.glossary-pop,.glossary-appendix,' +
+             '.gl-hint';
+
+  function eligible(node) {
+    if (!node.nodeValue || !node.nodeValue.trim()) return false;
+    var p = node.parentElement;
+    return !!p && !p.closest(SKIP);
+  }
+
+  function firstMatchNode(root, re) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var node;
+    while ((node = walker.nextNode())) {
+      if (eligible(node)) {
+        re.lastIndex = 0;
+        if (re.test(node.nodeValue)) return node;
+      }
+    }
+    return null;
+  }
+
+  function wrap(node, re, id) {
+    re.lastIndex = 0;
+    var m = re.exec(node.nodeValue);
+    if (!m) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'term';
+    btn.setAttribute('data-term', id);
+    btn.textContent = m[0];
+    var parent = node.parentNode;
+    parent.insertBefore(document.createTextNode(node.nodeValue.slice(0, m.index)), node);
+    parent.insertBefore(btn, node);
+    parent.insertBefore(document.createTextNode(node.nodeValue.slice(m.index + m[0].length)), node);
+    parent.removeChild(node);
+  }
+
+  // 术语表里的 note 用 **x** 标重点；纯文本插入会把星号显示出来，
+  // 所以按偶数段/奇数段切分，奇数段包成 <strong>。
+  function richText(el, text) {
+    String(text).split('**').forEach(function (seg, i) {
+      if (!seg) return;
+      if (i % 2 === 1) {
+        var s = document.createElement('strong');
+        s.textContent = seg;
+        el.appendChild(s);
+      } else {
+        el.appendChild(document.createTextNode(seg));
+      }
+    });
+    return el;
+  }
+
+  // 每个二级章节里，每个术语只标第一次出现——否则满页虚线，反而没人看。
+  var used = {};
+  Array.prototype.forEach.call(main.children, function (el) {
+    if (el.tagName === 'H2') used = {};
+    patterns.forEach(function (p) {
+      if (used[p.id]) return;
+      var node = firstMatchNode(el, p.re);
+      if (!node) return;
+      wrap(node, p.re, p.id);
+      used[p.id] = true;
+    });
+  });
+
+  var pop = document.createElement('div');
+  pop.className = 'glossary-pop';
+  pop.setAttribute('role', 'dialog');
+  pop.hidden = true;
+  document.body.appendChild(pop);
+  var active = null;
+
+  function close() {
+    pop.hidden = true;
+    if (active) active.classList.remove('is-open');
+    active = null;
+  }
+
+  function open(btn) {
+    var t = byId[btn.getAttribute('data-term')];
+    if (!t) return;
+    if (active === btn) { close(); return; }
+    if (active) active.classList.remove('is-open');
+    active = btn;
+    btn.classList.add('is-open');
+
+    pop.textContent = '';
+    var elEn = document.createElement('div');
+    elEn.className = 'gp-en';
+    elEn.textContent = t.en;
+    pop.appendChild(elEn);
+    var elZh = document.createElement('div');
+    elZh.className = 'gp-zh';
+    elZh.textContent = t.zh;
+    pop.appendChild(elZh);
+    var elNote = document.createElement('div');
+    elNote.className = 'gp-note';
+    richText(elNote, t.note);
+    pop.appendChild(elNote);
+    var hint = document.createElement('div');
+    hint.className = 'gp-hint';
+    hint.textContent = '点击空白处或按 Esc 关闭';
+    pop.appendChild(hint);
+
+    pop.hidden = false;
+    var r = btn.getBoundingClientRect();
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 12;
+    var top = r.bottom + window.scrollY + 8;
+    // 下方空间不够就翻到上方
+    if (r.bottom + pop.offsetHeight + 16 > window.innerHeight && r.top > pop.offsetHeight + 16) {
+      top = r.top + window.scrollY - pop.offsetHeight - 8;
+    }
+    pop.style.top = top + 'px';
+    pop.style.left = Math.max(12 + window.scrollX,
+                              Math.min(r.left + window.scrollX, maxLeft)) + 'px';
+  }
+
+  document.addEventListener('click', function (ev) {
+    var btn = ev.target.closest && ev.target.closest('.term');
+    if (btn) { open(btn); return; }
+    if (!pop.hidden && !pop.contains(ev.target)) close();
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') close();
+  });
+
+  window.addEventListener('resize', close);
+  window.addEventListener('scroll', function () { if (!pop.hidden) close(); }, { passive: true });
+
+  // 页头“术语表”链接：点一下直接展开文末的折叠区
+  var link = document.getElementById('gl-open');
+  var det = document.getElementById('glossary');
+  if (link && det) link.addEventListener('click', function () { det.open = true; });
+})();
+"""
+
+
+def load_glossary(path: str) -> list:
+    """读取术语表；文件不存在或格式错就返回空列表（构建仍可继续）。"""
+    if not path or not os.path.exists(path):
+        return []
+    try:
+        data = json.load(open(path, encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"警告：术语表读取失败（{e}），跳过术语功能", file=sys.stderr)
+        return []
+    return [t for t in data.get("terms", [])
+            if t.get("en") and t.get("zh") and t.get("note")]
+
+
+def md_bold(s: str) -> str:
+    """把术语表 note 里的 **强调** 转成 <strong>（先转义，避免注入）。"""
+    segs = html_mod.escape(s).split("**")
+    return "".join(f"<strong>{x}</strong>" if i % 2 else x
+                   for i, x in enumerate(segs))
+
+
+def glossary_appendix(terms: list) -> str:
+    """文末可折叠的完整术语表，按分类分组。"""
+    if not terms:
+        return ""
+    order, groups = [], {}
+    for t in terms:
+        cat = t.get("cat", "其他")
+        if cat not in groups:
+            groups[cat] = []
+            order.append(cat)
+        groups[cat].append(t)
+
+    parts = ['<details class="glossary-appendix" id="glossary">',
+             f'<summary>术语表 · 共 {len(terms)} 条（点击展开）</summary>']
+    for cat in order:
+        parts.append(f'<div class="gl-cat">{html_mod.escape(cat)}</div><dl>')
+        for t in groups[cat]:
+            parts.append(
+                f'<div class="gl-entry"><dt>{html_mod.escape(t["en"])}'
+                f'<span class="gl-zh">{html_mod.escape(t["zh"])}</span></dt>'
+                f'<dd>{md_bold(t["note"])}</dd></div>'
+            )
+        parts.append("</dl>")
+    parts.append("</details>")
+    return "\n".join(parts)
 
 
 def md_to_fragment(md_path: str) -> str:
@@ -245,10 +516,17 @@ def build_toc(body: str) -> str:
 
 
 def main() -> None:
-    md_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_IN
-    out_path = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUT
+    ap = argparse.ArgumentParser()
+    ap.add_argument("md", nargs="?", default=DEFAULT_IN, help="输入 Markdown")
+    ap.add_argument("out", nargs="?", default=DEFAULT_OUT, help="输出 HTML")
+    ap.add_argument("--glossary", default=DEFAULT_GLOSSARY,
+                    help="术语表 JSON（默认同目录 glossary.json）")
+    a = ap.parse_args()
+    md_path, out_path = a.md, a.out
     if not os.path.exists(md_path):
         sys.exit(f"错误：输入文件不存在：{md_path}")
+
+    terms = load_glossary(a.glossary)
 
     raw = open(md_path, encoding="utf-8").read()
 
@@ -275,6 +553,21 @@ def main() -> None:
     body = wrap_tables(body)
     toc = build_toc(body)
 
+    glossary_data = appendix = gl_hint = glossary_js = ""
+    if terms:
+        payload = json.dumps({"terms": terms}, ensure_ascii=False).replace("</", "<\\/")
+        glossary_data = ('<script type="application/json" id="glossary-data">'
+                         f'{payload}</script>')
+        glossary_js = f"<script>{GLOSSARY_JS}</script>"
+        appendix = glossary_appendix(terms)
+        gl_hint = ('<p class="gl-hint">术语看不懂？'
+                   '正文里带 <span class="gl-demo">虚线下划线</span> 的词'
+                   '（例如 <span class="gl-demo">EV</span>、'
+                   '<span class="gl-demo">YTD</span>、'
+                   '<span class="gl-demo">反向 DCF</span>）'
+                   '<b>点一下就会弹出解释</b>。'
+                   f'完整 <a href="#glossary" id="gl-open">术语表（{len(terms)} 条）</a>在文末。</p>')
+
     doc = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -290,17 +583,21 @@ def main() -> None:
   <p class="kicker">Equity Research · Teaching Slice</p>
   <h1>{html_mod.escape(title)}</h1>
   {''.join(subs)}
+  {gl_hint}
 </header>
 {toc}
 <main>
 {body}
 </main>
+{appendix}
 <footer class="doc">
   <p>本文件为投资分析方法教学材料，<strong>不是投资建议</strong>，不构成任何证券的买卖推荐。</p>
   <p>数据截止 2026-10-15 港股收盘 ｜ 由 <code>build_html.py</code> 从 Markdown 源稿生成</p>
 </footer>
 </div>
 <a class="top-btn" href="#" aria-label="回到顶部" title="回到顶部">↑</a>
+{glossary_data}
+{glossary_js}
 </body>
 </html>
 """
@@ -316,6 +613,8 @@ def main() -> None:
     print(f"已生成 {out_path}")
     print(f"  {size:,} 字节 | {len(body.splitlines()):,} 行 HTML | {n_tbl} 张表 | "
           f"{n_pre} 个代码块 | 目录 {toc.count('<li>')} 项 | div 配对 {n_div_o}/{n_div_c} ✓")
+    if terms:
+        print(f"  术语表 {len(terms)} 条（已内联；标注由页面 JS 在浏览器里完成）")
 
 
 if __name__ == "__main__":
