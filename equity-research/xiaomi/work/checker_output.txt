@@ -1,0 +1,4 @@
+财务/估值一致性检查发现 1 项：P0=0 P1=0 P2=0 P3=1
+
+[P3] FORENSIC_MSCORE_INFO [xiaomi/work/financials.csv]: Beneish M-Score = -2.29（阈值 -1.78，未越限）。
+    M=-2.29 | DSRI=0.84 GMI=0.94 AQI=1.12 SGI=1.25 DEPI=1.06 SGAI=1.03 TATA=0.015 LVGI=0.90

@@ -1,0 +1,157 @@
+{
+ "_note": "小米集团 1810.HK 教学切片估值假设。单位 = RMB 十亿元。现价 27.08 HKD × 0.8524 (HKD/CNY, 2026-10-15) = 23.0831 RMB/股。",
+ "_net_debt_def": "净债 = 总借款 39.277 − (现金及等价物 37.252 + 受限制现金 4.138 + 短期定存 62.466 + 短期投资 22.006) = −86.585。公司自有 gearing 口径剔除短期投资，为 −64.579（作为敏感性对照）。",
+ "_wacc_build": "无风险利率 = 中国10Y 1.65% 与海外收入38%加权 ≈ 2.5%；ERP 6.0%（中国含国别风险）；beta 1.05（行业无杠杆beta，非单股5Y回归的0.70）；Ke ≈ 9.5%；Kd 税后 ≈ 2.4%；净现金结构下 WACC ≈ Ke = 9.5%。",
+ "price": 23.0831,
+ "shares": 25.7947,
+ "net_debt": -86.585,
+ "wacc": 0.095,
+ "terminal_g": 0.03,
+ "scenarios": [
+  {
+   "name": "bear",
+   "prob": 0.3,
+   "evidence_strength": "中强",
+   "evidence": "存储涨价已由 TrendForce 一手确认（26Q4 DRAM +10~15%、NAND +15~20%）；H1 2026 经调整净利 −42.8% 已实现；EV 分部毛利率 24.3%→19.2%；EV 分部 H1 亏损 −57 亿；手机份额 26Q3 降至 10%、同比 −30%+。",
+   "revenue": [
+    430,
+    450,
+    470,
+    485,
+    495
+   ],
+   "fcf_margin": [
+    0.01,
+    0.018,
+    0.025,
+    0.03,
+    0.032
+   ],
+   "fade_years": 5,
+   "fade_g_start": 0.02,
+   "annual_dilution": 0.0
+  },
+  {
+   "name": "base",
+   "prob": 0.5,
+   "evidence_strength": "中",
+   "evidence": "收入落在一致预期下沿（FY26E 430–437bn，2027E +22%）；FCF 利润率沿 FY2025 的 4.7% 温和回升；回购 200 亿港元/年抵消 SBC 稀释。",
+   "revenue": [
+    435,
+    515,
+    575,
+    628,
+    672
+   ],
+   "fcf_margin": [
+    0.028,
+    0.036,
+    0.043,
+    0.047,
+    0.05
+   ],
+   "fade_years": 5,
+   "fade_g_start": 0.08,
+   "annual_dilution": 0.0
+  },
+  {
+   "name": "bull",
+   "prob": 0.2,
+   "evidence_strength": "中",
+   "evidence": "EV 继续放量（1–9 月 286,490 辆；澎程首月锁单 >7 万）、AI 与自研芯片（XRING O3、V900）兑现、存储成本 2027 年回落。",
+   "revenue": [
+    440,
+    545,
+    650,
+    750,
+    840
+   ],
+   "fcf_margin": [
+    0.02,
+    0.045,
+    0.06,
+    0.07,
+    0.075
+   ],
+   "fade_years": 5,
+   "fade_g_start": 0.15,
+   "annual_dilution": 0.0
+  }
+ ],
+ "sensitivity": {
+  "scenario": "base",
+  "wacc": [
+   0.085,
+   0.095,
+   0.105
+  ],
+  "g": [
+   0.02,
+   0.03,
+   0.04
+  ]
+ },
+ "reverse": {
+  "base_revenue": 457.287,
+  "interim_fcf": [
+   8,
+   16,
+   24,
+   32,
+   40
+  ],
+  "steady_margins": [
+   0.04,
+   0.05,
+   0.06,
+   0.07
+  ]
+ },
+ "pvgo": {
+  "earnings_ps": 1.2,
+  "r": 0.095,
+  "price": 23.0831
+ },
+ "epv": {
+  "earnings_basis": "NOPAT",
+  "normalized_earnings": 25.0,
+  "coc": 0.095,
+  "net_debt": -86.585,
+  "excess_cash": 0.0,
+  "shares": 25.7947,
+  "asset_value": 269.819,
+  "price": 23.0831,
+  "growth": {
+   "g": 0.05,
+   "roiic": 0.16,
+   "mode": "franchise"
+  }
+ },
+ "eva": {
+  "invested_capital": 183.23,
+  "nopat": 25.0,
+  "wacc": 0.095,
+  "fade_years": 10,
+  "nopat_growth": 0.05,
+  "reinvestment_rate": 0.35,
+  "roiic": 0.16
+ },
+ "montecarlo": {
+  "n": 4000,
+  "seed": 20261015,
+  "base_revenue": 457.287,
+  "years": 5,
+  "growth_mean": 0.095,
+  "growth_std": 0.09,
+  "margin_low": 0.01,
+  "margin_mode": 0.042,
+  "margin_high": 0.075,
+  "wacc_low": 0.085,
+  "wacc_high": 0.105,
+  "terminal_g": 0.03,
+  "fade_years": 5
+ },
+ "range_low": 15.0,
+ "range_high": 26.8,
+ "_range_basis": "底部=EPV成长调整(18.2)与蒙特卡洛P25(14.0)之间取整；顶部=相对估值上沿(26.76, 22.3x×FY26E EPS)。区间含全部方法。"
+}
