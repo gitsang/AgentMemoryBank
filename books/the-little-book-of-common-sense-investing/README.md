@@ -17,6 +17,8 @@ images/             exhibit figures referenced by index.html
 build_book.py       EPUB  -> sections JSON (text + figures)
 build_html.py       sections JSON -> index.html (translations, notes, glossary)
 extract_paragraphs.py      sections JSON -> translatable-paragraph work queue
+collect_translations.py    per-section translation files -> translations.json
+translations.json   the Chinese running text (459 paragraphs)
 translations.example.json  worked example of the translation sidecar
 glossary.json       terminology glossary (en / zh / explanation)
 annotations.json    Chinese margin annotations, keyed by section + paragraph
@@ -76,22 +78,41 @@ Notes on fidelity:
 
 ## Parallel translation (对照翻译)
 
-The page can carry a second language interleaved under each paragraph. The
+The page carries a Chinese translation interleaved under each paragraph. The
 translation text is kept in a sidecar file rather than baked into the HTML, so
 the page can be rebuilt at any time and partial work is fine.
+
+**Current coverage: the full running text.** The Introduction and all 18
+chapters are translated — 459 of 459 paragraphs. The front matter (dropped at
+conversion) and the back matter (Acknowledgments, endnotes) are out of scope by
+choice: the page is the argument, not the apparatus. So a build reports
+`running text: 459/459 paragraphs (100% of the body)` and notes separately how
+many prose paragraphs exist in total, rather than presenting the back matter as
+an untranslated gap.
 
 Workflow:
 
 ```bash
-# 1. dump the translatable paragraphs of every section
-SECTIONS_JSON=sections.json python3 extract_paragraphs.py paragraphs.json
+# 1. dump the translatable paragraphs of the running text
+SECTIONS_JSON=sections.json python3 extract_paragraphs.py --body-only queue.json
 
-# 2. fill in paragraphs.json -> translations.json (see the format below)
+# 2. translate the queued paragraphs, one file per section, into a workdir:
+#      workdir/ch01.json = {"section": "ch01", "paragraphs": {"4": {"zh": "…"}}}
 
-# 3. rebuild with the translations interleaved
+# 3. merge the per-section files into the sidecar
+python3 collect_translations.py workdir/ queue.json -o translations.json --strict
+
+# 4. rebuild with the translations interleaved
 SECTIONS_JSON=sections.json TRANSLATIONS_JSON=translations.json \
     python3 build_html.py out/index.html
 ```
+
+`--body-only` narrows the queue to the running text: it drops the chapter
+label, the subtitle and tagline, and everything inside a "Don't Take My Word for
+It" aside. Paragraph indices stay those of the *full* selection even when
+apparatus is filtered out, so an index in the queue always means the same thing
+to `build_html.py`'s interleaver. Both sides import the same `body_only`
+predicate, so the work queue and the build's coverage count cannot drift apart.
 
 [`translations.example.json`](translations.example.json) is a short worked
 example. The format is keyed by paragraph index, which makes sparse and
@@ -112,13 +133,21 @@ partial translations safe:
   checks it against the paragraph it is about to attach the translation to; if
   it does not match, it locates the right paragraph by fingerprint instead of
   silently attaching the translation to the wrong place. Leftover mismatches are
-  reported as `mismatched: N` at build time.
-- Extracted paragraphs cover prose only (`<p>` and `<li>`): headings, figure
-  captions and the copyright boilerplate are excluded.
+  reported as `mismatched: N` at build time. `collect_translations.py` carries
+  the fingerprint across from the work queue, so a translator only ever supplies
+  `zh`.
+- Because the 19 sections were translated independently, mechanically drifting
+  conventions are settled once, in `collect_translations.normalise`, rather than
+  baked into the HTML by hand: the IME's `“ ”` become the corner brackets the
+  hand-written sidecars use, an in-text figure reference takes the English label
+  printed on the figure (`Exhibit 2.1`, matching the `EXHIBIT 2.1` caption,
+  rather than inventing a Chinese label the reader cannot see on the figure),
+  and stray ASCII spaces around full-width punctuation are dropped. It never
+  touches wording — term and number consistency across sections was checked
+  separately.
 - The translation mirrors the source paragraph's classes, so an indented, quoted
   or pull-quote paragraph keeps the same shape, plus a `tr` marker:
-  `<p class="tr q">`. `build_html.py` reports the resulting coverage, e.g.
-  `translation coverage: 6/611 paragraphs (1%)`.
+  `<p class="tr q">`.
 - When translations are present the page gains a 中文 show/hide toggle
   (persisted in `localStorage`), and the translation styles collapse for print.
 
@@ -226,7 +255,9 @@ last, which is not the same thing.
 
 Introduction, all 18 chapters, Acknowledgments, and the 24 endnotes. The EPUB's
 own table-of-contents page, title page, series blurb, copyright page and
-dedication are not carried over.
+dedication are not carried over. Of these, the running text (Introduction plus
+the 18 chapters) is translated into Chinese; the Acknowledgments and endnotes
+are left in English.
 
 ## Copyright
 

@@ -19,8 +19,8 @@ import warnings
 
 from bs4 import BeautifulSoup, NavigableString, XMLParsedAsHTMLWarning
 
-from extract_paragraphs import (SKIP_SECTIONS, iter_paragraphs, plain,
-                                selection, soup_of, src_key)
+from extract_paragraphs import (BODY_SECTION_IDS, SKIP_SECTIONS, body_only,
+                                plain, selection, soup_of, src_key)
 
 warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 
@@ -606,12 +606,29 @@ def main():
             parts.append(html)
     body = '\n'.join(parts)
 
-    total_paras = sum(1 for s in SECTIONS if s['id'] not in SKIP_SECTIONS
-                      for _ in iter_paragraphs(s['html']))
+    # Two counts, so an intentionally partial translation is not reported as a
+    # gap: `body_paras` is the running text a translation is expected to cover,
+    # `all_paras` every prose paragraph, back matter included.
+    body_paras = all_paras = 0
+    for s in SECTIONS:
+        if s['id'] in SKIP_SECTIONS:
+            continue
+        root = soup_of(s['html']).find(id='__root__')
+        all_paras += sum(1 for _ in selection(root))
+        if s['id'] in BODY_SECTION_IDS:
+            body_paras += sum(1 for _ in body_only(root))
     if translations:
-        pct = inserted / max(total_paras, 1)
-        print(f'translation: {inserted}/{total_paras} paragraphs '
-              f'({pct:.0%}), mismatched {mismatched}')
+        print(f'translation: {inserted} paragraphs inserted, mismatched '
+              f'{mismatched}')
+        pct = inserted / max(body_paras, 1)
+        print(f'  running text: {inserted}/{body_paras} paragraphs ({pct:.0%})')
+        if inserted < body_paras:
+            print(f'  NOTE: {body_paras - inserted} body paragraph(s) '
+                  f'untranslated')
+        elif inserted > body_paras:
+            print(f'  {inserted - body_paras} of them outside the running text')
+        print(f'  ({all_paras} prose paragraphs exist in total, including '
+              f'back matter)')
     if ANNOTATIONS:
         print(f'annotations: {notes} notes across {len(ANNOTATIONS)} sections, '
               f'mismatched {note_mismatch}')
