@@ -11,12 +11,13 @@ Usage:
     SECTIONS_JSON=sections.json python3 extract_paragraphs.py [out.json]
 
 Pass ``--body-only`` to narrow the queue to the running text: the Introduction
-and the 18 numbered chapters, minus the chapter labels, taglines and quoted
-"Don't Take My Word for It" asides. Front and back matter are dropped too, so
-the queue is exactly the prose a translation of the book is expected to cover
-and ``--strict`` can be a meaningful 100% check. ``build_html.py`` imports
-the same definitions for its coverage accounting, so the numerator and
-denominator cannot drift apart.
+and the 18 numbered chapters, minus the parts that are display or apparatus
+rather than prose a reader follows — the chapter labels and taglines, the
+centered pull quotes, and everything inside a "Don't Take My Word for It"
+aside. Front and back matter are dropped too, so the queue is exactly what a
+translation of the book is expected to cover and ``--strict`` can be a
+meaningful 100% check. ``build_html.py`` imports the same definitions for its
+coverage accounting, so the numerator and denominator cannot drift apart.
 """
 
 import json
@@ -39,9 +40,12 @@ OUT_PATH = next((a for a in sys.argv[1:] if not a.startswith('-')),
 SKIP_SECTIONS = set()
 # a paragraph shorter than this (in characters) is a fragment, not prose
 MIN_CHARS = 2
-# the running text of a chapter: everything else is apparatus (chapter labels,
-# taglines, the quoted "Don't Take My Word for It" asides)
-APPARATUS_CLASSES = {'chapter-label', 'subtitle', 'tagline', 'box-title'}
+# What a chapter is made of besides its prose. Labels and taglines are headings;
+# `pull` is a centered display quote set apart from the argument ("The stock
+# market is a giant distraction."), which is typography rather than the book's
+# running text. None of it is what a translation of the book covers.
+APPARATUS_CLASSES = {'chapter-label', 'subtitle', 'tagline', 'box-title',
+                     'pull'}
 # the running text of the book. Single source of truth: the work queue and
 # build_html.py's coverage count both scope themselves to this set.
 BODY_SECTION_IDS = frozenset({'intro'} | {f'ch{i:02d}' for i in range(1, 19)})
@@ -65,7 +69,7 @@ def selection(root, body_only=False):
 
 
 def _is_apparatus(el):
-    """True for a label, tagline or quoted aside rather than running text."""
+    """True for a heading, display quote or quoted aside, not running text."""
     if set(el.get('class') or []) & APPARATUS_CLASSES:
         return True
     return el.find_parent('aside', class_='box') is not None

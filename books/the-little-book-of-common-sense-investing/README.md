@@ -18,7 +18,7 @@ build_book.py       EPUB  -> sections JSON (text + figures)
 build_html.py       sections JSON -> index.html (translations, notes, glossary)
 extract_paragraphs.py      sections JSON -> translatable-paragraph work queue
 collect_translations.py    per-section translation files -> translations.json
-translations.json   the Chinese running text (459 paragraphs)
+translations.json   the Chinese running text (394 paragraphs)
 translations.example.json  worked example of the translation sidecar
 glossary.json       terminology glossary (en / zh / explanation)
 annotations.json    Chinese margin annotations, keyed by section + paragraph
@@ -83,12 +83,14 @@ translation text is kept in a sidecar file rather than baked into the HTML, so
 the page can be rebuilt at any time and partial work is fine.
 
 **Current coverage: the full running text.** The Introduction and all 18
-chapters are translated — 459 of 459 paragraphs. The front matter (dropped at
-conversion) and the back matter (Acknowledgments, endnotes) are out of scope by
-choice: the page is the argument, not the apparatus. So a build reports
-`running text: 459/459 paragraphs (100% of the body)` and notes separately how
-many prose paragraphs exist in total, rather than presenting the back matter as
-an untranslated gap.
+chapters are translated — 394 of 394 paragraphs. Out of scope by choice:
+front matter (dropped at conversion), the back matter (Acknowledgments,
+endnotes), and the display typography — chapter labels, taglines, and the
+centered pull quotes, which restate the argument rather than carry it. So the
+page is the argument itself, not its apparatus. A build reports
+`running text: 394/394 paragraphs (100% of the body)` and notes separately how
+many prose paragraphs exist in total, rather than presenting the excluded
+material as an untranslated gap.
 
 Workflow:
 
@@ -108,8 +110,8 @@ SECTIONS_JSON=sections.json TRANSLATIONS_JSON=translations.json \
 ```
 
 `--body-only` narrows the queue to the running text: it drops the chapter
-label, the subtitle and tagline, and everything inside a "Don't Take My Word for
-It" aside. Paragraph indices stay those of the *full* selection even when
+label, the subtitle and tagline, the centered pull quotes, and everything
+inside a "Don't Take My Word for It" aside. Paragraph indices stay those of the *full* selection even when
 apparatus is filtered out, so an index in the queue always means the same thing
 to `build_html.py`'s interleaver. Both sides import the same `body_only`
 predicate, so the work queue and the build's coverage count cannot drift apart.
